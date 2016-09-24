@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+     
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabs"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        android:background="@color/colorPrimaryDark"
+        app:tabIndicatorColor="#FFF"
+        app:tabSelectedTextColor="#FFF"
+        app:tabTextColor="#CCC"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </android.support.design.widget.TabLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+
+            <Button
+                android:layout_marginLeft="120dp"
+                android:visibility="gone"
+                android:layout_marginTop="15dp"
+                android:id="@+id/painelIniciarViagem"
+                android:text="INICIAR VIAGEM"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:layout_marginLeft="120dp"
+                android:padding="15dp"
+                android:layout_marginTop="15dp"
+                android:visibility="gone"
+                android:id="@+id/painelFinalizarViagem"
+                android:text="FINALIZAR VIAGEM"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginLeft="60dp"
+                android:background="#CCC"
+                android:padding="15dp"
+                android:layout_marginTop="15dp"
+                android:visibility="gone"
+                android:textSize="18sp"
+                android:id="@+id/painelMensagem"
+                android:text="Não possui encomendas \npara entrega no momento."
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        <!--</LinearLayout>-->
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+         
+        </android.support.v4.view.ViewPager>
+
+    </RelativeLayout>
+
+</LinearLayout>

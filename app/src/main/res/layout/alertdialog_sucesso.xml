@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_margin="16dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!--TITLE-->
+        <TextView
+            android:id="@+id/dialog_exit_title"
+            android:gravity="left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:text="Sair"/>
+
+        <!--SUBTITLE-->
+        <TextView
+            android:id="@+id/dialog_exit_subtitle"
+            android:layout_marginTop="16dp"
+            android:gravity="left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Deseja realmente sair ? "/>
+
+
+
+        <LinearLayout
+            android:weightSum="10"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!--SIM-->
+            <!--<TextView-->
+                <!--android:id="@+id/dialog_exit_btn_sim"-->
+                <!--android:gravity="center"-->
+                <!--android:layout_weight="5"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textSize="18sp"-->
+                <!--android:text="SIM"/>-->
+
+            <!--NAO-->
+            <TextView
+                android:id="@+id/dialog_exit_btn_nao"
+                android:gravity="center"
+                android:layout_weight="5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="OK"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

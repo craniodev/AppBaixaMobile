@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="br.com.a3rtecnologia.baixamobile.ocorrencia.OcorrenciaActivity"
+    tools:showIn="@layout/activity_ocorrencia">
+
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <!--GRUPO RECEBEDOR-->
+    <LinearLayout
+        android:id="@+id/grupoRecebedor"
+        android:padding="10dp"
+        android:orientation="vertical"
+        android:layout_margin="0dp"
+        android:background="#FFF"
+        android:layout_width="match_parent"
+        android:layout_height="121dp">
+
+        <!--OCORRENCIA-->
+        <TextView
+            android:id="@+id/ocorrencia_title"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="0dp"
+            android:textSize="14sp"
+            android:textColor="@color/colorPrimary"
+            android:text="Tipo de Ocorrência"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/ocorrencia_tipo_ocorrencia"
+            android:layout_marginLeft="-6dp"
+            android:layout_below="@+id/ocorrencia_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+
+
+
+    <!--GRUPO FOTO-->
+    <LinearLayout
+        android:id="@+id/grupo_foto_ocorrencia"
+        android:layout_marginTop="10dp"
+        android:padding="16dp"
+        android:orientation="vertical"
+        android:background="#FFF"
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+        <!--FOTO OCORRENCIA-->
+        <LinearLayout
+            android:weightSum="10"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp">
+
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:layout_weight="6"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:textSize="18sp"
+                    android:text="Foto Ocorrência"
+                    android:id="@+id/ocorrencia_foto_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginLeft="16dp"
+                android:layout_weight="4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:src="@drawable/ic_camera"
+                    android:id="@+id/ocorrencia_foto_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+
+        <!--FOTO OCORRENCIA-->
+        <LinearLayout
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            android:weightSum="30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_margin="5dp"
+                android:layout_weight="10"
+                android:visibility="gone"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="5dp"
+                android:id="@+id/ocorrencia_foto"
+                android:layout_width="64dp"
+                android:layout_height="64dp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

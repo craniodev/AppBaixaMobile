@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav_panel"
+            android:icon="@drawable/icon_painel"
+            android:title="@string/navigation_drawer_item_panel" />
+        <item
+            android:id="@+id/nav_pending"
+            android:icon="@drawable/icon_pendentes"
+            android:title="@string/navigation_drawer_item_pending" />
+        <item
+            android:id="@+id/nav_finished"
+            android:icon="@drawable/icon_entregue"
+            android:title="@string/navigation_drawer_item_finished" />
+    </group>
+
+    <item android:title="@string/navigation_drawer_config">
+        <menu>
+            <item
+                android:id="@+id/nav_account"
+                android:icon="@drawable/icon_minha_conta"
+                android:title="@string/navigation_drawer_item_account" />
+            <item
+                android:id="@+id/nav_exit"
+                android:icon="@drawable/icon_sair"
+                android:title="@string/navigation_drawer_item_exit" />
+        </menu>
+    </item>
+
+</menu>

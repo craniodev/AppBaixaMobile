@@ -1,0 +1,24 @@
+<resources>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="AppTheme.NoActionBarCustom">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">#000</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <!--<style name="EditTextLoginCustom" parent="Theme.AppCompat.Light.DarkActionBar">-->
+    <!--<item name="colorControlActivated">#FFF</item>-->
+    <!--<item name="colorControlNormal">#FFF</item>-->
+    <!--</style>-->
+
+
+</resources>

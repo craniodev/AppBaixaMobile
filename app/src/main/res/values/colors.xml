@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#006699</color>
+    <color name="colorPrimaryDark">#2DA6CD</color>
+    <color name="colorAccent">#006699</color>
+
+
+
+    <color name="topo">#2484a4</color>
+    <color name="detalhe">#FF8100</color>
+
+    <color name="teste_salmao">#FFA07A</color>
+    <color name="teste_orage">#FFA500</color>
+    <color name="green_one">#2E8B57</color>
+    <color name="green_two">#008141</color>
+
+
+    <color name="background_color_home_primary">#FFE7CF</color>
+    <color name="background_color_home_secondary">#FFF</color>
+
+    <color name="black">#000</color>
+
+</resources>
