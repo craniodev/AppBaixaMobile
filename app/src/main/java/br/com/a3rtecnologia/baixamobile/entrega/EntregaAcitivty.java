@@ -45,6 +45,7 @@ import br.com.a3rtecnologia.baixamobile.util.ActivityUtil;
 import br.com.a3rtecnologia.baixamobile.tipo_recebedor.TipoRecebedorAdapter;
 import br.com.a3rtecnologia.baixamobile.util.DateUtil;
 import br.com.a3rtecnologia.baixamobile.util.ImagemUtil;
+import br.com.a3rtecnologia.baixamobile.util.InternetStatus;
 import br.com.a3rtecnologia.baixamobile.util.SessionManager;
 
 public class EntregaAcitivty extends AppCompatActivity {
@@ -755,48 +756,106 @@ public class EntregaAcitivty extends AppCompatActivity {
         encomendaCorrente.setDataBaixa(DateUtil.getDataAtual());
         encomendaBusiness.update(encomendaCorrente);
 
-        BaixaEntregueVolley baixaEntregueVolley = new BaixaEntregueVolley(getApplicationContext(), encomendaCorrente, recebedor, latLng, new DelegateEntregaAsyncResponse() {
-
-            @Override
-            public void processFinish(boolean finish, String resposta) {
-
-                showProgress(false);
 
 
-                /**
-                 * REMOVE FLAG COLOR
-                 */
-                encomendaCorrente.setFlagTratado(false);
+        if(InternetStatus.isNetworkAvailable(mContext)) {
 
-                /**
-                 * ATUALIZA STATUS ENCOMENDA
-                 */
-                encomendaBusiness.encomendaEntregue(encomendaCorrente);
+            BaixaEntregueVolley baixaEntregueVolley = new BaixaEntregueVolley(getApplicationContext(), encomendaCorrente, recebedor, latLng, new DelegateEntregaAsyncResponse() {
 
-                /**
-                 * REMOVE ENCOMENDA CORRENTE
-                 */
-                statusBusiness.removeEncomendaCorrente();
+                @Override
+                public void processFinish(boolean finish, String resposta) {
+
+                    showProgress(false);
+
+
+                    /**
+                     * REMOVE FLAG COLOR
+                     */
+                    encomendaCorrente.setFlagTratado(false);
+
+                    /**
+                     * ATUALIZA STATUS ENCOMENDA
+                     */
+                    encomendaBusiness.encomendaEntregue(encomendaCorrente);
+
+                    /**
+                     * REMOVE ENCOMENDA CORRENTE
+                     */
+                    statusBusiness.removeEncomendaCorrente();
 //                TabItemMapaFragment.isRemoveMarkerMap = true;
 
-                /**
-                 * REMOVE MARKER
-                 */
+                    /**
+                     * REMOVE MARKER
+                     */
 //                TabItemMapaFragment.marker.remove();
 //                TabItemMapaFragment.map.clear();
 
-                finish();
-            }
 
-            @Override
-            public void processCanceled(boolean cancel) {
+                    /**
+                     * ENVIADO COM SUCESSO
+                     *
+                     * DELETE DO MODO OFFLINE
+                     */
+                    recebedorBusiness.getRecebedorList();
+                    recebedorBusiness.delete(recebedor);
 
-                System.out.println("ERRO - BAIXA ENCOMENDA");
+                    finish();
+                }
 
-                showProgress(false);
-                finish();
-            }
-        });
+                @Override
+                public void processCanceled(boolean cancel) {
+
+                    System.out.println("ERRO - BAIXA ENCOMENDA");
+
+                    showProgress(false);
+                    finish();
+                }
+            });
+
+        }else{
+
+            /**
+             * MODO OFFLINE
+             *
+             * SALVAR RECEBEDOR LOCAL
+             */
+            recebedor.setDataFinalizacao(encomendaCorrente.getDataBaixa());
+            recebedorBusiness.salvarRecebedor(recebedor);
+//            recebedorBusiness.getRecebedorList();
+
+
+            /**
+             * REMOVE FLAG COLOR
+             */
+            encomendaCorrente.setFlagTratado(false);
+
+            /**
+             * ATUALIZA STATUS ENCOMENDA
+             */
+            encomendaBusiness.encomendaEntregue(encomendaCorrente);
+
+            /**
+             * REMOVE ENCOMENDA CORRENTE
+             */
+            statusBusiness.removeEncomendaCorrente();
+
+
+            /**
+             * START TIMER TASK
+             *
+             *
+             */
+
+
+
+
+            /**
+             * FINALIZAR
+             */
+            finish();
+
+
+        }
     }
 
 

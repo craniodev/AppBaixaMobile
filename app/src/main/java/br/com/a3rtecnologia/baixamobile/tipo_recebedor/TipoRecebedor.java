@@ -3,6 +3,7 @@ package br.com.a3rtecnologia.baixamobile.tipo_recebedor;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import br.com.a3rtecnologia.baixamobile.entrega.Recebedor;
 import br.com.a3rtecnologia.baixamobile.orm.CustomDao;
 
 /**
@@ -18,6 +19,9 @@ public class TipoRecebedor {
     /** ID WEB **/
     @DatabaseField
     private int Id;
+
+    @DatabaseField(foreign = true, columnName = "ID_RECEBEDOR")
+    private Recebedor recebedor;
 
     @DatabaseField
     private String Descricao;
@@ -46,5 +50,13 @@ public class TipoRecebedor {
 
     public void setDescricao(String Descricao) {
         this.Descricao = Descricao;
+    }
+
+    public Recebedor getRecebedor() {
+        return recebedor;
+    }
+
+    public void setRecebedor(Recebedor recebedor) {
+        this.recebedor = recebedor;
     }
 }

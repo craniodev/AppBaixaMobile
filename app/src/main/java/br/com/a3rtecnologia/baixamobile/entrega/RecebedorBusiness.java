@@ -23,6 +23,9 @@ import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomendas;
 import br.com.a3rtecnologia.baixamobile.orm.CustomDao;
 import br.com.a3rtecnologia.baixamobile.orm.DatabaseHelper;
+import br.com.a3rtecnologia.baixamobile.status.Status;
+import br.com.a3rtecnologia.baixamobile.tipo_documento.TipoDocumento;
+import br.com.a3rtecnologia.baixamobile.tipo_recebedor.TipoRecebedor;
 import br.com.a3rtecnologia.baixamobile.util.EnumHttpError;
 import br.com.a3rtecnologia.baixamobile.util.GsonRequest;
 import br.com.a3rtecnologia.baixamobile.util.InternetStatus;
@@ -36,6 +39,8 @@ import br.com.a3rtecnologia.baixamobile.util.VolleyTimeout;
 public class RecebedorBusiness {
 
     private Dao<Recebedor, Integer> recebedorDao;
+    private Dao<TipoRecebedor, Integer> tipoRecebedorDao;
+    private Dao<TipoDocumento, Integer> tipoDocumentoDao;
     private Context mContext;
 
 
@@ -44,6 +49,8 @@ public class RecebedorBusiness {
 
         this.mContext = mContext;
         getDao();
+        getDaoTipoRecebedor();
+        getDaoTipoDocumento();
     }
 
 
@@ -55,6 +62,36 @@ public class RecebedorBusiness {
         try {
 
             recebedorDao = new CustomDao<Recebedor, Integer>(helper.getConnectionSource(), Recebedor.class);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        System.out.print("");
+    }
+
+    private void getDaoTipoRecebedor(){
+
+        DatabaseHelper helper  = new DatabaseHelper(mContext);
+
+        try {
+
+            tipoRecebedorDao = new CustomDao<TipoRecebedor, Integer>(helper.getConnectionSource(), TipoRecebedor.class);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        System.out.print("");
+    }
+
+    private void getDaoTipoDocumento(){
+
+        DatabaseHelper helper  = new DatabaseHelper(mContext);
+
+        try {
+
+            tipoDocumentoDao = new CustomDao<TipoDocumento, Integer>(helper.getConnectionSource(), TipoDocumento.class);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -80,6 +117,61 @@ public class RecebedorBusiness {
 
 
 
+
+
+    /**
+     * VERIFICA SE VIAGEM INICIADA
+     *
+     * @return
+     */
+    public List<Recebedor> getRecebedorList(){
+
+        List<Recebedor> result = null;
+
+        try {
+
+            result = recebedorDao.queryForAll();
+
+//            for (Recebedor recebedor : result){
+//
+//
+//            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+//        Recebedor recebedor = null;
+//        if(result != null && result.size() > 0) {
+//
+//            recebedor = result.get(result.size() -1);
+//        }
+
+        return result;
+    }
+
+
+
+
+
+    /**
+     * DELETE
+     *
+     */
+    public void delete(Recebedor recebedor){
+
+        try {
+
+            recebedorDao.delete(recebedor);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
     /**
      * DELETE ALL
      *
@@ -101,7 +193,13 @@ public class RecebedorBusiness {
 
     public void salvarRecebedor(Recebedor recebedor){
 
+        try {
 
+            recebedorDao.create(recebedor);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void salvarAssinaturaDigital(Recebedor recebedor){

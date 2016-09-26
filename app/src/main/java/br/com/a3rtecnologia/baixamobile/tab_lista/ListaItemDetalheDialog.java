@@ -20,9 +20,14 @@ import br.com.a3rtecnologia.baixamobile.encomenda.DelegateEncomendaAsyncResponse
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
 import br.com.a3rtecnologia.baixamobile.entrega.IniciarEntregaVolley;
+import br.com.a3rtecnologia.baixamobile.iniciar_viagem.IniciarViagem;
+import br.com.a3rtecnologia.baixamobile.iniciar_viagem.IniciarViagemBusiness;
 import br.com.a3rtecnologia.baixamobile.status.Status;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
+import br.com.a3rtecnologia.baixamobile.tab_mapa.MyLocationTimerTask;
+import br.com.a3rtecnologia.baixamobile.tab_mapa.TabItemMapaFragment;
 import br.com.a3rtecnologia.baixamobile.util.DateUtil;
+import br.com.a3rtecnologia.baixamobile.util.InternetStatus;
 import br.com.a3rtecnologia.baixamobile.util.SessionManager;
 
 /**
@@ -34,6 +39,8 @@ public class ListaItemDetalheDialog extends Activity{
     private EncomendaBusiness encomendaBusiness;
     private SessionManager sessionManager;
     private StatusBusiness statusBusiness;
+    private IniciarViagemBusiness iniciarViagemBusiness;
+    private IniciarViagem iniciarViagem;
 
 
 
@@ -43,6 +50,9 @@ public class ListaItemDetalheDialog extends Activity{
         this.encomendaBusiness = new EncomendaBusiness(mActivity);
         this.sessionManager = new SessionManager(mActivity);
         this.statusBusiness = new StatusBusiness(mActivity);
+        this.iniciarViagemBusiness = new IniciarViagemBusiness(mActivity);
+
+        iniciarViagem = new IniciarViagem();
 
         LayoutInflater li = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -133,22 +143,44 @@ public class ListaItemDetalheDialog extends Activity{
         encomendaEntregue.setDataInicioEntrega(DateUtil.getDataAtual());
         encomendaBusiness.update(encomendaEntregue);
 
-        IniciarEntregaVolley iniciarEntregaVolley = new IniciarEntregaVolley(mActivity, encomendaEntregue, new DelegateEncomendaAsyncResponse() {
 
-            @Override
-            public void processFinish(boolean finish, String resposta) {
+//        if(InternetStatus.isNetworkAvailable(mActivity)) {
 
-                System.out.println(resposta);
+            IniciarEntregaVolley iniciarEntregaVolley = new IniciarEntregaVolley(mActivity, encomendaEntregue, new DelegateEncomendaAsyncResponse() {
+
+                @Override
+                public void processFinish(boolean finish, String resposta) {
+
+                    System.out.println(resposta);
 
 //                finalizarViagemx();
-            }
+                }
 
-            @Override
-            public void processCanceled(boolean cancel) {
+                @Override
+                public void processCanceled(boolean cancel) {
 
-                System.out.println("ERRO INICIAR ENTREGA");
-            }
-        });
+                    System.out.println("ERRO INICIAR ENTREGA");
+                }
+            });
+
+
+//        }else{
+
+            /**
+             * MODO OFFLINE
+             *
+             *
+             */
+
+//            MyLocationTimerTask timerTaskLocation = new MyLocationTimerTask(mActivity, TabItemMapaFragment.map);
+//            timerTaskLocation.startTimer();
+//
+//            LatLng latLng = timerTaskLocation.getMyLatLng();
+//            timerTaskLocation.stoptimertask();
+
+
+
+//        }
     }
 
 
