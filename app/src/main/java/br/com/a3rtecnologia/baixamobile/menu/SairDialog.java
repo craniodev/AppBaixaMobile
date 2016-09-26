@@ -13,6 +13,8 @@ import android.widget.Toast;
 import br.com.a3rtecnologia.baixamobile.R;
 import br.com.a3rtecnologia.baixamobile.login.LoginActivity;
 import br.com.a3rtecnologia.baixamobile.ocorrencia.AtualizaEncomendaPendenteTimerTask;
+import br.com.a3rtecnologia.baixamobile.orm.DatabaseHelper;
+import br.com.a3rtecnologia.baixamobile.orm.TableUtil;
 import br.com.a3rtecnologia.baixamobile.util.SessionManager;
 
 /**
@@ -33,11 +35,26 @@ public class SairDialog {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
 
+
+                                            /**
+                                             * STOP TIMER TASK QUANDO DESLOGAR
+                                             */
                                             if(AtualizaEncomendaPendenteTimerTask.timer != null){
 
                                                 AtualizaEncomendaPendenteTimerTask.timer.cancel();
                                             }
 
+
+                                            /**
+                                             * LIMPA TABELAS PARA RECEBER NOVO USUARIO
+                                             */
+                                            TableUtil tableUtil = new TableUtil(mActivity);
+                                            tableUtil.clearAllTables();
+
+
+                                            /**
+                                             * REMOVER USUARIO DA SESSAO E INICIAR TELA DE LOGIN
+                                             */
                                             new SessionManager(mActivity).clear();
                                             Intent intent = new Intent(mActivity, LoginActivity.class);
                                             mActivity.startActivity(intent);

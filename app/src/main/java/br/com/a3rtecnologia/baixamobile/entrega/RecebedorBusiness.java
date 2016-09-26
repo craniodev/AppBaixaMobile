@@ -12,6 +12,7 @@ import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import br.com.a3rtecnologia.baixamobile.R;
@@ -76,6 +77,27 @@ public class RecebedorBusiness {
             e.printStackTrace();
         }
     }
+
+
+
+    /**
+     * DELETE ALL
+     *
+     */
+    public void deleteAll(){
+
+        try {
+
+            List<Recebedor> recebedorList = recebedorDao.queryForAll();
+            recebedorDao.delete(recebedorList);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 
     public void salvarRecebedor(Recebedor recebedor){
 
