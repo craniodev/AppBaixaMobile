@@ -179,6 +179,25 @@ public class StatusBusiness {
 
 
 
+    /**
+     * VERIFICA VIAGEM INICIADA
+     * JORNADA DE TRABALHO JÁ INICIADA
+     */
+    public void startJornadaTrabalho(String dataIniciada){
+
+        Status status = new Status();
+        status.setId(1);
+        status.setViagemIniciada(true);
+
+        String data = DateUtil.getDataAtual();
+        status.setDataInicioViagem(data);
+
+        salvar(status);
+    }
+
+
+
+
 
     /**
      * ENCERRAR JORNADA DE TRABALHO

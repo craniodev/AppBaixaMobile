@@ -11,8 +11,10 @@ import com.android.volley.VolleyError;
 import java.util.HashMap;
 import java.util.Map;
 
+import br.com.a3rtecnologia.baixamobile.Retorno;
 import br.com.a3rtecnologia.baixamobile.api.EnumAPI;
 import br.com.a3rtecnologia.baixamobile.dialogs.StatusDialog;
+import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
 import br.com.a3rtecnologia.baixamobile.usuario.Usuario;
 import br.com.a3rtecnologia.baixamobile.util.DelegateAsyncResponse;
 import br.com.a3rtecnologia.baixamobile.util.EnumHttpError;
@@ -25,26 +27,24 @@ import br.com.a3rtecnologia.baixamobile.util.VolleyTimeout;
 /**
  * Created by maclemon on 28/07/16.
  */
-public class LoginSecundarioVolley {
-
-    private Usuario usuario;
+public class VerificaViagemIniciadaVolley {
 
     private Context mContext;
     private DelegateAsyncResponse delegate;
     private RequestQueue queue;
 
+    private StatusBusiness statusBusiness;
     private SessionManager sessionManager;
 
 
 
-    public LoginSecundarioVolley(Context mContext, Usuario usuario, DelegateAsyncResponse delegate) {
+    public VerificaViagemIniciadaVolley(Context mContext, DelegateAsyncResponse delegate) {
 
         this.mContext = mContext;
         this.delegate = delegate;
         this.queue = VolleySingleton.getInstance(this.mContext).getRequestQueue();
         this.sessionManager = new SessionManager(mContext);
-
-        this.usuario = usuario;
+        this.statusBusiness = new StatusBusiness(mContext);
 
         requestAPI();
     }
@@ -78,10 +78,10 @@ public class LoginSecundarioVolley {
         Map<String, String> headers = header();
         Map<String, String> params = param();
 
-        GsonRequest<Usuario> myReq = new GsonRequest<Usuario>(
+        GsonRequest<Retorno> myReq = new GsonRequest<Retorno>(
                 Request.Method.POST,
-                EnumAPI.LOGIN_SECUNDARIO.getValue(),
-                Usuario.class,
+                EnumAPI.VERIFICA_VIAGEM_INICIADA.getValue(),
+                Retorno.class,
                 headers,
                 params,
                 successListener(),
@@ -93,22 +93,19 @@ public class LoginSecundarioVolley {
 
 
 
-    private Response.Listener<Usuario> successListener() {
-        return new Response.Listener<Usuario>() {
+    private Response.Listener<Retorno> successListener() {
+        return new Response.Listener<Retorno>() {
 
             @Override
-            public void onResponse(Usuario responseObject) {
+            public void onResponse(Retorno responseObject) {
 
                 try {
 
                     //objeto retorno server
-                    String id = String.valueOf(responseObject.getId());
-                    sessionManager.setValue("id", id);
-                    sessionManager.setValue("nome", responseObject.getNome());
+                    if(responseObject.getResposta().equalsIgnoreCase("OK")){
 
-                    //objeto com valor os dados da autenticacao
-                    sessionManager.setValue("email", usuario.getEmail());
-                    sessionManager.setValue("password", usuario.getPassword());
+                        statusBusiness.startJornadaTrabalho();
+                    }
 
                     delegate.processFinish(true);
 
@@ -133,13 +130,11 @@ public class LoginSecundarioVolley {
                     if (error.networkResponse.statusCode == EnumHttpError.ERROR_401.getErrorInt()) {
 
                         delegate.processCanceled(false);
-
-                        StatusDialog dialog = new StatusDialog((Activity)mContext, "Login Secundario", "Usuário ou senha inválido", false);
                     }
 
                 }else{
 
-                    StatusDialog dialog = new StatusDialog((Activity)mContext, "Login Secundario", "Sem conexão com internet", false);
+                    StatusDialog dialog = new StatusDialog((Activity)mContext, "Status", "Sem conexão com internet", false);
                 }
             }
         };

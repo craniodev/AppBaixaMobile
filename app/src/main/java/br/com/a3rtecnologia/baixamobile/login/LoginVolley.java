@@ -110,7 +110,21 @@ public class LoginVolley {
                     sessionManager.setValue("email", usuario.getEmail());
                     sessionManager.setValue("password", usuario.getPassword());
 
-                    delegate.processFinish(true);
+
+                    new VerificaViagemIniciadaVolley(mContext, new DelegateAsyncResponse() {
+                        @Override
+                        public void processFinish(boolean finish) {
+
+                            delegate.processFinish(true);
+                        }
+
+                        @Override
+                        public void processCanceled(boolean cancel) {
+
+                        }
+                    });
+
+//                    delegate.processFinish(true);
 
                 } catch (Exception e) {
 

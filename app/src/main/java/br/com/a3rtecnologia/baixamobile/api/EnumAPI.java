@@ -13,7 +13,7 @@ public enum EnumAPI {
 
 
     LOGIN("http://baixamobileapi.azurewebsites.net/api/Login"),
-    LOGIN_SECUNDARIO("http://baixamobileapi.azurewebsites.net/api/VerificaViagemIniciada"),
+    VERIFICA_VIAGEM_INICIADA("http://baixamobileapi.azurewebsites.net/api/VerificaViagemIniciada"),
     CADASTRO("http://baixamobileapi.azurewebsites.net/api/Motorista"),
     RECUPERAR("http://baixamobileapi.azurewebsites.net/api/ResetarSenha"),
 

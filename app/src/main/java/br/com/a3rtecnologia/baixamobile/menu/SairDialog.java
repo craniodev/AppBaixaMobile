@@ -8,9 +8,11 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import br.com.a3rtecnologia.baixamobile.R;
 import br.com.a3rtecnologia.baixamobile.login.LoginActivity;
+import br.com.a3rtecnologia.baixamobile.ocorrencia.AtualizaEncomendaPendenteTimerTask;
 import br.com.a3rtecnologia.baixamobile.util.SessionManager;
 
 /**
@@ -20,7 +22,7 @@ public class SairDialog {
 
 
 
-    public SairDialog(final Activity mActivity){
+    public SairDialog(final Activity mActivity, final AtualizaEncomendaPendenteTimerTask atualizaEncomendaPendenteTimerTask){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         builder.setTitle("Deseja realmente sair?");
@@ -30,6 +32,11 @@ public class SairDialog {
 
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
+
+                                            if(AtualizaEncomendaPendenteTimerTask.timer != null){
+
+                                                AtualizaEncomendaPendenteTimerTask.timer.cancel();
+                                            }
 
                                             new SessionManager(mActivity).clear();
                                             Intent intent = new Intent(mActivity, LoginActivity.class);

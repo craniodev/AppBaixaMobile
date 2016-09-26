@@ -77,7 +77,8 @@ public class MenuDrawerActivity extends AppCompatActivity implements NavigationV
     private static ProgressDialog mProgressDialog;
 
     private Menu menu;
-    static EncomendaTimerTask encomendaTimerTask;
+//    static EncomendaTimerTask encomendaTimerTask;
+    private AtualizaEncomendaPendenteTimerTask atualizaEncomendaPendenteTimerTask;
 
     private static int REQUEST_CODE_ASK_PERMISSIONS_WRITE_EXTERNAL_STORAGE = 1;
 
@@ -613,7 +614,7 @@ public class MenuDrawerActivity extends AppCompatActivity implements NavigationV
 
         } else if (id == R.id.nav_exit) {
 
-            SairDialog sairDialog = new SairDialog(this);
+            SairDialog sairDialog = new SairDialog(this, atualizaEncomendaPendenteTimerTask);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
