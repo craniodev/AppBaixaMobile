@@ -24,6 +24,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import br.com.a3rtecnologia.baixamobile.R;
+import br.com.a3rtecnologia.baixamobile.api.EnumAPI;
 import br.com.a3rtecnologia.baixamobile.encomenda.DelegateEncomendasAsyncResponse;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaAdapter;
@@ -62,7 +63,7 @@ public class TabItemListaFragment extends Fragment {
 //    private final Handler handler = new Handler();
 
     static EncomendaAdapter encomendaAdapter;
-
+    private SessionManager sessionManager;
 
 
 
@@ -78,12 +79,30 @@ public class TabItemListaFragment extends Fragment {
         mContext = getContext();
         encomendaBusiness = new EncomendaBusiness(mContext);
         statusBusiness = new StatusBusiness(mContext);
+        sessionManager = new SessionManager(mContext);
 
         createLoading(mContext);
 
         recyclerView = (RecyclerView) fragment_panel_encomenda.findViewById(R.id.recycler_view_encomenda);
 
         createReciclerView();
+
+
+
+
+//        String primeiroLogin = sessionManager.isPrimeiroLogin();
+//        if(primeiroLogin.equalsIgnoreCase("")) {
+//
+//            connectionServer();
+//
+//        }else {
+//
+//            sessionManager.setPrimeiroLogin("");
+//
+//            downloadEncomendas();
+//        }
+
+
 
         //connectionServer();
 
@@ -101,7 +120,20 @@ public class TabItemListaFragment extends Fragment {
         System.out.println("");
 
 //        getDATA();
-        connectionServer();
+
+        String primeiroLogin = sessionManager.isPrimeiroLogin();
+        if(primeiroLogin.equalsIgnoreCase("")) {
+
+
+
+            connectionServer();
+
+        }else {
+
+
+
+            downloadEncomendas();
+        }
 
         updateAdapter();
     }
@@ -177,68 +209,153 @@ public class TabItemListaFragment extends Fragment {
 
     private void connectionServer(){
 
-        showProgress(true);
 
-        int total = encomendaBusiness.count();
 
-        if(InternetStatus.isNetworkAvailable(mContext) && total == 0) {
+            showProgress(true);
 
-            buscarAPIOnline();
+            int total = encomendaBusiness.count();
 
-            showProgress(false);
-
-        }else{
-
-            List<Encomenda> encomendas = null;
-
-            encomendas = encomendaBusiness.buscarEntregasEmRota();
-            int encomendasEmRota = encomendas.size();
-
-            if(encomendas != null){
+            if (InternetStatus.isNetworkAvailable(mContext) && total == 0) {
 
                 /**
-                 * SE NAO TEM ENCOMENDAS EM ROTA(LOCAL)
-                 * LIMPA A BASE(LOCAL) E BUSCA MAIS NA WEB
-                 *
-                 *
-                 * REGRA PARA ULTIMA ENCOMENDA
-                 *
+                 * LIMPAR BASE PARA GARANTIR
                  */
-                if(encomendasEmRota == 0){
+                encomendaBusiness.deleteAll();
 
-                    encomendaBusiness.deleteAll();
+                buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_EM_ROTA.getValue());
+//            buscarAPIOnline();
+//            buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_EM_ROTA.getValue());
+//            buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_ENTREGUE.getValue());
+//            buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_PENDENTE.getValue());
 
-                    buscarAPIOnline();
+                showProgress(false);
 
-                    showProgress(false);
+            } else {
 
-                }else{
+                List<Encomenda> encomendas = null;
+
+                encomendas = encomendaBusiness.buscarEntregasEmRota();
+                int encomendasEmRota = encomendas.size();
+
+                if (encomendas != null) {
 
                     /**
-                     * EXISTE ENCOMENDAS EM ROTA(LOCAL)
+                     * SE NAO TEM ENCOMENDAS EM ROTA(LOCAL)
+                     * LIMPA A BASE(LOCAL) E BUSCA MAIS NA WEB
+                     *
+                     *
+                     * REGRA PARA ULTIMA ENCOMENDA
                      *
                      */
-                    updateAdapter(encomendas);
+                    if (encomendasEmRota == 0) {
 
-                    showProgress(false);
+                        /**
+                         * rever, deletar somente as EM ROTA
+                         */
+                        encomendaBusiness.deleteAll();
+
+                        /**
+                         * buscar somente as deletadas, EM ROTA
+                         */
+//                    buscarAPIOnline();
+                        buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_EM_ROTA.getValue());
+//                    buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_ENTREGUE.getValue());
+//                    buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_PENDENTE.getValue());
+
+
+                        showProgress(false);
+
+                    } else {
+
+                        /**
+                         * EXISTE ENCOMENDAS EM ROTA(LOCAL)
+                         *
+                         */
+                        updateAdapter(encomendas);
+
+                        showProgress(false);
+                    }
+
+
                 }
-
-
             }
-        }
+
+//        }
+
+
     }
 
 
 
-    private void buscarAPIOnline(){
+    private void buscarAPIOnline(String statusEncomenda){
 
-        new EncomendaVolley(getContext(), new DelegateEncomendasAsyncResponse() {
+        new EncomendaVolley(getContext(), statusEncomenda, 0, new DelegateEncomendasAsyncResponse() {
 
             @Override
             public void processFinish(boolean finish, Encomendas encomendas) {
 
                 System.out.println(finish);
+//                updateAdapter(encomendas.getEncomendas());
                 updateAdapter(encomendas.getEncomendas());
+
+//                PainelFragment.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
+                MenuDrawerActivity.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
+
+                showProgress(false);
+            }
+
+            @Override
+            public void processCanceled(boolean cancel) {
+
+                System.out.println(cancel);
+                showProgress(false);
+            }
+        });
+    }
+
+
+
+
+
+    private void buscarAPIOnlineDownload(String statusEncomenda){
+
+        new EncomendaVolley(getContext(), statusEncomenda, 1, new DelegateEncomendasAsyncResponse() {
+
+            @Override
+            public void processFinish(boolean finish, Encomendas encomendas) {
+
+                System.out.println(finish);
+//                updateAdapter(encomendas.getEncomendas());
+                updateAdapter(encomendas.getEncomendas());
+
+//                PainelFragment.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
+                MenuDrawerActivity.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
+
+                showProgress(false);
+            }
+
+            @Override
+            public void processCanceled(boolean cancel) {
+
+                System.out.println(cancel);
+                showProgress(false);
+            }
+        });
+    }
+
+
+
+
+    private void buscarAPIOnlineOthers(String statusEncomenda){
+
+        new EncomendaVolley(getContext(), statusEncomenda, 1, new DelegateEncomendasAsyncResponse() {
+
+            @Override
+            public void processFinish(boolean finish, Encomendas encomendas) {
+
+                System.out.println(finish);
+//                updateAdapter(encomendas.getEncomendas());
+//                updateAdapter(encomendas.getEncomendas());
 
 //                PainelFragment.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
                 MenuDrawerActivity.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
@@ -443,5 +560,30 @@ public class TabItemListaFragment extends Fragment {
 //            }
 //        };
 //    }
+
+
+
+
+    private void downloadEncomendas(){
+
+        String primeiroLogin = sessionManager.isPrimeiroLogin();
+        if(primeiroLogin.equalsIgnoreCase("1")) {
+
+            sessionManager.setPrimeiroLogin("");
+
+//            sessionManager.setPrimeiroLogin("");
+
+            /**
+             * LIMPAR BASE PARA GARANTIR
+             */
+            encomendaBusiness.deleteAll();
+
+            buscarAPIOnlineDownload(EnumAPI.ID_TIPO_ENCOMENDA_EM_ROTA.getValue());
+            buscarAPIOnlineOthers(EnumAPI.ID_TIPO_ENCOMENDA_ENTREGUE.getValue());
+            buscarAPIOnlineOthers(EnumAPI.ID_TIPO_ENCOMENDA_PENDENTE.getValue());
+
+
+        }
+    }
 
 }

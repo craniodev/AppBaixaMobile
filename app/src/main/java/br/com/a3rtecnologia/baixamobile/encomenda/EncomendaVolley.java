@@ -35,20 +35,22 @@ public class EncomendaVolley {
     private RequestQueue queue;
 
     private SessionManager sessionManager;
-//    private Dao<Encomenda, Integer> encomendaDao;
-//    private Dao<Atualizacao, Integer> atualizacaoDao;
-//    private SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
     private EncomendaBusiness encomendaBusiness;
     private Timer timer;
+    private String statusEncomenda;
+    private int isDownload;
 
 
 
-    public EncomendaVolley(Context mContext, DelegateEncomendasAsyncResponse delegate) {
+    public EncomendaVolley(Context mContext, String statusEncomenda, int isDownload, DelegateEncomendasAsyncResponse delegate) {
 
         this.mContext = mContext;
         this.delegate = delegate;
         this.queue = VolleySingleton.getInstance(this.mContext).getRequestQueue();
         this.sessionManager = new SessionManager(mContext);
+        this.statusEncomenda = statusEncomenda;
+
+        this.isDownload = isDownload;
 
         encomendaBusiness = new EncomendaBusiness(mContext);
 
@@ -89,7 +91,7 @@ public class EncomendaVolley {
         String id = sessionManager.getValue("id");
 
         params.put("IdMotorista", id);
-        params.put("TipoEncomenda", EnumAPI.ID_TIPO_ENCOMENDA.getValue());
+        params.put("TipoEncomenda", statusEncomenda);
 
         return params;
     }
@@ -127,9 +129,12 @@ public class EncomendaVolley {
 //                    timer.cancel();
 
                     /**
-                     * LIMPAR BASE PARA GARANTIR
+                     * removido
                      */
-                    encomendaBusiness.deleteAll();
+//                    /**
+//                     * LIMPAR BASE PARA GARANTIR
+//                     */
+//                    encomendaBusiness.deleteAll();
 
                     /**
                      * INSERE TODAS ENCOMENDAS
@@ -137,8 +142,41 @@ public class EncomendaVolley {
                     int indexCount = 1;
                     for (Encomenda encomenda : encomendas.getEncomendas()) {
 
+                        /**
+                         * id para visualizacao(bolinhas)
+                         */
                         encomenda.setIdOrdem(indexCount);
-//                        encomendaDao.create(encomenda);
+
+
+                        if(isDownload == 1) {
+                            if (statusEncomenda.equalsIgnoreCase(EnumAPI.ID_TIPO_ENCOMENDA_EM_ROTA.getValue())) {
+
+                                /**
+                                 * MANTEM STATUS
+                                 */
+                                encomenda.setIdStatus(EnumEncomendaStatus.EM_ROTA.getKey());
+                                encomenda.setDescStatus(EnumEncomendaStatus.EM_ROTA.getValue());
+
+                                System.out.println("Donwload encomendas do TIPO " + statusEncomenda + " - EM ROTA - ID " + encomenda.getIdOrdem());
+
+
+                            } else if (statusEncomenda.equalsIgnoreCase(EnumAPI.ID_TIPO_ENCOMENDA_ENTREGUE.getValue())) {
+
+                                encomenda.setIdStatus(EnumEncomendaStatus.ENTREGUE.getKey());
+                                encomenda.setDescStatus(EnumEncomendaStatus.ENTREGUE.getValue());
+
+                                System.out.println("Donwload encomendas do TIPO " + statusEncomenda + " - EM ROTA - ID " + encomenda.getIdOrdem());
+
+                            } else if (statusEncomenda.equalsIgnoreCase(EnumAPI.ID_TIPO_ENCOMENDA_PENDENTE.getValue())) {
+
+                                encomenda.setIdStatus(EnumEncomendaStatus.OCORRENCIA.getKey());
+                                encomenda.setDescStatus(EnumEncomendaStatus.OCORRENCIA.getValue());
+
+                                System.out.println("Donwload encomendas do TIPO " + statusEncomenda + " - EM ROTA - ID " + encomenda.getIdOrdem());
+                            }
+
+                        }
+
                         encomendaBusiness.salvar(encomenda);
 
                         indexCount++;
@@ -169,12 +207,11 @@ public class EncomendaVolley {
                         Toast.makeText(mContext, R.string.error_invalid_email_or_password, Toast.LENGTH_LONG).show();
 
                         delegate.processCanceled(false);
-                        //                        StatusDialog dialog = new StatusDialog((Activity)mContext, false, error.networkResponse.statusCode);
 
                     }else if (error.networkResponse.statusCode == EnumHttpError.ERROR_400.getErrorInt()) {
 
                         delegate.processCanceled(false);
-                        //                        StatusDialog dialog = new StatusDialog((Activity)mContext, false, error.networkResponse.statusCode);
+
                     }else if(error.networkResponse.statusCode == 404){
 
                         delegate.processCanceled(false);
@@ -183,7 +220,6 @@ public class EncomendaVolley {
                 }else{
 
                     delegate.processCanceled(false);
-                    //                    StatusDialog dialog = new StatusDialog((Activity)mContext, false, error.networkResponse.statusCode);
                 }
             }
         };

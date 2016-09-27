@@ -95,8 +95,8 @@ public class BaixaEntregueVolley {
         params.put("FotoAssinatura", recebedor.getFotoAssinaturaDigitalBase64() != null ? recebedor.getFotoAssinaturaDigitalBase64() : "");
 
         String idTipoDocumento = String.valueOf(recebedor.getTipoDocumento().getId());
-        params.put("IdTipoDocumento", idTipoDocumento);
-        params.put("NrDocumento", recebedor.getNrDocumento());
+        params.put("IdTipoDocumento", idTipoDocumento.equals("0") ? "" : idTipoDocumento);
+        params.put("NrDocumento", recebedor.getNrDocumento() != null ? recebedor.getNrDocumento() : "");
 
         if(latLng != null){
 
@@ -178,7 +178,7 @@ public class BaixaEntregueVolley {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(mContext, "API - BAIXA ENTREGUE - SUCESSO", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "API - BAIXA ENTREGUE - ERROR", Toast.LENGTH_LONG).show();
 
                 if(InternetStatus.isNetworkAvailable(mContext)){
 

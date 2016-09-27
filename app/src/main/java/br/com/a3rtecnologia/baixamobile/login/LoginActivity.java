@@ -26,11 +26,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import br.com.a3rtecnologia.baixamobile.R;
+import br.com.a3rtecnologia.baixamobile.api.EnumAPI;
 import br.com.a3rtecnologia.baixamobile.dialogs.StatusDialog;
+import br.com.a3rtecnologia.baixamobile.encomenda.DelegateEncomendasAsyncResponse;
+import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
+import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaVolley;
+import br.com.a3rtecnologia.baixamobile.encomenda.Encomendas;
 import br.com.a3rtecnologia.baixamobile.menu.MenuDrawerActivity;
 import br.com.a3rtecnologia.baixamobile.ocorrencia.DelegateOcorrenciaAsyncResponse;
 import br.com.a3rtecnologia.baixamobile.recuperar.RecuperarActivity;
 import br.com.a3rtecnologia.baixamobile.cadastro.CadastroActivity;
+import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
 import br.com.a3rtecnologia.baixamobile.tipo_documento.TipoDocumentoVolley;
 import br.com.a3rtecnologia.baixamobile.tipo_ocorrencia.TipoOcorrenciaVolley;
 import br.com.a3rtecnologia.baixamobile.tipo_recebedor.TipoRecebedor;
@@ -63,6 +69,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private Context mContext;
     private PermissionUtil permissionUtil;
+    private StatusBusiness statusBusiness;
+    private EncomendaBusiness encomendaBusiness;
+    private SessionManager sessionManager;
 
 
     private static int REQUEST_CODE_ASK_PERMISSIONS_WRITE_EXTERNAL_STORAGE = 1;
@@ -79,6 +88,10 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mContext = this;
+
+        statusBusiness = new StatusBusiness(mContext);
+        encomendaBusiness = new EncomendaBusiness(mContext);
+        sessionManager = new SessionManager(mContext);
 
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         mLoginFormView = findViewById(R.id.login_form);
@@ -363,8 +376,54 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(mContext, MenuDrawerActivity.class);
         startActivity(intent);
 
+//        downloadEncomendas();
+
+        sessionManager.setPrimeiroLogin("1");
+
         finish();
     }
+
+
+
+//    private void downloadEncomendas(){
+//
+//        sessionManager.setPrimeiroLogin("1");
+//
+//        /**
+//         * LIMPAR BASE PARA GARANTIR
+//         */
+//        encomendaBusiness.deleteAll();
+//
+//        buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_EM_ROTA.getValue());
+//        buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_ENTREGUE.getValue());
+//        buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_PENDENTE.getValue());
+//    }
+//
+//
+//    private void buscarAPIOnline(String statusEncomenda){
+//
+//        new EncomendaVolley(mContext, statusEncomenda, new DelegateEncomendasAsyncResponse() {
+//
+//            @Override
+//            public void processFinish(boolean finish, Encomendas encomendas) {
+//
+//                System.out.println(finish);
+////                updateAdapter(encomendas.getEncomendas());
+//
+////                PainelFragment.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
+//                MenuDrawerActivity.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
+//
+//                showProgress(false);
+//            }
+//
+//            @Override
+//            public void processCanceled(boolean cancel) {
+//
+//                System.out.println(cancel);
+//                showProgress(false);
+//            }
+//        });
+//    }
 
 
 

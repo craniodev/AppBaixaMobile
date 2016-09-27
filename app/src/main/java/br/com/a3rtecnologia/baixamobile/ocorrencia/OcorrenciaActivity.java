@@ -276,15 +276,24 @@ public class OcorrenciaActivity extends AppCompatActivity {
                 sb.append(camposPendentes.get("TIPO_OCORRENCIA")+"\n");
             }
 
-            if (tipoOcorrencia.getFgExigeFoto() == 1) {
 
-                /**
-                 * VALIDACAO ARQUIVOS
-                 */
-                if(ocorrencia.getFotoOcorrenciaPath() == null){
+            String isFinalizarForcado = sessionManager.getFinalizarViagemOcorrenciaForcado();
 
-                    camposPendentes.put("FOTO_OCORRENCIA", "Foto da ocorrência");
-                    sb.append(camposPendentes.get("FOTO_OCORRENCIA")+"\n");
+            /**
+             * QUANDO NAO FOR FORCADO, VALIDAR FOTO
+             */
+            if(!isFinalizarForcado.equalsIgnoreCase("1")) {
+
+                if(tipoOcorrencia.getFgExigeFoto() == 1){
+
+                    /**
+                     * VALIDACAO ARQUIVOS
+                     */
+                    if (ocorrencia.getFotoOcorrenciaPath() == null) {
+
+                        camposPendentes.put("FOTO_OCORRENCIA", "Foto da ocorrência");
+                        sb.append(camposPendentes.get("FOTO_OCORRENCIA") + "\n");
+                    }
                 }
             }
 

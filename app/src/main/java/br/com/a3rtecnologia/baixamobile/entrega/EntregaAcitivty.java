@@ -597,28 +597,30 @@ public class EntregaAcitivty extends AppCompatActivity {
 
         if(idSelectDocument == 0){
 
-            camposPendentes.put("COMBO_DOCUMENTO", "Combo documento");
+            /**
+             * removido obrigatoriedade
+             */
+//            camposPendentes.put("COMBO_DOCUMENTO", "Combo documento");
 
-//            StatusDialog dialog = new StatusDialog(this, "Formulário Incompleto", "Por favor, preencha todos os campos.", false);
-//            return false;
         }
 
 
 
         /**
+         * removido obrigatoriedade
          * VALIDACAO NUMERO DOCUMENTO
          */
-        if(!TextUtils.isEmpty(numero) && !TextUtils.isEmpty(numero.trim())){
-
-            numeroValido = true;
-
-        }else{
-
-            camposPendentes.put("NUM_DOCUMENTO", "Campo número do documento");
-
-            entrega_nr_documento.setError("campo obrigatório");
-            entrega_nr_documento.requestFocus();
-        }
+//        if(!TextUtils.isEmpty(numero) && !TextUtils.isEmpty(numero.trim())){
+//
+//            numeroValido = true;
+//
+//        }else{
+//
+//            camposPendentes.put("NUM_DOCUMENTO", "Campo número do documento");
+//
+//            entrega_nr_documento.setError("campo obrigatório");
+//            entrega_nr_documento.requestFocus();
+//        }
 
 
 //        if(isNumeroValid(numero)) {
@@ -635,15 +637,6 @@ public class EntregaAcitivty extends AppCompatActivity {
          */
         int idSelectRecebedor = entrega_tipo_recebedor.getSelectedItemPosition();
 
-//        if(idSelectDocument == 0){
-//
-//            camposPendentes.put("COMBO_DOCUMENTO", "Combo tipo de documento");
-//
-////            StatusDialog dialog = new StatusDialog(this, "Formulário Incompleto", "Por favor, preencha todos os campos.", false);
-////            return false;
-//        }
-
-
         if(idSelectRecebedor == 0){
 
             camposPendentes.put("COMBO_RECEBEDOR", "Combo recebedor");
@@ -653,11 +646,6 @@ public class EntregaAcitivty extends AppCompatActivity {
         /**
          * VALIDACAO ARQUIVOS
          */
-//        if(recebedor.getFotoAssinaturaDigitalPath() == null){
-//
-//            camposPendentes.put("ASSINATURA", "Assinatura digital");
-//        }
-
         if(recebedor.getFotoComprovantePath() == null){
 
             camposPendentes.put("COMPROVANTE", "Foto do comprovante");
@@ -676,15 +664,18 @@ public class EntregaAcitivty extends AppCompatActivity {
             sb.append(camposPendentes.get("NOME")+ " \n");
         }
 
-        if(camposPendentes.get("COMBO_DOCUMENTO") != null){
-
-            sb.append(camposPendentes.get("COMBO_DOCUMENTO")+ " \n");
-        }
-
-        if(camposPendentes.get("NUM_DOCUMENTO") != null){
-
-            sb.append(camposPendentes.get("NUM_DOCUMENTO")+ " \n");
-        }
+        /**
+         * removido obrigatoriedade
+         */
+//        if(camposPendentes.get("COMBO_DOCUMENTO") != null){
+//
+//            sb.append(camposPendentes.get("COMBO_DOCUMENTO")+ " \n");
+//        }
+//
+//        if(camposPendentes.get("NUM_DOCUMENTO") != null){
+//
+//            sb.append(camposPendentes.get("NUM_DOCUMENTO")+ " \n");
+//        }
 
         if(camposPendentes.get("ASSINATURA") != null){
 

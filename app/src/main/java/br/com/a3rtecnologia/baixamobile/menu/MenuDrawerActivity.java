@@ -39,11 +39,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.a3rtecnologia.baixamobile.R;
+import br.com.a3rtecnologia.baixamobile.api.EnumAPI;
 import br.com.a3rtecnologia.baixamobile.dialogs.EncerrarViagemDialog;
 import br.com.a3rtecnologia.baixamobile.dialogs.IniciarViagemDialog;
 import br.com.a3rtecnologia.baixamobile.encomenda.DelegateEncomendaAsyncResponse;
+import br.com.a3rtecnologia.baixamobile.encomenda.DelegateEncomendasAsyncResponse;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaTimerTask;
+import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaVolley;
+import br.com.a3rtecnologia.baixamobile.encomenda.Encomendas;
 import br.com.a3rtecnologia.baixamobile.ocorrencia.AtualizaEncomendaPendenteTimerTask;
 import br.com.a3rtecnologia.baixamobile.status.Status;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
@@ -116,6 +120,9 @@ public class MenuDrawerActivity extends AppCompatActivity implements NavigationV
 //        atualizaEncomendaPendenteTimerTask.startTimer();
 
         donwloadTablesTipo();
+
+
+//        downloadEncomendas();
 
         /**
          * ATIVA VERIFICADOR DE ENCOMENDAS TRATADAS
@@ -526,6 +533,52 @@ public class MenuDrawerActivity extends AppCompatActivity implements NavigationV
         TipoOcorrenciaVolley tipoOcorrenciaVolley = new TipoOcorrenciaVolley(mContext);
         TipoDocumentoVolley tipoDocumentoVolley = new TipoDocumentoVolley(mContext);
         TipoRecebedorVolley tipoRecebedorVolley = new TipoRecebedorVolley(mContext);
+    }
+
+//    private void downloadEncomendas(){
+//
+//        String primeiroLogin = sessionManager.isPrimeiroLogin();
+//        if(primeiroLogin.equalsIgnoreCase("1")) {
+//
+////            sessionManager.setPrimeiroLogin("");
+//
+//            /**
+//             * LIMPAR BASE PARA GARANTIR
+//             */
+//            encomendaBusiness.deleteAll();
+//
+//            buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_EM_ROTA.getValue());
+//            buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_ENTREGUE.getValue());
+//            buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_PENDENTE.getValue());
+//
+//
+//        }
+//    }
+
+
+    private void buscarAPIOnline(String statusEncomenda){
+
+        new EncomendaVolley(mContext, statusEncomenda, 0, new DelegateEncomendasAsyncResponse() {
+
+            @Override
+            public void processFinish(boolean finish, Encomendas encomendas) {
+
+                System.out.println(finish);
+//                updateAdapter(encomendas.getEncomendas());
+
+//                PainelFragment.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
+                MenuDrawerActivity.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
+
+                showProgress(false);
+            }
+
+            @Override
+            public void processCanceled(boolean cancel) {
+
+                System.out.println(cancel);
+                showProgress(false);
+            }
+        });
     }
 
 

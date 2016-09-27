@@ -6,7 +6,9 @@ package br.com.a3rtecnologia.baixamobile.api;
 public enum EnumAPI {
 
     ID_CONTRATANTE("3"),
-    ID_TIPO_ENCOMENDA("1"),
+    ID_TIPO_ENCOMENDA_EM_ROTA("1"),
+    ID_TIPO_ENCOMENDA_ENTREGUE("2"),
+    ID_TIPO_ENCOMENDA_PENDENTE("3"),
 
     HEADER_PARAM_1("Api"),
     HEADER_PARAM_2("fernandoApi"),

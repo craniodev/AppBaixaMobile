@@ -68,13 +68,13 @@ public class SessionManager {
 
 
 
-    public void setUltimaAtualizacao(String date) {
-        editor.putString("ultimaAtualizacao", date);
+    public void setPrimeiroLogin(String primeiroLogin) {
+        editor.putString("primeiroLogin", primeiroLogin);
         editor.commit();
     }
-    public String getUltimaAtualizacao(String date) {
+    public String isPrimeiroLogin() {
 
-        return pref.getString("ultimaAtualizacao", date);
+        return pref.getString("primeiroLogin", "");
     }
 
 

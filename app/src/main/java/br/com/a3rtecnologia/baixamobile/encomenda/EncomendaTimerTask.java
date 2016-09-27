@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import br.com.a3rtecnologia.baixamobile.api.EnumAPI;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
 import br.com.a3rtecnologia.baixamobile.menu.MenuDrawerActivity;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
@@ -131,7 +132,9 @@ public class EncomendaTimerTask {
 
                                     encomendaBusiness.deleteAll();
 
-                                    buscarAPIOnline();
+                                    buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_EM_ROTA.getValue());
+                                    buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_ENTREGUE.getValue());
+                                    buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_PENDENTE.getValue());
 
                                     //showProgress(false);
 
@@ -155,9 +158,9 @@ public class EncomendaTimerTask {
 
 
 
-    private void buscarAPIOnline(){
+    private void buscarAPIOnline(String statusEncomenda){
 
-        new EncomendaVolley(mContext, new DelegateEncomendasAsyncResponse() {
+        new EncomendaVolley(mContext, statusEncomenda, 0, new DelegateEncomendasAsyncResponse() {
 
             @Override
             public void processFinish(boolean finish, Encomendas encomendas) {
