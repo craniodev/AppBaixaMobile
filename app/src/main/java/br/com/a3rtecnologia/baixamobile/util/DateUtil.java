@@ -12,7 +12,7 @@ public class DateUtil {
 
     public static String getDataAtual(){
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         String dataAtual = sdf.format(Calendar.getInstance().getTime());
 
         return dataAtual;
