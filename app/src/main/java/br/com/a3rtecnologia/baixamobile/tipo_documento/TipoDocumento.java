@@ -16,7 +16,7 @@ public class TipoDocumento {
     private int IdMobile;
 
     /** ID WEB **/
-    @DatabaseField
+    @DatabaseField(columnName = "idTipoDocumento")
     private int Id;
 
     @DatabaseField

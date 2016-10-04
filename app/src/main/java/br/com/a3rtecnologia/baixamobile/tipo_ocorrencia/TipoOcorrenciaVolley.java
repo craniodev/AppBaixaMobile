@@ -108,7 +108,9 @@ public class TipoOcorrenciaVolley {
                      * SEMPRE REMOVER TODOS
                      * GARANTIR A ATUALIZACAO DO SERVIDOR
                      */
-                    tipoOcorrenciaBusiness.deleteAll();
+
+                    /** desativado **/
+//                    tipoOcorrenciaBusiness.deleteAll();
 
 
 

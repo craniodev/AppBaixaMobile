@@ -11,6 +11,7 @@ import br.com.a3rtecnologia.baixamobile.entrega.RecebedorBusiness;
 import br.com.a3rtecnologia.baixamobile.iniciar_viagem.IniciarViagem;
 import br.com.a3rtecnologia.baixamobile.iniciar_viagem.IniciarViagemBusiness;
 import br.com.a3rtecnologia.baixamobile.ocorrencia.Ocorrencia;
+import br.com.a3rtecnologia.baixamobile.ocorrencia.OcorrenciaBusiness;
 import br.com.a3rtecnologia.baixamobile.sincronizacao.Atualizacao;
 import br.com.a3rtecnologia.baixamobile.status.Status;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
@@ -29,7 +30,7 @@ public class TableUtil {
 //    private Dao<TipoRecebedor, Integer> mTipoRecebedorDao = null;
 //    private Dao<TipoDocumento, Integer> mTipoDocumentoDao = null;
 //    private Dao<TipoOcorrencia, Integer> mTipoOcorrenciaDao = null;
-    private Dao<Ocorrencia, Integer> mOcorrenciaDao = null;
+    private OcorrenciaBusiness ocorrenciaBusiness;
     private StatusBusiness statusBusiness;
     private IniciarViagemBusiness iniciarViagemBusiness;
 
@@ -39,6 +40,8 @@ public class TableUtil {
 
         encomendaBusiness = new EncomendaBusiness(mContext);
         recebedorBusiness = new RecebedorBusiness(mContext);
+        ocorrenciaBusiness = new OcorrenciaBusiness(mContext);
+
         statusBusiness = new StatusBusiness(mContext);
         iniciarViagemBusiness = new IniciarViagemBusiness(mContext);
     }
@@ -48,6 +51,7 @@ public class TableUtil {
 
         encomendaBusiness.deleteAll();
         recebedorBusiness.deleteAll();
+        ocorrenciaBusiness.deleteAll();
         statusBusiness.deleteAll();
         iniciarViagemBusiness.deleteAll();
     }

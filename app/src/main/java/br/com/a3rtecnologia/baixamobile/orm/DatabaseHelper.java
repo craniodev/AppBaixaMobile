@@ -24,7 +24,7 @@ import br.com.a3rtecnologia.baixamobile.sincronizacao.Atualizacao;
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     private static final String DATABASE_NAME    = "ormlite.db";
-    private static final int    DATABASE_VERSION = 41;
+    private static final int    DATABASE_VERSION = 58;
 
     private Dao<Encomenda, Integer> mEncomendaDao = null;
     private Dao<Atualizacao, Integer> mAtualizacaoDao = null;

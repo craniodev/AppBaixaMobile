@@ -107,6 +107,8 @@ public class TipoRecebedorVolley {
                      * SEMPRE REMOVER TODOS
                      * GARANTIR A ATUALIZACAO DO SERVIDOR
                      */
+
+                    /** desativado **/
                     tipoRecebedorBusiness.deleteAll();
 
 

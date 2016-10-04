@@ -13,16 +13,16 @@ import br.com.a3rtecnologia.baixamobile.tipo_recebedor.TipoRecebedor;
 @DatabaseTable(tableName = "recebedor", daoClass = CustomDao.class)
 public class Recebedor {
 
-    @DatabaseField(generatedId = true)
+    @DatabaseField(generatedId = true, columnName = "idRecebedor")
     private int Id;
 
     @DatabaseField
     private String Nome;
 
-    @DatabaseField(foreign = true)
+    @DatabaseField(foreign = true, columnName = "idTipoRecebedor", foreignAutoRefresh=true)
     private TipoRecebedor tipoRecebedor;
 
-    @DatabaseField(foreign = true)
+    @DatabaseField(foreign = true, columnName = "idTipoDocumento", foreignAutoRefresh=true)
     private TipoDocumento tipoDocumento;
 
     @DatabaseField

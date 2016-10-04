@@ -21,6 +21,7 @@ import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaAdapter;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
 import br.com.a3rtecnologia.baixamobile.encomenda.EnumEncomendaStatus;
+import br.com.a3rtecnologia.baixamobile.ocorrencia.SincronizaEncomendaPendenteTimerTask;
 
 /**
  * Created by maclemon on 01/08/16.
@@ -32,12 +33,10 @@ public class EntregaPendenteFragment extends Fragment {
 
     //LISTA COMPARTILHADA COM MAPA
     public static List<Encomenda> encomendaList;
-//    private List<Encomenda> encomendaList;
 
     private Context mContext;
     private ProgressDialog progress;
 
-//    private Dao<Encomenda, Integer> encomendaDao;
     private EncomendaBusiness encomendaBusiness;
 
 
@@ -69,28 +68,12 @@ public class EntregaPendenteFragment extends Fragment {
         mSwipyRefreshLayout = (SwipyRefreshLayout) fragment_pending.findViewById(R.id.swipeRefreshLayout);
         swipyRefresh();
 
+        SincronizaEncomendaPendenteTimerTask sincronizaEncomendaPendenteTimerTask = new SincronizaEncomendaPendenteTimerTask(mContext);
+        sincronizaEncomendaPendenteTimerTask.startTimer();
 
         return fragment_pending;
     }
 
-
-
-
-
-//    private void getDao(){
-//
-//        DatabaseHelper helper  = new DatabaseHelper(mContext);
-//
-//        try {
-//
-//            encomendaDao = new CustomDao<Encomenda, Integer>(helper.getConnectionSource(), Encomenda.class);
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//
-//        System.out.print("");
-//    }
 
 
 

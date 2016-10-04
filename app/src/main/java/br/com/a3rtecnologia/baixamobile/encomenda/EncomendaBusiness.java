@@ -1,6 +1,5 @@
 package br.com.a3rtecnologia.baixamobile.encomenda;
 
-import android.app.Activity;
 import android.content.Context;
 
 import com.j256.ormlite.dao.Dao;
@@ -9,6 +8,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import java.sql.SQLException;
 import java.util.List;
 
+import br.com.a3rtecnologia.baixamobile.EnumStatusEnvio;
 import br.com.a3rtecnologia.baixamobile.orm.CustomDao;
 import br.com.a3rtecnologia.baixamobile.orm.DatabaseHelper;
 
@@ -157,6 +157,40 @@ public class EncomendaBusiness {
 
 
 
+    /**
+     * COUNT
+     *
+     * @return
+     */
+    public int countOcorrenciasNaoSincronizadas(){
+
+//        Long count = null;
+//        try {
+//
+//            count = usuarioDao.queryBuilder()
+//                    .where()
+//                    .eq(Usuario.FIELD_NAME_NAME, "Fernando")
+//                    .countOf();
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+
+        List<Encomenda> lista = buscarOcorrenciasNaoSincronizadas();
+
+        if(lista != null){
+
+            return lista.size();
+
+        }else{
+
+            return 0;
+        }
+    }
+
+
+
+
 
 
 
@@ -210,6 +244,36 @@ public class EncomendaBusiness {
 
 
 
+
+    /**
+     * BUSCAR EM ROTA
+     *
+     * @return
+     */
+    public List<Encomenda> getEncomendasByIdSincronizado(List<Long> listIdEncomenda){
+
+        List<Encomenda> result = null;
+
+        try {
+
+            result = encomendaDao.queryBuilder()
+                    .where()
+                    .in("IdEncomenda", listIdEncomenda)
+                    .and()
+                    .eq("flagEnviado", EnumStatusEnvio.SINCRONIZADO.getKey())
+                    .query();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+
+
+
+
     /**
      * BUSCAR ENTREGUE
      *
@@ -224,6 +288,35 @@ public class EncomendaBusiness {
             result = encomendaDao.queryBuilder()
                     .where()
                     .eq("IdStatus", EnumEncomendaStatus.ENTREGUE.getKey())
+                    .query();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+
+
+
+
+    /**
+     * BUSCAR ENTREGUE NAO SINCRONIZADAS
+     *
+     * @return
+     */
+    public List<Encomenda> buscarOcorrenciasNaoSincronizadas(){
+
+        List<Encomenda> result = null;
+
+        try {
+
+            result = encomendaDao.queryBuilder()
+                    .where()
+                    .eq("IdStatus", EnumEncomendaStatus.OCORRENCIA.getKey())
+                    .and()
+                    .eq("flagEnviado", EnumStatusEnvio.NAO_SINCRONIZADO.getKey())
                     .query();
 
         } catch (SQLException e) {
@@ -259,6 +352,64 @@ public class EncomendaBusiness {
 
         return result;
     }
+
+
+
+
+    /**
+     * BUSCAR PENDENTES NAO SINCRONIZADAS
+     *
+     * @return
+     */
+    public List<Encomenda> buscarPendentesNaoSincronizadas(){
+
+        List<Encomenda> result = null;
+
+        try {
+
+            result = encomendaDao.queryBuilder()
+                    .where()
+                    .eq("IdStatus", EnumEncomendaStatus.OCORRENCIA.getKey())
+                    .and()
+                    .eq("flagEnviado", EnumStatusEnvio.NAO_SINCRONIZADO.getKey())
+                    .query();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+
+
+
+
+    /**
+     * BUSCAR PENDENTES NAO SINCRONIZADAS
+     *
+     * @return
+     */
+    public List<Encomenda> buscarRealizadasNaoSincronizadas(){
+
+        List<Encomenda> result = null;
+
+        try {
+
+            result = encomendaDao.queryBuilder()
+                    .where()
+                    .eq("IdStatus", EnumEncomendaStatus.ENTREGUE.getKey())
+                    .and()
+                    .eq("flagEnviado", EnumStatusEnvio.NAO_SINCRONIZADO.getKey())
+                    .query();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
 
 
 

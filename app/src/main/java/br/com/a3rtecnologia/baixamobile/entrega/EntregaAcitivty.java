@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import br.com.a3rtecnologia.baixamobile.EnumStatusEnvio;
 import br.com.a3rtecnologia.baixamobile.MaskBaixa;
 import br.com.a3rtecnologia.baixamobile.R;
 import br.com.a3rtecnologia.baixamobile.assinatura.AssinaturaDigital;
@@ -79,10 +80,6 @@ public class EntregaAcitivty extends AppCompatActivity {
     private ProgressDialog mProgressDialog;
 
     private AutoCompleteTextView entrega_nome_recebedor;
-//    private MaskedEditText entrega_nr_documento;
-//    private MaskedEditText entrega_cnh;
-//    private MaskedEditText entrega_cpf;
-//    private MaskedEditText entrega_rg;
     private EditText entrega_nr_documento;
     private EditText entrega_cnh;
     private EditText entrega_cpf;
@@ -95,8 +92,6 @@ public class EntregaAcitivty extends AppCompatActivity {
 
     private Map<String, View> controleTipoDocumento;
     private Map<String, String> camposPendentes;
-
-
 
 
 
@@ -138,14 +133,8 @@ public class EntregaAcitivty extends AppCompatActivity {
         createNomeRecebedor();
         createNumeroDocumentoRecebedor();
 
-
-
-
-
-
         getDadosFormulario();
     }
-
 
 
 
@@ -168,7 +157,6 @@ public class EntregaAcitivty extends AppCompatActivity {
 
         super.onSaveInstanceState(savedInstanceState);
     }
-
 
 
 
@@ -277,15 +265,11 @@ public class EntregaAcitivty extends AppCompatActivity {
     }
 
 
+
     @Override
     public void onBackPressed() {
 //        super.onBackPressed();
     }
-
-
-
-
-
 
 
 
@@ -536,7 +520,6 @@ public class EntregaAcitivty extends AppCompatActivity {
         // Apply the adapter to the spinner
         entrega_tipo_documento.setAdapter(adapter_tipo_documento);
 
-
 //        entrega_tipo_recebedor.setFocusable(true);
 //        entrega_tipo_recebedor.setFocusableInTouchMode(true);
     }
@@ -720,144 +703,73 @@ public class EntregaAcitivty extends AppCompatActivity {
 
 
 
-
     /**
      * ENVIAR SERVIDOR
      */
     private void enviarDadosServidor(){
 
+        /** 1 - progress **/
         createLoading(mActivity, "Enviando");
         showProgress(true);
 
         getDadosFormulario();
 
+        /** 2 - recupera id encomenda corrente **/
         long id = statusBusiness.getIdEncomendaCorrente();
+
+        /** 2.1 - recupera objeto encomenda corrente **/
         final Encomenda encomendaCorrente = encomendaBusiness.buscarEncomendaCorrente(id);
 
-        //RECUPERA MINHA LOCALIZACAO ATUAL
+        /** 3 - recupera localizacao atual **/
         MyLocationTimerTask timerTaskLocation = new MyLocationTimerTask(mContext, TabItemMapaFragment.map);
         timerTaskLocation.startTimer();
 
+        /** 3.1 - monta objeto latlng **/
         LatLng latLng = timerTaskLocation.getMyLatLng();
         timerTaskLocation.stoptimertask();
 
+
+
         /**
-         * ATUALIZAR DATA BAIXA
+         * RECEBEDOR TUDO OK
          */
+        recebedor.setDataFinalizacao(encomendaCorrente.getDataBaixa());
+        recebedorBusiness.salvarRecebedor(recebedor);
+
+
+
+        /**
+         * ENCOMENDA TUDO OK
+         */
+        /** 4 - verifica se é um finalizar viagem forcado - SOMENTE OCORRENCIA **/
+
+        /** 5 - data atual da baixa **/
         encomendaCorrente.setDataBaixa(DateUtil.getDataAtual());
+
+        /** 6 - remove COR do circulo se for uma encomenda TRATADA **/
+        encomendaCorrente.setFlagTratado(false);
+
+        /** 7 - atualiza STATUS da encomenda para ENTREGUE **/
+        encomendaBusiness.encomendaEntregue(encomendaCorrente);
+
+        /** 8 - DESMARCA encomenda como CORRENTE **/
+        statusBusiness.removeEncomendaCorrente();
+
+        /** 9 - atualiza botao iniciar/finalizar viagem **/
+
+        /** 10 - ativa VERIFICADOR de encomendas TRATADAS - SOMENTE OCORRENCIA **/
+
+        /** 11 - adiciona recebedor **/
+        encomendaCorrente.setRecebedor(recebedor);
+
+        /** 12 - marca como NAO SINCRONIZADO **/
+        encomendaCorrente.setFlagEnviado(EnumStatusEnvio.NAO_SINCRONIZADO.getKey());
+
+        /** 13 - atualiza encomenda - FINAL **/
         encomendaBusiness.update(encomendaCorrente);
 
-
-
-        if(InternetStatus.isNetworkAvailable(mContext)) {
-
-            BaixaEntregueVolley baixaEntregueVolley = new BaixaEntregueVolley(getApplicationContext(), encomendaCorrente, recebedor, latLng, new DelegateEntregaAsyncResponse() {
-
-                @Override
-                public void processFinish(boolean finish, String resposta) {
-
-                    showProgress(false);
-
-
-                    /**
-                     * REMOVE FLAG COLOR
-                     */
-                    encomendaCorrente.setFlagTratado(false);
-
-                    /**
-                     * ATUALIZA STATUS ENCOMENDA
-                     */
-                    encomendaBusiness.encomendaEntregue(encomendaCorrente);
-
-                    /**
-                     * REMOVE ENCOMENDA CORRENTE
-                     */
-                    statusBusiness.removeEncomendaCorrente();
-//                TabItemMapaFragment.isRemoveMarkerMap = true;
-
-                    /**
-                     * REMOVE MARKER
-                     */
-//                TabItemMapaFragment.marker.remove();
-//                TabItemMapaFragment.map.clear();
-
-
-                    /**
-                     * ENVIADO COM SUCESSO
-                     *
-                     * DELETE DO MODO OFFLINE
-                     */
-                    recebedorBusiness.getRecebedorList();
-                    recebedorBusiness.delete(recebedor);
-
-                    finish();
-                }
-
-                @Override
-                public void processCanceled(boolean cancel) {
-
-                    System.out.println("ERRO - BAIXA ENCOMENDA");
-
-                    showProgress(false);
-                    finish();
-                }
-            });
-
-        }else{
-
-            /**
-             * MODO OFFLINE
-             *
-             * SALVAR RECEBEDOR LOCAL
-             */
-            recebedor.setDataFinalizacao(encomendaCorrente.getDataBaixa());
-            recebedorBusiness.salvarRecebedor(recebedor);
-//            recebedorBusiness.getRecebedorList();
-
-
-            /**
-             * REMOVE FLAG COLOR
-             */
-            encomendaCorrente.setFlagTratado(false);
-
-            /**
-             * ATUALIZA STATUS ENCOMENDA
-             */
-            encomendaBusiness.encomendaEntregue(encomendaCorrente);
-
-            /**
-             * REMOVE ENCOMENDA CORRENTE
-             */
-            statusBusiness.removeEncomendaCorrente();
-
-
-            /**
-             * START TIMER TASK
-             *
-             *
-             */
-
-
-
-
-            /**
-             * FINALIZAR
-             */
-            finish();
-
-
-        }
+        finish();
     }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -916,12 +828,6 @@ public class EntregaAcitivty extends AppCompatActivity {
             }
         });
     }
-
-
-
-
-
-
 
 
 
@@ -985,8 +891,6 @@ public class EntregaAcitivty extends AppCompatActivity {
 
 
 
-
-
     private Bitmap getBitmap(Uri uri){
         Bitmap bm = null;
 
@@ -995,16 +899,10 @@ public class EntregaAcitivty extends AppCompatActivity {
             String name = uri.getPath().replace("/my_images/", "");
             diretorioCompleto = Environment.getExternalStorageDirectory().getAbsolutePath()+"/Android/data/br.com.a3rtecnologia.baixamobile/files/Pictures/" + name;
             bm = ImagemUtil.getbitpam(diretorioCompleto);
-
-        }else{
-
-
         }
 
         return bm;
     }
-
-
 
 
 

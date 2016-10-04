@@ -132,7 +132,13 @@ public class AtualizaEncomendaPendenteVolley {
                             encomendasId.add(encomenda.getIdEncomenda());
                         }
 
-                        List<Encomenda> encomendasTratadas = encomendaBusiness.getEncomendasByIds(encomendasId);
+
+
+//                        List<Encomenda> encomendasTratadas = encomendaBusiness.getEncomendasByIds(encomendasId);
+                        List<Encomenda> encomendasTratadas = encomendaBusiness.getEncomendasByIdSincronizado(encomendasId);
+
+
+
 
                         if(encomendasTratadas != null && encomendasTratadas.size() > 0) {
                             for (Encomenda encomenda : encomendasTratadas) {

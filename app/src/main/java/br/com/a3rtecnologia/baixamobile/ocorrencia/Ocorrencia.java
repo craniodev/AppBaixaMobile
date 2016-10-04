@@ -12,10 +12,10 @@ import br.com.a3rtecnologia.baixamobile.tipo_ocorrencia.TipoOcorrencia;
 @DatabaseTable(tableName = "ocorrencia", daoClass = CustomDao.class)
 public class Ocorrencia {
 
-    @DatabaseField(generatedId = true)
+    @DatabaseField(generatedId = true, columnName = "idOcorrencia")
     private int Id;
 
-    @DatabaseField(foreign = true)
+    @DatabaseField(foreign = true, columnName = "idTipoOcorrencia", foreignAutoRefresh=true)
     private TipoOcorrencia tipoOcorrencia;
 
     @DatabaseField

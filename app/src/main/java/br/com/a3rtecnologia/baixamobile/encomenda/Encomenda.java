@@ -6,7 +6,10 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.io.Serializable;
 
+import br.com.a3rtecnologia.baixamobile.entrega.Recebedor;
+import br.com.a3rtecnologia.baixamobile.ocorrencia.Ocorrencia;
 import br.com.a3rtecnologia.baixamobile.orm.CustomDao;
+import br.com.a3rtecnologia.baixamobile.tipo_recebedor.TipoRecebedor;
 
 /**
  * Created by maclemon on 01/08/16.
@@ -21,6 +24,12 @@ public class Encomenda implements Serializable{
     /** SOMENTE VISUAL **/
     @DatabaseField
     private Integer idOrdem;
+
+    @DatabaseField(foreign = true, columnName = "idOcorrencia", foreignAutoRefresh=true)
+    private Ocorrencia ocorrencia;
+
+    @DatabaseField(foreign = true, columnName = "idRecebedor", foreignAutoRefresh=true)
+    private Recebedor recebedor;
 
     @DatabaseField
     private String dataInicioEntrega;
@@ -93,6 +102,22 @@ public class Encomenda implements Serializable{
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Recebedor getRecebedor() {
+        return recebedor;
+    }
+
+    public void setRecebedor(Recebedor recebedor) {
+        this.recebedor = recebedor;
+    }
+
+    public Ocorrencia getOcorrencia() {
+        return ocorrencia;
+    }
+
+    public void setOcorrencia(Ocorrencia ocorrencia) {
+        this.ocorrencia = ocorrencia;
     }
 
     public Long getIdDocumentoOperacional() {

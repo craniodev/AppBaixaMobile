@@ -16,7 +16,7 @@ public class TipoOcorrencia {
     private int IdMobile;
 
     /** ID WEB **/
-    @DatabaseField
+    @DatabaseField(columnName = "idTipoOcorrencia")
     private int Id;
 
     @DatabaseField

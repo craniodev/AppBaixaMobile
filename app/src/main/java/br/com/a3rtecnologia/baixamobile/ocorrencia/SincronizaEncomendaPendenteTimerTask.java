@@ -5,9 +5,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.widget.Toast;
 
-
-import com.j256.ormlite.stmt.query.In;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -18,13 +15,13 @@ import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomendas;
 import br.com.a3rtecnologia.baixamobile.entrega.DelegateEntregaAsyncResponse;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
-import br.com.a3rtecnologia.baixamobile.tab_lista.TabItemListaFragment;
+import br.com.a3rtecnologia.baixamobile.util.InternetStatus;
 import br.com.a3rtecnologia.baixamobile.util.SessionManager;
 
 /**
  * Created by maclemon on 10/09/16.
  */
-public class AtualizaEncomendaPendenteTimerTask {
+public class SincronizaEncomendaPendenteTimerTask {
 
     public static ProgressDialog mProgressDialog;
 
@@ -33,6 +30,8 @@ public class AtualizaEncomendaPendenteTimerTask {
     private SessionManager sessionManager;
     private EncomendaBusiness encomendaBusiness;
     private StatusBusiness statusBusiness;
+
+    private List<Encomenda> encomendasSincronizar;
 
 
     public static Timer timer;
@@ -44,12 +43,12 @@ public class AtualizaEncomendaPendenteTimerTask {
 
 
 
-    public AtualizaEncomendaPendenteTimerTask(Context mContext){
+    public SincronizaEncomendaPendenteTimerTask(Context mContext){
 
         this.mContext = mContext;
         encomendaBusiness = new EncomendaBusiness(mContext);
-        List<Encomenda> encomendaPendentes = encomendaBusiness.buscarEntregasOcorrencia();
-        if(encomendaPendentes != null && encomendaPendentes.size() > 0){
+        encomendasSincronizar = encomendaBusiness.buscarPendentesNaoSincronizadas();
+        if(encomendasSincronizar != null && encomendasSincronizar.size() > 0){
 
             isAtivar = true;
         }
@@ -64,7 +63,7 @@ public class AtualizaEncomendaPendenteTimerTask {
 
         if(timer == null && isAtivar){
 
-            Toast.makeText(mContext, "START - SINCRONISMO ENCOMENDAS TRATADAS", Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, "START SINCRONIZAR OCORRENCIAS", Toast.LENGTH_LONG).show();
 
             timer = new Timer();
             showProgress(true);
@@ -72,7 +71,7 @@ public class AtualizaEncomendaPendenteTimerTask {
             initializeTimerTask();
 
             //schedule the timer, after the first 5000ms the TimerTask will run every 10000ms
-            timer.schedule(timerTask, 50000, 50000); //
+            timer.schedule(timerTask, 5000, 5000); //
         }
 
     }
@@ -99,40 +98,17 @@ public class AtualizaEncomendaPendenteTimerTask {
 
                     public void run() {
 
-                        List<Encomenda> encomendaList = encomendaBusiness.buscarEntregasOcorrencia();
-                        List<Encomenda> listaPendentes = new ArrayList<Encomenda>();
 
-                        Encomendas e = new Encomendas();
-                        for (Encomenda encomendaRecuperada : encomendaList){
+                        if(InternetStatus.isNetworkAvailable(mContext)){
 
-                            Encomenda enc = new Encomenda();
-                            enc.setIdEncomenda(encomendaRecuperada.getIdEncomenda());
+                            Toast.makeText(mContext, "COM INTERNET", Toast.LENGTH_LONG).show();
+                            SincronizarOcorrencia sincronizarOcorrencia = new SincronizarOcorrencia(mContext, encomendasSincronizar, timer);
 
-                            listaPendentes.add(enc);
+                        }else{
+
+                            Toast.makeText(mContext, "SEM INTERNET", Toast.LENGTH_LONG).show();
                         }
-                        e.setEncomendas(listaPendentes);
 
-                        AtualizaEncomendaPendenteVolley atualizaEncomendaPendenteVolley = new AtualizaEncomendaPendenteVolley(mContext, e, new DelegateEntregaAsyncResponse() {
-                            @Override
-                            public void processFinish(boolean finish, String resposta) {
-
-                                if(finish){
-
-                                    List<Encomenda> encomendasPendentes = encomendaBusiness.buscarEntregasOcorrencia();
-
-                                    if(encomendasPendentes == null || encomendasPendentes.size() == 0){
-
-                                        stoptimertask();
-                                        Toast.makeText(mContext, "API - STOP - ATUALIZA ENCOMENDA PENDENTE(TRATADA) - SUCESSO", Toast.LENGTH_LONG).show();
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void processCanceled(boolean cancel) {
-
-                            }
-                        });
                     }
                 });
             }

@@ -108,6 +108,8 @@ public class TipoDocumentoVolley {
                      * SEMPRE REMOVER TODOS
                      * GARANTIR A ATUALIZACAO DO SERVIDOR
                      */
+
+                    /** desativado **/
                     tipoDocumentoBusiness.deleteAll();
 
 

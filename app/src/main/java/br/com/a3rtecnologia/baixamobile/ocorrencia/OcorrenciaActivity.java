@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import br.com.a3rtecnologia.baixamobile.EnumStatusEnvio;
 import br.com.a3rtecnologia.baixamobile.R;
 import br.com.a3rtecnologia.baixamobile.dialogs.StatusDialog;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
@@ -55,6 +56,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
     private TipoOcorrenciaBusiness tipoOcorrenciaBusiness;
     private StatusBusiness statusBusiness;
     private SessionManager sessionManager;
+    private OcorrenciaBusiness ocorrenciaBusiness;
 
     private ProgressDialog progress;
 
@@ -94,6 +96,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
         tipoOcorrenciaBusiness = new TipoOcorrenciaBusiness(mContext);
         sessionManager = new SessionManager(mContext);
         statusBusiness = new StatusBusiness(mContext);
+        ocorrenciaBusiness = new OcorrenciaBusiness(mContext);
 
         createLoading(mActivity);
 
@@ -345,18 +348,30 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
     private void enviarDadosServidor(){
 
+        /** 1 - progress **/
         showProgress(true);
 
+        /** 2 - recupera id encomenda corrente **/
         long id = statusBusiness.getIdEncomendaCorrente();
+
+        /** 2.1 - recupera objeto encomenda corrente **/
         final Encomenda encomendaCorrente = encomendaBusiness.buscarEncomendaCorrente(id);
 
-
+        /** 3 - recupera localizacao atual **/
         MyLocationTimerTask timerTaskLocation = new MyLocationTimerTask(mContext, TabItemMapaFragment.map);
         timerTaskLocation.startTimer();
 
+        /** 3.1 - monta objeto latlng **/
         LatLng latLng = timerTaskLocation.getMyLatLng();
         timerTaskLocation.stoptimertask();
 
+        if(latLng != null){
+
+            encomendaCorrente.setLatitude(latLng.latitude);
+            encomendaCorrente.setLongitude(latLng.longitude);
+        }
+
+        /** 4 - verifica se é um finalizar viagem forcado **/
         if(finalizarViagemOcorrencia.equalsIgnoreCase("1")){
 
             sessionManager.setFinalizarViagemOcorrenciaForcado("");
@@ -368,73 +383,43 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
         }else {
 
-            /**
-             * ATUALIZAR DATA BAIXA
-             */
+            /** 5 - data atual da baixa **/
             encomendaCorrente.setDataBaixa(DateUtil.getDataAtual());
             encomendaBusiness.update(encomendaCorrente);
 
-            BaixaOcorrenciaVolley baixaOcorrenciaVolley = new BaixaOcorrenciaVolley(getApplicationContext(), encomendaCorrente, ocorrencia, latLng, new DelegateEntregaAsyncResponse() {
 
-                @Override
-                public void processFinish(boolean finish, String resposta) {
+            /** 6 - remove COR do circulo se for uma encomenda TRATADA **/
+            encomendaCorrente.setFlagTratado(false);
 
-                    /**
-                     * REMOVE FLAG COLOR
-                     */
-                    encomendaCorrente.setFlagTratado(false);
+            /** 7 - atualiza STATUS da encomenda para OCORRENCIA **/
+            encomendaBusiness.atualizarStatusEncomendaOcorrencia(encomendaCorrente);
 
-                    /**
-                     * ATUALIZA STATUS DA ENCOMENDA
-                     */
-                    encomendaBusiness.atualizarStatusEncomendaOcorrencia(encomendaCorrente);
-
-                    /**
-                     * REMOVE ENCOMENDA CORRENTE
-                     */
-                    statusBusiness.removeEncomendaCorrente();
+            /** 8 - DESMARCA encomenda como CORRENTE **/
+            statusBusiness.removeEncomendaCorrente();
 //                    TabItemMapaFragment.isRemoveMarkerMap = true;
 
-                    /**
-                     * REMOVE MARKER
-                     */
-//                    TabItemMapaFragment.map.
-//                    TabItemMapaFragment.marker.remove();
-//                    TabItemMapaFragment.map.clear();
+            /** 9 - atualiza botao iniciar/finalizar viagem **/
+            MenuDrawerActivity.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
+
+            Toast.makeText(mContext, "API - START - ENCOMENDA PENDENTE - SUCESSO", Toast.LENGTH_LONG).show();
+
+            /** 10 - ativa VERIFICADOR de encomendas TRATADAS **/
+            AtualizaEncomendaPendenteTimerTask atualizaEncomendaPendenteTimerTask = new AtualizaEncomendaPendenteTimerTask(mContext);
+            atualizaEncomendaPendenteTimerTask.startTimer();
+
+            /** 11 - adiciona recebedor - SOMENTE TRATADAS **/
 
 
+            /** 12 - marca como NAO SINCRONIZADO **/
+            encomendaCorrente.setFlagEnviado(EnumStatusEnvio.NAO_SINCRONIZADO.getKey());
 
-                    System.out.println(resposta);
-                    showProgress(false);
+            ocorrenciaBusiness.salvarOcorrencia(ocorrencia);
+            encomendaCorrente.setOcorrencia(ocorrencia);
 
+            /** 13 - atualiza encomenda - FINAL **/
+            encomendaBusiness.update(encomendaCorrente);
 
-//                    PainelFragment.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
-                    MenuDrawerActivity.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
-
-
-                    Toast.makeText(mContext, "API - START - ENCOMENDA PENDENTE - SUCESSO", Toast.LENGTH_LONG).show();
-
-                    /**
-                     * ATIVA VERIFICADOR DE ENCOMENDAS TRATADAS
-                     */
-                    AtualizaEncomendaPendenteTimerTask atualizaEncomendaPendenteTimerTask = new AtualizaEncomendaPendenteTimerTask(mContext);
-                    atualizaEncomendaPendenteTimerTask.startTimer();
-
-
-
-
-                    finish();
-                }
-
-                @Override
-                public void processCanceled(boolean cancel) {
-
-                    showProgress(false);
-                    System.out.println("ERRO - BAIXA OCORRENCIA");
-
-                    finish();
-                }
-            });
+            finish();
         }
     }
 

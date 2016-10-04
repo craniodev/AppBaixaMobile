@@ -118,7 +118,7 @@ public class MenuDrawerActivity extends AppCompatActivity implements NavigationV
          */
 //        AtualizaEncomendaPendenteTimerTask atualizaEncomendaPendenteTimerTask = new AtualizaEncomendaPendenteTimerTask(mContext);
 //        atualizaEncomendaPendenteTimerTask.startTimer();
-
+        
         donwloadTablesTipo();
 
 

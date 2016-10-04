@@ -17,11 +17,8 @@ public class TipoRecebedor {
     private int IdMobile;
 
     /** ID WEB **/
-    @DatabaseField
+    @DatabaseField(columnName = "idTipoRecebedor")
     private int Id;
-
-    @DatabaseField(foreign = true, columnName = "ID_RECEBEDOR")
-    private Recebedor recebedor;
 
     @DatabaseField
     private String Descricao;
@@ -52,11 +49,4 @@ public class TipoRecebedor {
         this.Descricao = Descricao;
     }
 
-    public Recebedor getRecebedor() {
-        return recebedor;
-    }
-
-    public void setRecebedor(Recebedor recebedor) {
-        this.recebedor = recebedor;
-    }
 }
