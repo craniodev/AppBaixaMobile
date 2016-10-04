@@ -110,7 +110,7 @@ public class TipoDocumentoVolley {
                      */
 
                     /** desativado **/
-                    tipoDocumentoBusiness.deleteAll();
+                    //tipoDocumentoBusiness.deleteAll();
 
 
 //                    tipoDocumentoBusiness.deleteAll(listaDocumento.getDocumentos());

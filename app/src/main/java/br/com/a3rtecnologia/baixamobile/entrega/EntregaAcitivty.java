@@ -728,7 +728,11 @@ public class EntregaAcitivty extends AppCompatActivity {
         LatLng latLng = timerTaskLocation.getMyLatLng();
         timerTaskLocation.stoptimertask();
 
+        if(latLng != null){
 
+            encomendaCorrente.setLatitude(latLng.latitude);
+            encomendaCorrente.setLongitude(latLng.longitude);
+        }
 
         /**
          * RECEBEDOR TUDO OK

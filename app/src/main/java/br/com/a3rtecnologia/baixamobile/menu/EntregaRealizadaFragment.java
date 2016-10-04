@@ -21,6 +21,7 @@ import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaAdapter;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
 import br.com.a3rtecnologia.baixamobile.encomenda.EnumEncomendaStatus;
+import br.com.a3rtecnologia.baixamobile.entrega.SincronizaEncomendaEntregueTimerTask;
 
 /**
  * Created by maclemon on 01/08/16.
@@ -51,11 +52,8 @@ public class EntregaRealizadaFragment extends Fragment {
          */
         View fragment_finished = inflater.inflate(R.layout.fragment_finished, null);
 
-
-
         mContext = getContext();
         encomendaBusiness = new EncomendaBusiness(mContext);
-//        getDao();
 
         createLoading(mContext);
 
@@ -69,35 +67,11 @@ public class EntregaRealizadaFragment extends Fragment {
         swipyRefresh();
 
 
+        SincronizaEncomendaEntregueTimerTask sincronizaEncomendaEntregueTimerTask = new SincronizaEncomendaEntregueTimerTask(mContext);
+        sincronizaEncomendaEntregueTimerTask.startTimer();
 
         return fragment_finished;
     }
-
-
-
-
-
-
-
-
-
-
-
-//    private void getDao(){
-//
-//        DatabaseHelper helper  = new DatabaseHelper(mContext);
-//
-//        try {
-//
-//            encomendaDao = new CustomDao<Encomenda, Integer>(helper.getConnectionSource(), Encomenda.class);
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//
-//        System.out.print("");
-//    }
-
 
 
 

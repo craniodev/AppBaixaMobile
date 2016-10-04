@@ -13,6 +13,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.HashMap;
 import java.util.Map;
 
+import br.com.a3rtecnologia.baixamobile.EnumStatusEnvio;
 import br.com.a3rtecnologia.baixamobile.R;
 import br.com.a3rtecnologia.baixamobile.api.EnumAPI;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
@@ -38,8 +39,7 @@ public class BaixaEntregueVolley {
     private EncomendaBusiness encomendaBusiness;
 
     private Encomenda encomenda;
-    private Recebedor recebedor;
-    private LatLng latLng;
+
 
 
 
@@ -49,7 +49,7 @@ public class BaixaEntregueVolley {
      * @param mContext
      * @param delegate
      */
-    public BaixaEntregueVolley(Context mContext, Encomenda encomenda, Recebedor recebedor, LatLng latLng, DelegateEntregaAsyncResponse delegate) {
+    public BaixaEntregueVolley(Context mContext, Encomenda encomenda, DelegateEntregaAsyncResponse delegate) {
 
         this.mContext = mContext;
         this.delegate = delegate;
@@ -59,12 +59,9 @@ public class BaixaEntregueVolley {
         this.encomendaBusiness = new EncomendaBusiness(mContext);
 
         this.encomenda = encomenda;
-        this.recebedor = recebedor;
-        this.latLng = latLng;
 
         requestAPI();
     }
-
 
 
 
@@ -77,47 +74,45 @@ public class BaixaEntregueVolley {
         return headers;
     }
 
+
+
     private Map<String, String> param(){
 
         Map<String, String> params = new HashMap<>();
         String id = sessionManager.getValue("id");
 
-        params.put("IdMotorista", id);
+        Recebedor recebedor = encomenda.getRecebedor();
 
+        /** id encomenda **/
         String idEncomenda = String.valueOf(encomenda.getIdEncomenda());
-        params.put("IdEncomenda", idEncomenda);
 
+        /** id tipo recebedor **/
         String idTipoRecebedor = String.valueOf(recebedor.getTipoRecebedor().getId());
+
+        /** foto recebimento **/
+        params.put("FotoRecebimento", recebedor.getFotoComprovanteBase64());
+
+        /** id tipo documento **/
+        String idTipoDocumento = String.valueOf(recebedor.getTipoDocumento().getId());
+
+        Double lat = encomenda.getLatitude() != null ? encomenda.getLatitude() : 0.0;
+        Double lng = encomenda.getLongitude() != null ? encomenda.getLongitude() : 0.0;
+        String latitude = String.valueOf(lat);
+        String longitude = String.valueOf(lng);
+
+        params.put("IdMotorista", id);
+        params.put("IdEncomenda", idEncomenda);
         params.put("IdTipoRecebedor", idTipoRecebedor);
         params.put("NmRecebedor", recebedor.getNome());
-
-        params.put("FotoRecebimento", recebedor.getFotoComprovanteBase64());
         params.put("FotoAssinatura", recebedor.getFotoAssinaturaDigitalBase64() != null ? recebedor.getFotoAssinaturaDigitalBase64() : "");
-
-        String idTipoDocumento = String.valueOf(recebedor.getTipoDocumento().getId());
         params.put("IdTipoDocumento", idTipoDocumento.equals("0") ? "" : idTipoDocumento);
         params.put("NrDocumento", recebedor.getNrDocumento() != null ? recebedor.getNrDocumento() : "");
-
-        if(latLng != null){
-
-            String latitude = String.valueOf(latLng.latitude);
-            String longitude = String.valueOf(latLng.longitude);
-            params.put("Latitude", latitude);
-            params.put("Longitude", longitude);
-
-        }else{
-
-            params.put("Latitude", "0");
-            params.put("Longitude", "0");
-        }
-
+        params.put("Latitude", latitude);
+        params.put("Longitude", longitude);
         params.put("DataIteracao", encomenda.getDataBaixa());
 
         return params;
     }
-
-
-
 
 
 
@@ -141,10 +136,6 @@ public class BaixaEntregueVolley {
 
 
 
-
-
-
-
     private Response.Listener<ListaOcorrencia> successListener() {
         return new Response.Listener<ListaOcorrencia>() {
 
@@ -154,6 +145,9 @@ public class BaixaEntregueVolley {
                 try {
 
                     Toast.makeText(mContext, "API - BAIXA ENTREGUE - SUCESSO", Toast.LENGTH_LONG).show();
+
+                    encomenda.setFlagEnviado(EnumStatusEnvio.SINCRONIZADO.getKey());
+                    encomendaBusiness.update(encomenda);
 
                     delegate.processFinish(true, "BAIXA ENTREGUE - OK");
 
@@ -166,9 +160,6 @@ public class BaixaEntregueVolley {
             };
         };
     }
-
-
-
 
 
 

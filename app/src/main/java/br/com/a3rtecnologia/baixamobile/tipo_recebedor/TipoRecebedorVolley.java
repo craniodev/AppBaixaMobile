@@ -109,7 +109,7 @@ public class TipoRecebedorVolley {
                      */
 
                     /** desativado **/
-                    tipoRecebedorBusiness.deleteAll();
+//                    tipoRecebedorBusiness.deleteAll();
 
 
 

@@ -192,6 +192,43 @@ public class EncomendaBusiness {
 
 
 
+    /**
+     * COUNT
+     *
+     * @return
+     */
+    public int countEntregueNaoSincronizadas(){
+
+//        Long count = null;
+//        try {
+//
+//            count = usuarioDao.queryBuilder()
+//                    .where()
+//                    .eq(Usuario.FIELD_NAME_NAME, "Fernando")
+//                    .countOf();
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+
+        List<Encomenda> lista = buscarEntregueNaoSincronizadas();
+
+        if(lista != null){
+
+            return lista.size();
+
+        }else{
+
+            return 0;
+        }
+    }
+
+
+
+
+
+
+
 
 
     /**
@@ -325,6 +362,35 @@ public class EncomendaBusiness {
 
         return result;
     }
+
+
+
+
+    /**
+     * BUSCAR ENTREGUE NAO SINCRONIZADAS
+     *
+     * @return
+     */
+    public List<Encomenda> buscarEntregueNaoSincronizadas(){
+
+        List<Encomenda> result = null;
+
+        try {
+
+            result = encomendaDao.queryBuilder()
+                    .where()
+                    .eq("IdStatus", EnumEncomendaStatus.ENTREGUE.getKey())
+                    .and()
+                    .eq("flagEnviado", EnumStatusEnvio.NAO_SINCRONIZADO.getKey())
+                    .query();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
 
 
 
