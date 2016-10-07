@@ -116,6 +116,8 @@ public class EncomendaTimerTask {
                             List<Encomenda> encomendas = null;
 
                             encomendas = encomendaBusiness.buscarEntregasEmRota();
+                            int encomendasNaoSincronizadas = encomendaBusiness.countNaoSincronizadas();
+
                             int encomendasEmRota = encomendas.size();
 
                             if(encomendas != null) {
@@ -128,7 +130,7 @@ public class EncomendaTimerTask {
                                  * REGRA PARA ULTIMA ENCOMENDA
                                  *
                                  */
-                                if (encomendasEmRota == 0) {
+                                if (encomendasEmRota == 0 && encomendasNaoSincronizadas == 0) {
 
                                     encomendaBusiness.deleteAll();
 

@@ -214,8 +214,16 @@ public class TabItemListaFragment extends Fragment {
             showProgress(true);
 
             int total = encomendaBusiness.count();
+            int pendentesSincronizar = encomendaBusiness.countNaoSincronizadas();
+            boolean result = false;
 
-            if (InternetStatus.isNetworkAvailable(mContext) && total == 0) {
+            if(total == 0 && pendentesSincronizar == 0){
+
+                result = true;
+            }
+
+            if (InternetStatus.isNetworkAvailable(mContext) && result) {
+//            if (InternetStatus.isNetworkAvailable(mContext) && total == 0) {
 
                 /**
                  * LIMPAR BASE PARA GARANTIR
@@ -237,6 +245,7 @@ public class TabItemListaFragment extends Fragment {
                 encomendas = encomendaBusiness.buscarEntregasEmRota();
                 int encomendasEmRota = encomendas.size();
 
+
                 if (encomendas != null) {
 
                     /**
@@ -247,7 +256,7 @@ public class TabItemListaFragment extends Fragment {
                      * REGRA PARA ULTIMA ENCOMENDA
                      *
                      */
-                    if (encomendasEmRota == 0) {
+                    if (encomendasEmRota == 0 && pendentesSincronizar == 0) {
 
                         /**
                          * rever, deletar somente as EM ROTA
@@ -277,6 +286,18 @@ public class TabItemListaFragment extends Fragment {
                     }
 
 
+                }else{
+
+                    /***
+                     * TODAS ENCOMENDAS ENVIADAS
+                     * MAS PENDENTES DE SINCRONISMO
+                     *
+                     */
+
+
+
+                    encomendas = encomendaBusiness.buscarEntregasEmRota();
+                    updateAdapter(encomendas);
                 }
             }
 

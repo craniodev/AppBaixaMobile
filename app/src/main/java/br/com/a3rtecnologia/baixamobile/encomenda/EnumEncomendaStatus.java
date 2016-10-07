@@ -36,6 +36,8 @@ public enum EnumEncomendaStatus {
     EM_ROTA(5, "Em Rota"),
     LIBERADO(6, "Liberado"),
 
+//    PENDENTE_SINCRONIZAR(-1, "Pendente Sincronizar"),
+
     ENTREGUE(7, "Entregue"),
     OCORRENCIA(8, "Ocorrência");
 

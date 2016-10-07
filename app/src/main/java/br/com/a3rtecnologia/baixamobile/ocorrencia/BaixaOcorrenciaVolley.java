@@ -76,28 +76,36 @@ public class BaixaOcorrenciaVolley {
     private Map<String, String> param(){
 
         Map<String, String> params = new HashMap<>();
-        String id = sessionManager.getValue("id");
 
-        String idEncomenda = String.valueOf(encomenda.getIdEncomenda());
+        try {
 
-        Double lat = encomenda.getLatitude() != null ? encomenda.getLatitude() : 0.0;
-        Double lng = encomenda.getLongitude() != null ? encomenda.getLongitude() : 0.0;
-        String latitude = String.valueOf(lat);
-        String longitude = String.valueOf(lng);
+            String id = sessionManager.getValue("id");
 
-        Ocorrencia ocorrencia = encomenda.getOcorrencia();
-        int idOcorrencia = ocorrencia.getTipoOcorrencia().getId();
-        String idStatus = String.valueOf(idOcorrencia);
+            String idEncomenda = String.valueOf(encomenda.getIdEncomenda());
+
+            Double lat = encomenda.getLatitude() != null ? encomenda.getLatitude() : 0.0;
+            Double lng = encomenda.getLongitude() != null ? encomenda.getLongitude() : 0.0;
+            String latitude = String.valueOf(lat);
+            String longitude = String.valueOf(lng);
+
+            Ocorrencia ocorrencia = encomenda.getOcorrencia();
+            int idOcorrencia = ocorrencia.getTipoOcorrencia().getId();
+            String idStatus = String.valueOf(idOcorrencia);
 
 
 
-        params.put("IdMotorista", id);
-        params.put("IdEncomenda", idEncomenda);
-        params.put("IdStatus", idStatus);
-        params.put("FotoOcorrencia", ocorrencia.getFotoOcorrenciaBase64() != null ? ocorrencia.getFotoOcorrenciaBase64() : "");
-        params.put("Latitude", latitude);
-        params.put("Longitude", longitude);
-        params.put("DataIteracao", encomenda.getDataBaixa());
+            params.put("IdMotorista", id);
+            params.put("IdEncomenda", idEncomenda);
+            params.put("IdStatus", idStatus);
+            params.put("FotoOcorrencia", ocorrencia.getFotoOcorrenciaBase64() != null ? ocorrencia.getFotoOcorrenciaBase64() : "");
+            params.put("Latitude", latitude);
+            params.put("Longitude", longitude);
+            params.put("DataIteracao", encomenda.getDataBaixa());
+
+        }catch (Exception e){
+
+            e.printStackTrace();
+        }
 
         return params;
     }

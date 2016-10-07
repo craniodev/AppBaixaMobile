@@ -28,6 +28,7 @@ import br.com.a3rtecnologia.baixamobile.R;
 import br.com.a3rtecnologia.baixamobile.dialogs.StatusDialog;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
+import br.com.a3rtecnologia.baixamobile.encomenda.EnumEncomendaStatus;
 import br.com.a3rtecnologia.baixamobile.entrega.DelegateEntregaAsyncResponse;
 import br.com.a3rtecnologia.baixamobile.menu.MenuDrawerActivity;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
@@ -415,6 +416,11 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
             ocorrenciaBusiness.salvarOcorrencia(ocorrencia);
             encomendaCorrente.setOcorrencia(ocorrencia);
+
+
+//            /** MARCAR COMO PENDENTE DE SINCRONISMO **/
+//            encomendaCorrente.setIdStatus(EnumEncomendaStatus.PENDENTE_SINCRONIZAR.getKey());
+//            encomendaCorrente.setDescStatus(EnumEncomendaStatus.PENDENTE_SINCRONIZAR.getValue());
 
             /** 13 - atualiza encomenda - FINAL **/
             encomendaBusiness.update(encomendaCorrente);

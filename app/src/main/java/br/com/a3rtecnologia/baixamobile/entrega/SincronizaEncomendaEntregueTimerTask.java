@@ -37,6 +37,7 @@ public class SincronizaEncomendaEntregueTimerTask {
     private final Handler handler = new Handler();
 
     private boolean isAtivar;
+    private SincronizaEncomendaEntregueTimerTask task;
 
 
 
@@ -46,9 +47,12 @@ public class SincronizaEncomendaEntregueTimerTask {
         this.mContext = mContext;
         encomendaBusiness = new EncomendaBusiness(mContext);
         encomendasSincronizar = encomendaBusiness.buscarRealizadasNaoSincronizadas();
+        task = this;
+
         if(encomendasSincronizar != null && encomendasSincronizar.size() > 0){
 
             isAtivar = true;
+            startTimer();
         }
 
     }
@@ -59,7 +63,8 @@ public class SincronizaEncomendaEntregueTimerTask {
 
         //set a new Timer
 
-        if(timer == null && isAtivar){
+        if(isAtivar){
+//        if(timer == null && isAtivar){
 
             Toast.makeText(mContext, "START SINCRONIZAR REALIZADAS", Toast.LENGTH_LONG).show();
 
@@ -77,11 +82,13 @@ public class SincronizaEncomendaEntregueTimerTask {
     public void stoptimertask() {
 
         //stop the timer, if it's not already null
-        if (timer != null) {
+//        if (timer != null) {
+        if(isAtivar){
 
             timer.cancel();
 
             timer = null;
+            isAtivar = false;
         }
     }
 
@@ -100,7 +107,7 @@ public class SincronizaEncomendaEntregueTimerTask {
                         if(InternetStatus.isNetworkAvailable(mContext)){
 
                             Toast.makeText(mContext, "COM INTERNET", Toast.LENGTH_LONG).show();
-                            SincronizarRealizadas sincronizarRealizadas = new SincronizarRealizadas(mContext, encomendasSincronizar, timer);
+                            SincronizarRealizadas sincronizarRealizadas = new SincronizarRealizadas(mContext, encomendasSincronizar, task);
 
                         }else{
 

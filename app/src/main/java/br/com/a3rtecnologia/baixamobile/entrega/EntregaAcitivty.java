@@ -33,6 +33,7 @@ import br.com.a3rtecnologia.baixamobile.assinatura.AssinaturaDigital;
 import br.com.a3rtecnologia.baixamobile.dialogs.StatusDialog;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
+import br.com.a3rtecnologia.baixamobile.encomenda.EnumEncomendaStatus;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
 import br.com.a3rtecnologia.baixamobile.tab_mapa.MyLocationTimerTask;
 import br.com.a3rtecnologia.baixamobile.tab_mapa.TabItemMapaFragment;
@@ -768,6 +769,10 @@ public class EntregaAcitivty extends AppCompatActivity {
 
         /** 12 - marca como NAO SINCRONIZADO **/
         encomendaCorrente.setFlagEnviado(EnumStatusEnvio.NAO_SINCRONIZADO.getKey());
+
+//        /** MARCAR COMO PENDENTE DE SINCRONISMO **/
+//        encomendaCorrente.setDescStatus(EnumEncomendaStatus.PENDENTE_SINCRONIZAR.getValue());
+//        encomendaCorrente.setIdStatus(EnumEncomendaStatus.PENDENTE_SINCRONIZAR.getKey());
 
         /** 13 - atualiza encomenda - FINAL **/
         encomendaBusiness.update(encomendaCorrente);

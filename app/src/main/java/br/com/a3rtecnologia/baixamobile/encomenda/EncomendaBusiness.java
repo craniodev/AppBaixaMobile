@@ -124,7 +124,7 @@ public class EncomendaBusiness {
 
 
     /**
-     * COUNT
+     * COUNT - TODOS MENOS NAO SINCRONIZADOS
      *
      * @return
      */
@@ -142,7 +142,9 @@ public class EncomendaBusiness {
 //            e.printStackTrace();
 //        }
 
-        List<Encomenda> lista = buscarTodos();
+//        List<Encomenda> lista = buscarTodos();
+        List<Encomenda> lista = buscarTodosNaoPendentesSincronismo();
+
 
         if(lista != null){
 
@@ -158,7 +160,7 @@ public class EncomendaBusiness {
 
 
     /**
-     * COUNT
+     * COUNT - OCORRENCIAS NAO SINCRONIZADAS
      *
      * @return
      */
@@ -192,8 +194,14 @@ public class EncomendaBusiness {
 
 
 
+
+
+
+
+
+
     /**
-     * COUNT
+     * COUNT - ENTREGUE NAO SINCRONIZADAS
      *
      * @return
      */
@@ -229,10 +237,47 @@ public class EncomendaBusiness {
 
 
 
+    /**
+     * COUNT - NAO SINCRONIZADAS - ENTREGUE E OCORRENCIAS
+     *
+     * @return
+     */
+    public int countNaoSincronizadas(){
+
+//        Long count = null;
+//        try {
+//
+//            count = usuarioDao.queryBuilder()
+//                    .where()
+//                    .eq(Usuario.FIELD_NAME_NAME, "Fernando")
+//                    .countOf();
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+
+        List<Encomenda> lista = naoSincronizados();
+
+        if(lista != null){
+
+            return lista.size();
+
+        }else{
+
+            return 0;
+        }
+    }
+
+
+
+
+
+
+
 
 
     /**
-     * BUSCAR TODOS
+     * BUSCAR TODOS - INDEPENDENTE DE STATUS
      *
      * @return
      */
@@ -247,6 +292,37 @@ public class EncomendaBusiness {
         }
 
         return encomendas;
+    }
+
+
+
+
+
+
+    /**
+     * BUSCAR TODOS COM STATUS DIFERENTE DE NAO SINCRONIZADOS
+     *
+     * @return
+     */
+    public List<Encomenda> buscarTodosNaoPendentesSincronismo(){
+
+        List<Encomenda> result = null;
+
+        try {
+
+            result = encomendaDao.queryBuilder()
+                    .where()
+                    .in("IdStatus", EnumEncomendaStatus.EM_ROTA.getKey(), EnumEncomendaStatus.LIBERADO.getKey())
+//                    .eq("IdStatus", EnumEncomendaStatus.LIBERADO.getKey())
+//                    .or()
+//                    .eq("IdStatus", EnumEncomendaStatus.EM_ROTA.getKey())
+                    .query();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
 
@@ -353,6 +429,32 @@ public class EncomendaBusiness {
                     .where()
                     .eq("IdStatus", EnumEncomendaStatus.OCORRENCIA.getKey())
                     .and()
+                    .eq("flagEnviado", EnumStatusEnvio.NAO_SINCRONIZADO.getKey())
+                    .query();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+
+
+
+    /**
+     * BUSCAR ENTREGUE NAO SINCRONIZADAS
+     *
+     * @return
+     */
+    public List<Encomenda> naoSincronizados(){
+
+        List<Encomenda> result = null;
+
+        try {
+
+            result = encomendaDao.queryBuilder()
+                    .where()
                     .eq("flagEnviado", EnumStatusEnvio.NAO_SINCRONIZADO.getKey())
                     .query();
 
@@ -523,10 +625,10 @@ public class EncomendaBusiness {
 
             result = encomendaDao.queryBuilder()
                     .where()
-                    //.in("IdStatus", EnumEncomendaStatus.EM_ROTA.getKey(), EnumEncomendaStatus.LIBERADO.getKey())
-                    .eq("IdStatus", EnumEncomendaStatus.LIBERADO.getKey())
-                    .or()
-                    .eq("IdStatus", EnumEncomendaStatus.EM_ROTA.getKey())
+                    .in("IdStatus", EnumEncomendaStatus.EM_ROTA.getKey(), EnumEncomendaStatus.LIBERADO.getKey())
+//                    .eq("IdStatus", EnumEncomendaStatus.LIBERADO.getKey())
+//                    .or()
+//                    .eq("IdStatus", EnumEncomendaStatus.EM_ROTA.getKey())
                     .query();
 
         } catch (SQLException e) {

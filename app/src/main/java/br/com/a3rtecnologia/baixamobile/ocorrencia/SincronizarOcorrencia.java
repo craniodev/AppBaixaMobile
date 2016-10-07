@@ -23,11 +23,11 @@ public class SincronizarOcorrencia {
     private List<Encomenda> encomendaList;
 
     private Context mContext;
-    private Timer timer;
+    private SincronizaEncomendaPendenteTimerTask task;
 
 
 
-    public SincronizarOcorrencia(Context mContext, List<Encomenda> encomendaList, Timer timer){
+    public SincronizarOcorrencia(Context mContext, List<Encomenda> encomendaList, SincronizaEncomendaPendenteTimerTask task){
 
         this.encomendaBusiness = new EncomendaBusiness(mContext);
         this.statusBusiness = new StatusBusiness(mContext);
@@ -35,7 +35,7 @@ public class SincronizarOcorrencia {
         this.encomendaList = encomendaList;
 
         this.mContext = mContext;
-        this.timer = timer;
+        this.task = task;
 
         sincronizar();
     }
@@ -56,7 +56,7 @@ public class SincronizarOcorrencia {
                     int pendentesSincronizar = encomendaBusiness.countOcorrenciasNaoSincronizadas();
                     if(pendentesSincronizar == 0){
 
-                        stoptimertask();
+                        task.stoptimertask();
                     }
                 }
 
@@ -73,17 +73,17 @@ public class SincronizarOcorrencia {
 
 
 
-    public void stoptimertask() {
-
-        //stop the timer, if it's not already null
-        if (timer != null) {
-
-            timer.cancel();
-
-            timer = null;
-
-            Toast.makeText(mContext, "STOP - SINCRONIZAR OCORRENCIAS", Toast.LENGTH_LONG).show();
-        }
-    }
+//    public void stoptimertask() {
+//
+//        //stop the timer, if it's not already null
+//        if (timer != null) {
+//
+//            timer.cancel();
+//
+//            timer = null;
+//
+//            Toast.makeText(mContext, "STOP - SINCRONIZAR OCORRENCIAS", Toast.LENGTH_LONG).show();
+//        }
+//    }
 
 }

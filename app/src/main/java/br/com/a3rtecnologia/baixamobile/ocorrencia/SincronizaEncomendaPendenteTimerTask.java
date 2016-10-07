@@ -39,6 +39,7 @@ public class SincronizaEncomendaPendenteTimerTask {
     private final Handler handler = new Handler();
 
     private boolean isAtivar;
+    private SincronizaEncomendaPendenteTimerTask task;
 
 
 
@@ -48,9 +49,12 @@ public class SincronizaEncomendaPendenteTimerTask {
         this.mContext = mContext;
         encomendaBusiness = new EncomendaBusiness(mContext);
         encomendasSincronizar = encomendaBusiness.buscarPendentesNaoSincronizadas();
+        task = this;
+
         if(encomendasSincronizar != null && encomendasSincronizar.size() > 0){
 
             isAtivar = true;
+            startTimer();
         }
 
     }
@@ -61,7 +65,8 @@ public class SincronizaEncomendaPendenteTimerTask {
 
         //set a new Timer
 
-        if(timer == null && isAtivar){
+        if(isAtivar){
+//        if(timer == null && isAtivar){
 
             Toast.makeText(mContext, "START SINCRONIZAR OCORRENCIAS", Toast.LENGTH_LONG).show();
 
@@ -79,11 +84,14 @@ public class SincronizaEncomendaPendenteTimerTask {
     public void stoptimertask() {
 
         //stop the timer, if it's not already null
-        if (timer != null) {
+//        if (timer != null) {
+        if (isAtivar) {
 
             timer.cancel();
 
             timer = null;
+
+            isAtivar = false;
         }
     }
 
@@ -102,7 +110,7 @@ public class SincronizaEncomendaPendenteTimerTask {
                         if(InternetStatus.isNetworkAvailable(mContext)){
 
                             Toast.makeText(mContext, "COM INTERNET", Toast.LENGTH_LONG).show();
-                            SincronizarOcorrencia sincronizarOcorrencia = new SincronizarOcorrencia(mContext, encomendasSincronizar, timer);
+                            SincronizarOcorrencia sincronizarOcorrencia = new SincronizarOcorrencia(mContext, encomendasSincronizar, task);
 
                         }else{
 

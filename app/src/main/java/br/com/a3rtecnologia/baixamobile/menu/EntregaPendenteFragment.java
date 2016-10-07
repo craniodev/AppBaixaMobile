@@ -69,7 +69,7 @@ public class EntregaPendenteFragment extends Fragment {
         swipyRefresh();
 
         SincronizaEncomendaPendenteTimerTask sincronizaEncomendaPendenteTimerTask = new SincronizaEncomendaPendenteTimerTask(mContext);
-        sincronizaEncomendaPendenteTimerTask.startTimer();
+//        sincronizaEncomendaPendenteTimerTask.startTimer();
 
         return fragment_pending;
     }

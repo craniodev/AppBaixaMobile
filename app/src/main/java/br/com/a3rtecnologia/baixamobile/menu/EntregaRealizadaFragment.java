@@ -68,7 +68,7 @@ public class EntregaRealizadaFragment extends Fragment {
 
 
         SincronizaEncomendaEntregueTimerTask sincronizaEncomendaEntregueTimerTask = new SincronizaEncomendaEntregueTimerTask(mContext);
-        sincronizaEncomendaEntregueTimerTask.startTimer();
+//        sincronizaEncomendaEntregueTimerTask.startTimer();
 
         return fragment_finished;
     }
