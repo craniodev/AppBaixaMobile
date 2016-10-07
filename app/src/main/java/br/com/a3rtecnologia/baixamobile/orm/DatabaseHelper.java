@@ -19,15 +19,13 @@ import br.com.a3rtecnologia.baixamobile.tipo_documento.TipoDocumento;
 import br.com.a3rtecnologia.baixamobile.tipo_recebedor.TipoRecebedor;
 import br.com.a3rtecnologia.baixamobile.ocorrencia.Ocorrencia;
 import br.com.a3rtecnologia.baixamobile.tipo_ocorrencia.TipoOcorrencia;
-import br.com.a3rtecnologia.baixamobile.sincronizacao.Atualizacao;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     private static final String DATABASE_NAME    = "ormlite.db";
-    private static final int    DATABASE_VERSION = 61;
+    private static final int DATABASE_VERSION = 62;
 
     private Dao<Encomenda, Integer> mEncomendaDao = null;
-    private Dao<Atualizacao, Integer> mAtualizacaoDao = null;
     private Dao<Recebedor, Integer> mRecebedorDao = null;
     private Dao<TipoRecebedor, Integer> mTipoRecebedorDao = null;
     private Dao<TipoDocumento, Integer> mTipoDocumentoDao = null;
@@ -35,10 +33,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private Dao<Ocorrencia, Integer> mOcorrenciaDao = null;
     private Dao<Status, Integer> mStatusDao = null;
     private Dao<IniciarViagem, Integer> mIniciarViagemDao = null;
-//    private Dao<Role, Integer> mRoleDao = null;
-//    private Dao<Email, Integer> mEmailDao = null;
-//    private Dao<UserProject, Integer> mUserProjectDao = null;
-//    private Dao<Project, Integer> mProjectDao = null;
+
     private RuntimeExceptionDao<Encomenda, ?> m;
 
 
@@ -53,7 +48,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
         try {
             TableUtils.createTable(connectionSource, Encomenda.class);
-            TableUtils.createTable(connectionSource, Atualizacao.class);
             TableUtils.createTable(connectionSource, Recebedor.class);
             TableUtils.createTable(connectionSource, TipoRecebedor.class);
             TableUtils.createTable(connectionSource, TipoDocumento.class);
@@ -61,10 +55,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, Ocorrencia.class);
             TableUtils.createTable(connectionSource, Status.class);
             TableUtils.createTable(connectionSource, IniciarViagem.class);
-//            TableUtils.createTable(connectionSource, Role.class);
-//            TableUtils.createTable(connectionSource, Email.class);
-//            TableUtils.createTable(connectionSource, UserProject.class);
-//            TableUtils.createTable(connectionSource, Project.class);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -77,7 +67,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource, int oldVersion, int newVersion) {
         try {
             TableUtils.dropTable(connectionSource, Encomenda.class, true);
-            TableUtils.dropTable(connectionSource, Atualizacao.class, true);
             TableUtils.dropTable(connectionSource, Recebedor.class, true);
             TableUtils.dropTable(connectionSource, TipoRecebedor.class, true);
             TableUtils.dropTable(connectionSource, TipoDocumento.class, true);
@@ -85,10 +74,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.dropTable(connectionSource, Ocorrencia.class, true);
             TableUtils.dropTable(connectionSource, Status.class, true);
             TableUtils.dropTable(connectionSource, IniciarViagem.class, true);
-//            TableUtils.dropTable(connectionSource, Role.class, true);
-//            TableUtils.dropTable(connectionSource, Email.class, true);
-//            TableUtils.dropTable(connectionSource, UserProject.class, true);
-//            TableUtils.dropTable(connectionSource, Project.class, true);
             onCreate(db, connectionSource);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -107,16 +92,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         m = getRuntimeExceptionDao(Encomenda.class);
 
         return mEncomendaDao;
-    }
-
-    /* Atualizacao */
-    public Dao<Atualizacao, Integer> getAtualizacaoDao() throws SQLException {
-
-        if (mAtualizacaoDao == null) {
-            mAtualizacaoDao = getDao(Atualizacao.class);
-        }
-
-        return mAtualizacaoDao;
     }
 
     /* Recebedor */
@@ -192,66 +167,15 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
 
 
-
-
-
-    /* Role */
-
-//    public Dao<Role, Integer> getRoleDao() throws SQLException {
-//        if (mRoleDao == null) {
-//            mRoleDao = getDao(Role.class);
-//        }
-//
-//        return mRoleDao;
-//    }
-//
-//    /* Email */
-//
-//    public Dao<Email, Integer> getEmailDao() throws SQLException {
-//        if (mEmailDao == null) {
-//            mEmailDao = getDao(Email.class);
-//        }
-//
-//        return mEmailDao;
-//    }
-//
-//    /* UserProject */
-//
-//    public Dao<UserProject, Integer> getUserProjectDao() throws SQLException {
-//        if (mUserProjectDao == null) {
-//            mUserProjectDao = getDao(UserProject.class);
-//        }
-//
-//        return mUserProjectDao;
-//    }
-//
-//    /* Project */
-//
-//    public Dao<Project, Integer> getProjectDao() throws SQLException {
-//        if (mProjectDao == null) {
-//            mProjectDao = getDao(Project.class);
-//        }
-//
-//        return mProjectDao;
-//    }
-
-
-
     @Override
     public void close() {
         mEncomendaDao = null;
-        mAtualizacaoDao = null;
         mRecebedorDao = null;
         mTipoRecebedorDao = null;
         mTipoDocumentoDao = null;
         mTipoOcorrenciaDao = null;
         mOcorrenciaDao = null;
         mIniciarViagemDao = null;
-
-//        mRoleDao = null;
-//        mEmailDao = null;
-//        mUserProjectDao = null;
-//        mProjectDao = null;
 
         super.close();
     }

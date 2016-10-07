@@ -26,6 +26,7 @@ public class IniciarViagemDialog {
     private StatusBusiness statusBusiness;
 
 
+
     public IniciarViagemDialog(final Activity mActivity, String title, String mensagem, final Button painelIniciarViagem, final Button painelFinalizarViagem, final boolean encerrar, final TextView viagemTextView) {
 
         sessionManager = new SessionManager(mActivity);
@@ -43,17 +44,11 @@ public class IniciarViagemDialog {
 
                         PainelFragment.showProgress(true);
 
-//                        LatLng latLng = new LatLng(1.1, 2.2);
                         MyLocationTimerTask timerTaskLocation = new MyLocationTimerTask(mActivity, TabItemMapaFragment.map);
                         timerTaskLocation.startTimer();
 
                         LatLng latLng = timerTaskLocation.getMyLatLng();
                         timerTaskLocation.stoptimertask();
-
-//                        /**
-//                         * SALVAR DATA INICIO
-//                         */
-//                        statusBusiness.startJornadaTrabalho();
 
                         IniciarViagemVolley iniciarViagemVolley = new IniciarViagemVolley(mActivity, latLng, new DelegateEncomendaAsyncResponse() {
                             @Override
@@ -61,17 +56,6 @@ public class IniciarViagemDialog {
 
                                 System.out.println("Sucesso");
 
-                                /**
-                                 * REMOVIDO
-                                 */
-//                                Status status = new Status();/
-//                                status.setViagemIniciada(true);
-//                                statusBusiness.salvar(status);
-
-                                /**
-                                 * ADICIONADO
-                                 */
-//                                statusBusiness.startJornadaTrabalho();
                                 viagemTextView.setText("Finalizar Viagem");
 
 
@@ -97,6 +81,7 @@ public class IniciarViagemDialog {
                         });
                     }
                 });
+
         builder.setNegativeButton("NÃO",
                 new DialogInterface.OnClickListener() {
 

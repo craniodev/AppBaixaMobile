@@ -27,10 +27,7 @@ public class SincronizaEncomendaPendenteTimerTask {
 
     private Context mContext;
 
-    private SessionManager sessionManager;
     private EncomendaBusiness encomendaBusiness;
-    private StatusBusiness statusBusiness;
-
     private List<Encomenda> encomendasSincronizar;
 
 
@@ -66,25 +63,25 @@ public class SincronizaEncomendaPendenteTimerTask {
         //set a new Timer
 
         if(isAtivar){
-//        if(timer == null && isAtivar){
 
             Toast.makeText(mContext, "START SINCRONIZAR OCORRENCIAS", Toast.LENGTH_LONG).show();
 
             timer = new Timer();
             showProgress(true);
+
             //initialize the TimerTask's job
             initializeTimerTask();
 
             //schedule the timer, after the first 5000ms the TimerTask will run every 10000ms
             timer.schedule(timerTask, 5000, 5000); //
         }
-
     }
+
+
 
     public void stoptimertask() {
 
         //stop the timer, if it's not already null
-//        if (timer != null) {
         if (isAtivar) {
 
             timer.cancel();
@@ -94,6 +91,8 @@ public class SincronizaEncomendaPendenteTimerTask {
             isAtivar = false;
         }
     }
+
+
 
     public void initializeTimerTask() {
 
@@ -122,11 +121,6 @@ public class SincronizaEncomendaPendenteTimerTask {
             }
         };
     }
-
-
-
-
-
 
 
 

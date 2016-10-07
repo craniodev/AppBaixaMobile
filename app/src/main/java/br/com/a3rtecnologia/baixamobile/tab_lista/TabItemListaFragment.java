@@ -57,11 +57,6 @@ public class TabItemListaFragment extends Fragment {
     private static EncomendaBusiness encomendaBusiness;
     private StatusBusiness statusBusiness;
 
-
-//    private Timer timer;
-//    private TimerTask timerTask;
-//    private final Handler handler = new Handler();
-
     static EncomendaAdapter encomendaAdapter;
     private SessionManager sessionManager;
 
@@ -87,30 +82,12 @@ public class TabItemListaFragment extends Fragment {
 
         createReciclerView();
 
-
-
-
-//        String primeiroLogin = sessionManager.isPrimeiroLogin();
-//        if(primeiroLogin.equalsIgnoreCase("")) {
-//
-//            connectionServer();
-//
-//        }else {
-//
-//            sessionManager.setPrimeiroLogin("");
-//
-//            downloadEncomendas();
-//        }
-
-
-
-        //connectionServer();
-
         mSwipyRefreshLayout = (SwipyRefreshLayout) fragment_panel_encomenda.findViewById(R.id.swipeRefreshLayout);
         swipyRefresh();
 
         return fragment_panel_encomenda;
     }
+
 
 
     @Override
@@ -119,24 +96,20 @@ public class TabItemListaFragment extends Fragment {
 
         System.out.println("");
 
-//        getDATA();
-
         String primeiroLogin = sessionManager.isPrimeiroLogin();
         if(primeiroLogin.equalsIgnoreCase("")) {
-
-
 
             connectionServer();
 
         }else {
-
-
 
             downloadEncomendas();
         }
 
         updateAdapter();
     }
+
+
 
     private void createReciclerView(){
 
@@ -172,16 +145,11 @@ public class TabItemListaFragment extends Fragment {
 
         this.encomendaList = encomendaList;
 
-//        EncomendaAdapter encomendaAdapter = new EncomendaAdapter(encomendaList, getActivity(), null, EnumEncomendaStatus.EM_ROTA.getKey());
         encomendaAdapter = new EncomendaAdapter(encomendaList, getActivity(), null, EnumEncomendaStatus.EM_ROTA.getKey());
         encomendaAdapter.notifyDataSetChanged();
 
         recyclerView.setAdapter(encomendaAdapter);
     }
-
-
-
-
 
 
 
@@ -206,104 +174,86 @@ public class TabItemListaFragment extends Fragment {
 
 
 
+    private void connectionServer() {
 
-    private void connectionServer(){
+        showProgress(true);
+
+        int total = encomendaBusiness.count();
+        int pendentesSincronizar = encomendaBusiness.countNaoSincronizadas();
+        boolean result = false;
+
+        if (total == 0 && pendentesSincronizar == 0) {
+
+            result = true;
+        }
+
+        if (InternetStatus.isNetworkAvailable(mContext) && result) {
+
+            /**
+             * LIMPAR BASE PARA GARANTIR
+             */
+            encomendaBusiness.deleteAll();
+
+            buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_EM_ROTA.getValue());
+
+            showProgress(false);
+
+        } else {
+
+            List<Encomenda> encomendas = null;
+
+            encomendas = encomendaBusiness.buscarEntregasEmRota();
+            int encomendasEmRota = encomendas.size();
 
 
-
-            showProgress(true);
-
-            int total = encomendaBusiness.count();
-            int pendentesSincronizar = encomendaBusiness.countNaoSincronizadas();
-            boolean result = false;
-
-            if(total == 0 && pendentesSincronizar == 0){
-
-                result = true;
-            }
-
-            if (InternetStatus.isNetworkAvailable(mContext) && result) {
-//            if (InternetStatus.isNetworkAvailable(mContext) && total == 0) {
+            if (encomendas != null) {
 
                 /**
-                 * LIMPAR BASE PARA GARANTIR
+                 * SE NAO TEM ENCOMENDAS EM ROTA(LOCAL)
+                 * LIMPA A BASE(LOCAL) E BUSCA MAIS NA WEB
+                 *
+                 *
+                 * REGRA PARA ULTIMA ENCOMENDA
+                 *
                  */
-                encomendaBusiness.deleteAll();
+                if (encomendasEmRota == 0 && pendentesSincronizar == 0) {
 
-                buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_EM_ROTA.getValue());
-//            buscarAPIOnline();
-//            buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_EM_ROTA.getValue());
-//            buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_ENTREGUE.getValue());
-//            buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_PENDENTE.getValue());
+                    /**
+                     * rever, deletar somente as EM ROTA
+                     */
+                    encomendaBusiness.deleteAll();
 
-                showProgress(false);
+                    /**
+                     * buscar somente as deletadas, EM ROTA
+                     */
+                    buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_EM_ROTA.getValue());
+
+
+                    showProgress(false);
+
+                } else {
+
+                    /**
+                     * EXISTE ENCOMENDAS EM ROTA(LOCAL)
+                     *
+                     */
+                    updateAdapter(encomendas);
+
+                    showProgress(false);
+                }
+
 
             } else {
 
-                List<Encomenda> encomendas = null;
-
+                /***
+                 * TODAS ENCOMENDAS ENVIADAS
+                 * MAS PENDENTES DE SINCRONISMO
+                 *
+                 */
                 encomendas = encomendaBusiness.buscarEntregasEmRota();
-                int encomendasEmRota = encomendas.size();
-
-
-                if (encomendas != null) {
-
-                    /**
-                     * SE NAO TEM ENCOMENDAS EM ROTA(LOCAL)
-                     * LIMPA A BASE(LOCAL) E BUSCA MAIS NA WEB
-                     *
-                     *
-                     * REGRA PARA ULTIMA ENCOMENDA
-                     *
-                     */
-                    if (encomendasEmRota == 0 && pendentesSincronizar == 0) {
-
-                        /**
-                         * rever, deletar somente as EM ROTA
-                         */
-                        encomendaBusiness.deleteAll();
-
-                        /**
-                         * buscar somente as deletadas, EM ROTA
-                         */
-//                    buscarAPIOnline();
-                        buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_EM_ROTA.getValue());
-//                    buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_ENTREGUE.getValue());
-//                    buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_PENDENTE.getValue());
-
-
-                        showProgress(false);
-
-                    } else {
-
-                        /**
-                         * EXISTE ENCOMENDAS EM ROTA(LOCAL)
-                         *
-                         */
-                        updateAdapter(encomendas);
-
-                        showProgress(false);
-                    }
-
-
-                }else{
-
-                    /***
-                     * TODAS ENCOMENDAS ENVIADAS
-                     * MAS PENDENTES DE SINCRONISMO
-                     *
-                     */
-
-
-
-                    encomendas = encomendaBusiness.buscarEntregasEmRota();
-                    updateAdapter(encomendas);
-                }
+                updateAdapter(encomendas);
             }
-
-//        }
-
-
+        }
     }
 
 
@@ -316,10 +266,9 @@ public class TabItemListaFragment extends Fragment {
             public void processFinish(boolean finish, Encomendas encomendas) {
 
                 System.out.println(finish);
-//                updateAdapter(encomendas.getEncomendas());
+
                 updateAdapter(encomendas.getEncomendas());
 
-//                PainelFragment.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
                 MenuDrawerActivity.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
 
                 showProgress(false);
@@ -336,8 +285,6 @@ public class TabItemListaFragment extends Fragment {
 
 
 
-
-
     private void buscarAPIOnlineDownload(String statusEncomenda){
 
         new EncomendaVolley(getContext(), statusEncomenda, 1, new DelegateEncomendasAsyncResponse() {
@@ -346,10 +293,9 @@ public class TabItemListaFragment extends Fragment {
             public void processFinish(boolean finish, Encomendas encomendas) {
 
                 System.out.println(finish);
-//                updateAdapter(encomendas.getEncomendas());
+
                 updateAdapter(encomendas.getEncomendas());
 
-//                PainelFragment.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
                 MenuDrawerActivity.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
 
                 showProgress(false);
@@ -375,10 +321,7 @@ public class TabItemListaFragment extends Fragment {
             public void processFinish(boolean finish, Encomendas encomendas) {
 
                 System.out.println(finish);
-//                updateAdapter(encomendas.getEncomendas());
-//                updateAdapter(encomendas.getEncomendas());
 
-//                PainelFragment.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
                 MenuDrawerActivity.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
 
                 showProgress(false);
@@ -429,160 +372,6 @@ public class TabItemListaFragment extends Fragment {
         }
     }
 
-//    public void loadingShow(){
-//
-//        progress = new ProgressDialog(mContext);
-//        progress.setCanceledOnTouchOutside(false);
-//        progress.setMessage("Carregando encomendas no mapa");
-//
-//        showProgress(true);
-//    }
-
-//    public void loadingHide(){
-//
-//        showProgress(false);
-//    }
-
-
-
-
-
-
-
-//    public void startTimer() {
-//
-//        //set a new Timer
-//        timer = new Timer();
-//
-//        showProgress(true);
-//        //initialize the TimerTask's job
-//        initializeTimerTask();
-//
-//        //schedule the timer, after the first 5000ms the TimerTask will run every 10000ms
-//        timer.schedule(timerTask, 5000, 1000); //
-//
-//        Toast.makeText(mContext, "API - init - SUCESSO", Toast.LENGTH_LONG).show();
-//    }
-//
-//    public void stoptimertask() {
-//
-//        //stop the timer, if it's not already null
-//        if (timer != null) {
-//
-//            timer.cancel();
-//
-//            timer = null;
-//
-//            Toast.makeText(mContext, "API - stop - SUCESSO", Toast.LENGTH_LONG).show();
-//        }
-//    }
-//
-//    public void initializeTimerTask() {
-//
-//        timerTask = new TimerTask() {
-//
-//            public void run() {
-//
-//                //use a handler to run a toast that shows the current timestamp
-//                handler.post(new Runnable() {
-//
-//                    public void run() {
-//
-//
-//                        int total = encomendaBusiness.count();
-//
-//                        if(InternetStatus.isNetworkAvailable(mContext) && total == 0) {
-//
-//                            buscarAPIOnline();
-//
-//                        }else{
-//
-//                            List<Encomenda> encomendas = null;
-//
-//                            encomendas = encomendaBusiness.buscarEntregasEmRota();
-//                            int encomendasEmRota = encomendas.size();
-//
-//                            if(encomendas != null){
-//
-//                                /**
-//                                 * SE NAO TEM ENCOMENDAS EM ROTA(LOCAL)
-//                                 * LIMPA A BASE(LOCAL) E BUSCA MAIS NA WEB
-//                                 *
-//                                 *
-//                                 * REGRA PARA ULTIMA ENCOMENDA
-//                                 *
-//                                 */
-//                                if(encomendasEmRota == 0){
-//
-//                                    encomendaBusiness.deleteAll();
-//
-//                                    buscarAPIOnline();
-//
-//                                }else{
-//
-//                                    /**
-//                                     * EXISTE ENCOMENDAS EM ROTA(LOCAL)
-//                                     *
-//                                     */
-//                                    updateAdapter(encomendas);
-//
-//                                    showProgress(false);
-//                                }
-//
-//
-//                            }
-//                        }
-//
-//
-//
-//
-//
-////                        if(InternetStatus.isNetworkAvailable(mContext)) {
-////
-////                            buscarAPIOnline();
-////
-////                        }else{
-////
-////                            List<Encomenda> encomendas = null;
-////
-////                            encomendas = encomendaBusiness.buscarEntregasEmRota();
-////                            int encomendasEmRota = encomendas.size();
-////
-////                            if(encomendas != null) {
-////
-////                                /**
-////                                 * SE NAO TEM ENCOMENDAS EM ROTA(LOCAL)
-////                                 * LIMPA A BASE(LOCAL) E BUSCA MAIS NA WEB
-////                                 *
-////                                 *
-////                                 * REGRA PARA ULTIMA ENCOMENDA
-////                                 *
-////                                 */
-////                                if (encomendasEmRota == 0) {
-////
-////                                    encomendaBusiness.deleteAll();
-////
-////                                    buscarAPIOnline();
-////
-////                                } else {
-////
-////                                    /**
-////                                     * EXISTE ENCOMENDAS EM ROTA(LOCAL)
-////                                     *
-////                                     */
-////                                    updateAdapter(encomendas);
-////
-////                                    showProgress(false);
-////                                }
-////                            }
-////                        }
-//                    }
-//                });
-//            }
-//        };
-//    }
-
-
 
 
     private void downloadEncomendas(){
@@ -592,8 +381,6 @@ public class TabItemListaFragment extends Fragment {
 
             sessionManager.setPrimeiroLogin("");
 
-//            sessionManager.setPrimeiroLogin("");
-
             /**
              * LIMPAR BASE PARA GARANTIR
              */
@@ -602,8 +389,6 @@ public class TabItemListaFragment extends Fragment {
             buscarAPIOnlineDownload(EnumAPI.ID_TIPO_ENCOMENDA_EM_ROTA.getValue());
             buscarAPIOnlineOthers(EnumAPI.ID_TIPO_ENCOMENDA_ENTREGUE.getValue());
             buscarAPIOnlineOthers(EnumAPI.ID_TIPO_ENCOMENDA_PENDENTE.getValue());
-
-
         }
     }
 

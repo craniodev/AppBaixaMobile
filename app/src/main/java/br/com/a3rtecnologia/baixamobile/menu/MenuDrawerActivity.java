@@ -4,10 +4,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
@@ -18,34 +16,21 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.common.GooglePlayServicesUtil;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import br.com.a3rtecnologia.baixamobile.R;
-import br.com.a3rtecnologia.baixamobile.api.EnumAPI;
 import br.com.a3rtecnologia.baixamobile.dialogs.EncerrarViagemDialog;
 import br.com.a3rtecnologia.baixamobile.dialogs.IniciarViagemDialog;
 import br.com.a3rtecnologia.baixamobile.encomenda.DelegateEncomendaAsyncResponse;
 import br.com.a3rtecnologia.baixamobile.encomenda.DelegateEncomendasAsyncResponse;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
-import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaTimerTask;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaVolley;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomendas;
 import br.com.a3rtecnologia.baixamobile.ocorrencia.AtualizaEncomendaPendenteTimerTask;
@@ -53,7 +38,6 @@ import br.com.a3rtecnologia.baixamobile.status.Status;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
 import br.com.a3rtecnologia.baixamobile.tab_lista.FinalizarViagemVolley;
 import br.com.a3rtecnologia.baixamobile.tab_lista.StatusEncomendaDialog;
-import br.com.a3rtecnologia.baixamobile.tab_lista.TabItemListaFragment;
 import br.com.a3rtecnologia.baixamobile.tipo_documento.TipoDocumentoVolley;
 import br.com.a3rtecnologia.baixamobile.tipo_ocorrencia.TipoOcorrenciaVolley;
 import br.com.a3rtecnologia.baixamobile.tipo_recebedor.TipoRecebedorVolley;
@@ -61,7 +45,6 @@ import br.com.a3rtecnologia.baixamobile.util.ActivityUtil;
 import br.com.a3rtecnologia.baixamobile.util.SessionManager;
 
 public class MenuDrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
 
     private FragmentManager mFragmentManager;
     private FragmentTransaction mFragmentTransaction;
@@ -81,10 +64,10 @@ public class MenuDrawerActivity extends AppCompatActivity implements NavigationV
     private static ProgressDialog mProgressDialog;
 
     private Menu menu;
-//    static EncomendaTimerTask encomendaTimerTask;
     private AtualizaEncomendaPendenteTimerTask atualizaEncomendaPendenteTimerTask;
 
     private static int REQUEST_CODE_ASK_PERMISSIONS_WRITE_EXTERNAL_STORAGE = 1;
+
 
 
 
@@ -112,27 +95,14 @@ public class MenuDrawerActivity extends AppCompatActivity implements NavigationV
 
         createLoading(this);
 
-
-        /**
-         * ALTERADO LUGAR DA CHAMADA - BAIXA OCORRENCIA
-         */
-//        AtualizaEncomendaPendenteTimerTask atualizaEncomendaPendenteTimerTask = new AtualizaEncomendaPendenteTimerTask(mContext);
-//        atualizaEncomendaPendenteTimerTask.startTimer();
-        
         donwloadTablesTipo();
-
-
-//        downloadEncomendas();
 
         /**
          * ATIVA VERIFICADOR DE ENCOMENDAS TRATADAS
          */
         AtualizaEncomendaPendenteTimerTask atualizaEncomendaPendenteTimerTask = new AtualizaEncomendaPendenteTimerTask(mContext);
         atualizaEncomendaPendenteTimerTask.startTimer();
-     }
-
-
-
+    }
 
 
 
@@ -161,10 +131,6 @@ public class MenuDrawerActivity extends AppCompatActivity implements NavigationV
 
 
 
-
-
-
-
     private void init(){
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -185,15 +151,6 @@ public class MenuDrawerActivity extends AppCompatActivity implements NavigationV
         mFragmentTransaction = mFragmentManager.beginTransaction();
         mFragmentTransaction.replace(R.id.containerView,new PainelFragment()).commit();
     }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -227,8 +184,6 @@ public class MenuDrawerActivity extends AppCompatActivity implements NavigationV
 
 
 
-
-
     @Override
     public void onBackPressed() {
 
@@ -246,32 +201,6 @@ public class MenuDrawerActivity extends AppCompatActivity implements NavigationV
 
 
 
-
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//
-//        // Inflate the menu; this adds items to the action bar if it is present.
-////        getMenuInflater().inflate(R.menu.menu_drawer, menu);
-//
-//        return true;
-//    }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-////        int id = item.getItemId();
-////
-////        //noinspection SimplifiableIfStatement
-////        if (id == R.id.action_settings) {
-////            return true;
-////        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -279,15 +208,11 @@ public class MenuDrawerActivity extends AppCompatActivity implements NavigationV
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_action_bar, menu);
 
-        //BUSCA
-//        search(menu);
-
         MenuItem menuItem = menu.findItem(R.id.item_generic);
         MenuItemCompat.setActionView(menuItem, R.layout.menu_action_bar_layout);
         layout = (RelativeLayout) MenuItemCompat.getActionView(menuItem);
 
-//        payment(menuItem);
-        cart(menuItem);
+        iniciarViagemActionBar(menuItem);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -299,63 +224,27 @@ public class MenuDrawerActivity extends AppCompatActivity implements NavigationV
      *
      * @param menuItem
      */
-    private void cart(final MenuItem menuItem){
+    private void iniciarViagemActionBar(final MenuItem menuItem){
 
-            viagemTextView = (TextView) layout.findViewById(R.id.menu_action_bar_label);
+        viagemTextView = (TextView) layout.findViewById(R.id.menu_action_bar_label);
+        viagemTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-            //VERIFICAR ESTADO DO BOTAO
-            //INICIAR VIAGEM | FINALIZAR VIAGEM
-//            viagemTextView.setText("TESTE");
+                if (viagemTextView.getText().toString().equalsIgnoreCase("FINALIZAR VIAGEM")) {
 
+                    finalizarViagem();
 
+                } else if (viagemTextView.getText().toString().equalsIgnoreCase("INICIAR VIAGEM")) {
 
-            viagemTextView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    if(viagemTextView.getText().toString().equalsIgnoreCase("FINALIZAR VIAGEM")){
-
-//                        createLoading(mContext, "Finalizando");
-//                        showProgress(true);
-
-                        finalizarViagem();
-
-                        //UPDATE TEXT BOTAO
-                        //exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
-
-                    }else if(viagemTextView.getText().toString().equalsIgnoreCase("INICIAR VIAGEM")){
-
-//                        createLoading(mContext, "Iniciando Viagem");
-//                        showProgress(true);
-
-                        IniciarViagemDialog dialog = new IniciarViagemDialog(mActivity, "Iniciar Viagem", "Deseja iniciar sua viagem?", null, null, false, viagemTextView);
-
-                        //UPDATE TEXT BOTAO
-                        //exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
-                    }
+                    IniciarViagemDialog dialog = new IniciarViagemDialog(mActivity, "Iniciar Viagem", "Deseja iniciar sua viagem?", null, null, false, viagemTextView);
                 }
-            });
-
+            }
+        });
 
         //UPDATE TEXT BOTAO
         exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
-
-
-
-        //RECUPERAR ICONE + ONCLICK
-//        ImageView cart = (ImageView) layout.findViewById(R.id.cart);
-//        cart.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View view) {
-//
-//                Toast.makeText(getApplicationContext(), "Itens Carrinho ", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(mContext, CartActivity.class);
-//                startActivity(intent);
-//            }
-//        });
     }
-
 
 
 
@@ -677,11 +566,6 @@ public class MenuDrawerActivity extends AppCompatActivity implements NavigationV
 
 
 
-
-
-
-
-
     private void setTitle(String title){
 
         if(toolbar != null){
@@ -690,13 +574,6 @@ public class MenuDrawerActivity extends AppCompatActivity implements NavigationV
         }
     }
 
-//    private void createLoading(Context mContext, String message){
-//
-//        mProgressDialog = new ProgressDialog(mContext);
-//        mProgressDialog.setCanceledOnTouchOutside(false);
-//        mProgressDialog.setMessage(message);
-//    }
-//
     private static void createLoading(Context mContext){
 
         mProgressDialog = new ProgressDialog(mContext);

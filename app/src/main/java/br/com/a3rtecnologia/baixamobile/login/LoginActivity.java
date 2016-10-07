@@ -97,26 +97,11 @@ public class LoginActivity extends AppCompatActivity {
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
-
-
-
         int hasACCESS_FINE_LOCATION = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         int hasACCESS_COARSE_LOCATION = ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION);
-//        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-
-
 
         if (hasACCESS_FINE_LOCATION != PackageManager.PERMISSION_GRANTED && hasACCESS_COARSE_LOCATION != PackageManager.PERMISSION_GRANTED) {
             if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION) && !ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
-
-//                showMessageOKCancel("Permitir que o app BaixaMobile acesse o local do dispositivo?",
-//                        new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                ActivityCompat.requestPermissions(MenuDrawerActivity.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_PERMISSIONS);
-//                            }
-//                        });
 
                 ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE_ASK_PERMISSIONS_ACCESS_FINE_LOCATION);
 
@@ -132,9 +117,6 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         init();
-
-//        insertDummyContact();
-
     }
 
 
@@ -146,9 +128,6 @@ public class LoginActivity extends AppCompatActivity {
         password();
         login();
     }
-
-
-
 
 
 
@@ -176,20 +155,6 @@ public class LoginActivity extends AppCompatActivity {
     private void password(){
 
         mPasswordView = (EditText) findViewById(R.id.password);
-//        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//
-//            @Override
-//            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-//
-//                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-//
-//                    attemptLogin();
-//                    return true;
-//                }
-//
-//                return false;
-//            }
-//        });
     }
 
 
@@ -345,8 +310,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-
-
     private void permissaoWRITE_EXTERNAL_STORAGE(){
 
         int hasWriteContactsPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -371,65 +334,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+
     private void result(){
 
         Intent intent = new Intent(mContext, MenuDrawerActivity.class);
         startActivity(intent);
 
-//        downloadEncomendas();
-
         sessionManager.setPrimeiroLogin("1");
 
         finish();
     }
-
-
-
-//    private void downloadEncomendas(){
-//
-//        sessionManager.setPrimeiroLogin("1");
-//
-//        /**
-//         * LIMPAR BASE PARA GARANTIR
-//         */
-//        encomendaBusiness.deleteAll();
-//
-//        buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_EM_ROTA.getValue());
-//        buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_ENTREGUE.getValue());
-//        buscarAPIOnline(EnumAPI.ID_TIPO_ENCOMENDA_PENDENTE.getValue());
-//    }
-//
-//
-//    private void buscarAPIOnline(String statusEncomenda){
-//
-//        new EncomendaVolley(mContext, statusEncomenda, new DelegateEncomendasAsyncResponse() {
-//
-//            @Override
-//            public void processFinish(boolean finish, Encomendas encomendas) {
-//
-//                System.out.println(finish);
-////                updateAdapter(encomendas.getEncomendas());
-//
-////                PainelFragment.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
-//                MenuDrawerActivity.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
-//
-//                showProgress(false);
-//            }
-//
-//            @Override
-//            public void processCanceled(boolean cancel) {
-//
-//                System.out.println(cancel);
-//                showProgress(false);
-//            }
-//        });
-//    }
-
-
-
-
-
-
 
 
 
@@ -472,7 +386,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
 
 
 

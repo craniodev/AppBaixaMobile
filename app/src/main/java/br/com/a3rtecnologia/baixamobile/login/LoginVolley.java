@@ -39,6 +39,7 @@ public class LoginVolley {
 
 
 
+
     public LoginVolley(Context mContext, Usuario usuario, DelegateAsyncResponse delegate) {
 
         this.mContext = mContext;
@@ -61,6 +62,8 @@ public class LoginVolley {
 
         return headers;
     }
+
+
 
     private Map<String, String> param(){
 
@@ -123,8 +126,6 @@ public class LoginVolley {
 
                         }
                     });
-
-//                    delegate.processFinish(true);
 
                 } catch (Exception e) {
 

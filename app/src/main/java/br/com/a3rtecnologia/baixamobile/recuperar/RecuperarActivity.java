@@ -76,19 +76,12 @@ public class RecuperarActivity extends AppCompatActivity {
 
         if (InternetStatus.isNetworkAvailable(mContext)) {
 
-//            String email = String.valueOf(recovery_login_id.getText());
-//            usuario.setEmail(email);
-
             new RecuperarVolley(mContext, usuario, new DelegateAsyncResponse() {
 
                 @Override
                 public void processFinish(boolean success) {
 
                     showProgress(false);
-
-//                    KeyboardUtil.hideKeyboard(mContext, recovery_login_id);
-//
-//                    recovery_login_id.setText("");
                 }
 
                 @Override

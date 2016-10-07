@@ -24,16 +24,11 @@ import br.com.a3rtecnologia.baixamobile.util.InternetStatus;
 
 public class CadastroActivity extends AppCompatActivity {
 
-
     private Context mContext;
     private View focusView;
     private ProgressDialog progress;
 
     private AutoCompleteTextView nomeEditText;
-//    private MaskedEditText cpfEditText;
-//    private MaskedEditText cnhEditText;
-//    private MaskedEditText telefoneEditText;
-//    private MaskedEditText celularEditText;
     private EditText cpfEditText;
     private EditText cnhEditText;
     private EditText telefoneEditText;
@@ -43,7 +38,6 @@ public class CadastroActivity extends AppCompatActivity {
     private Usuario usuario;
 
     private boolean cancel;
-
 
 
 
@@ -59,22 +53,12 @@ public class CadastroActivity extends AppCompatActivity {
         cancel = false;
         focusView = null;
 
-
-
         nomeEditText = (AutoCompleteTextView) findViewById(R.id.register_complete_name_id);
-//        cpfEditText = (MaskedEditText) findViewById(R.id.register_cpf_id);
-//        cnhEditText = (MaskedEditText) findViewById(R.id.register_cnh_id);
-//        telefoneEditText = (MaskedEditText) findViewById(R.id.register_phone1_id);
-//        celularEditText = (MaskedEditText) findViewById(R.id.register_phone2_id);
         cpfEditText = (EditText) findViewById(R.id.register_cpf_id);
         cnhEditText = (EditText) findViewById(R.id.register_cnh_id);
         telefoneEditText = (EditText) findViewById(R.id.register_phone1_id);
         celularEditText = (EditText) findViewById(R.id.register_phone2_id);
         emailEditText = (AutoCompleteTextView) findViewById(R.id.register_email_id);
-
-
-
-
 
         MaskBaixa maskCPF = new MaskBaixa("###.###.###-##", cpfEditText);
         cpfEditText.addTextChangedListener(maskCPF);
@@ -87,10 +71,6 @@ public class CadastroActivity extends AppCompatActivity {
 
         MaskBaixa maskCEL = new MaskBaixa("(##)#####-####", celularEditText);
         celularEditText.addTextChangedListener(maskCEL);
-
-
-
-
 
         createLoading(mContext);
 
@@ -206,25 +186,6 @@ public class CadastroActivity extends AppCompatActivity {
 
 
     private void getValuesForm(){
-
-//        nomeEditText = (AutoCompleteTextView) findViewById(R.id.register_complete_name_id);
-////        cpfEditText = (MaskedEditText) findViewById(R.id.register_cpf_id);
-////        cnhEditText = (MaskedEditText) findViewById(R.id.register_cnh_id);
-////        telefoneEditText = (MaskedEditText) findViewById(R.id.register_phone1_id);
-////        celularEditText = (MaskedEditText) findViewById(R.id.register_phone2_id);
-//        cpfEditText = (EditText) findViewById(R.id.register_cpf_id);
-//        cnhEditText = (EditText) findViewById(R.id.register_cnh_id);
-//        telefoneEditText = (EditText) findViewById(R.id.register_phone1_id);
-//        celularEditText = (EditText) findViewById(R.id.register_phone2_id);
-//        emailEditText = (AutoCompleteTextView) findViewById(R.id.register_email_id);
-//
-//
-//
-//        MaskFormatter cpfMaskFormatter = new MaskFormatter(IBAN_MASK, cpfEditText);
-//        nomeEditText.addTextChangedListener(cpfMaskFormatter);
-
-
-
 
         nomeEditText.setError(null);
         cpfEditText.setError(null);

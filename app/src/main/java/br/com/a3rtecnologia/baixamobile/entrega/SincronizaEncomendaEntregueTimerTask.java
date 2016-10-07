@@ -22,12 +22,9 @@ import br.com.a3rtecnologia.baixamobile.util.SessionManager;
 public class SincronizaEncomendaEntregueTimerTask {
 
     public static ProgressDialog mProgressDialog;
-
     private Context mContext;
 
-    private SessionManager sessionManager;
     private EncomendaBusiness encomendaBusiness;
-    private StatusBusiness statusBusiness;
 
     private List<Encomenda> encomendasSincronizar;
 
@@ -64,20 +61,21 @@ public class SincronizaEncomendaEntregueTimerTask {
         //set a new Timer
 
         if(isAtivar){
-//        if(timer == null && isAtivar){
 
             Toast.makeText(mContext, "START SINCRONIZAR REALIZADAS", Toast.LENGTH_LONG).show();
 
             timer = new Timer();
             showProgress(true);
+
             //initialize the TimerTask's job
             initializeTimerTask();
 
             //schedule the timer, after the first 5000ms the TimerTask will run every 10000ms
             timer.schedule(timerTask, 5000, 5000); //
         }
-
     }
+
+
 
     public void stoptimertask() {
 
@@ -92,6 +90,8 @@ public class SincronizaEncomendaEntregueTimerTask {
         }
     }
 
+
+
     public void initializeTimerTask() {
 
         timerTask = new TimerTask() {
@@ -102,7 +102,6 @@ public class SincronizaEncomendaEntregueTimerTask {
                 handler.post(new Runnable() {
 
                     public void run() {
-
 
                         if(InternetStatus.isNetworkAvailable(mContext)){
 

@@ -87,31 +87,15 @@ public class ListaItemDetalheDialog extends Activity{
                     statusBusiness.salvar(status);
 
                     /**
-                     * REMOVIDO
-                     */
-//                    sessionManager.setValue("CORRENTE", encomenda.getIdEncomenda().toString());
-
-
-                    /**
-                     * REMOVIDO
-                     */
-//                    iniciarViagem(encomenda);
-
-
-                    /**
                      * ADICIONADO
                      */
                     iniciarEntrega(encomenda);
-
-
-
 
                     /**
                      * ADICIONA ENCOMENDA CORRENTE
                      */
                     statusBusiness.addEncomendaCorrente(encomenda.getIdEncomenda());
                     NavegacaoGPSDialog navegacaoGPSDialog = new NavegacaoGPSDialog(mActivity, encomenda);
-
 
                     /**
                      * UPDATE LISTA ENCOMENDAS
@@ -143,79 +127,21 @@ public class ListaItemDetalheDialog extends Activity{
         encomendaEntregue.setDataInicioEntrega(DateUtil.getDataAtual());
         encomendaBusiness.update(encomendaEntregue);
 
+        IniciarEntregaVolley iniciarEntregaVolley = new IniciarEntregaVolley(mActivity, encomendaEntregue, new DelegateEncomendaAsyncResponse() {
 
-//        if(InternetStatus.isNetworkAvailable(mActivity)) {
+            @Override
+            public void processFinish(boolean finish, String resposta) {
 
-            IniciarEntregaVolley iniciarEntregaVolley = new IniciarEntregaVolley(mActivity, encomendaEntregue, new DelegateEncomendaAsyncResponse() {
+                System.out.println(resposta);
+            }
 
-                @Override
-                public void processFinish(boolean finish, String resposta) {
+            @Override
+            public void processCanceled(boolean cancel) {
 
-                    System.out.println(resposta);
-
-//                finalizarViagemx();
-                }
-
-                @Override
-                public void processCanceled(boolean cancel) {
-
-                    System.out.println("ERRO INICIAR ENTREGA");
-                }
-            });
-
-
-//        }else{
-
-            /**
-             * MODO OFFLINE
-             *
-             *
-             */
-
-//            MyLocationTimerTask timerTaskLocation = new MyLocationTimerTask(mActivity, TabItemMapaFragment.map);
-//            timerTaskLocation.startTimer();
-//
-//            LatLng latLng = timerTaskLocation.getMyLatLng();
-//            timerTaskLocation.stoptimertask();
-
-
-
-//        }
+                System.out.println("ERRO INICIAR ENTREGA");
+            }
+        });
     }
-
-
-    /**
-     * REMOVIDO
-     *
-     *
-     * @param view
-     * @param encomenda
-     */
-//    /**
-//     * PASSAR ESSA CHAMADA PARA UM TIMER TASK
-//     *
-//     * @param encomenda
-//     */
-//    public void iniciarViagem(Encomenda encomenda){
-//
-////        LatLng latLng = new LatLng(encomenda.getLatitude(), encomenda.getLongitude());
-//        LatLng latLng = null;
-//
-//        IniciarViagemVolley iniciarViagemVolley = new IniciarViagemVolley(mActivity, latLng, new DelegateEncomendaAsyncResponse() {
-//            @Override
-//            public void processFinish(boolean finish, String resposta) {
-//
-//                System.out.println(resposta);
-//            }
-//
-//            @Override
-//            public void processCanceled(boolean cancel) {
-//
-//                System.out.println("ERRO INICIAR VIAGEM");
-//            }
-//        });
-//    }
-
 
 
 
@@ -263,7 +189,6 @@ public class ListaItemDetalheDialog extends Activity{
 
 
 
-
     private void validateAndAppend(String value, String separator, StringBuilder stringBuilder){
 
         if(value != null && !value.equals("")){
@@ -272,7 +197,6 @@ public class ListaItemDetalheDialog extends Activity{
             stringBuilder.append(separator);
         }
     }
-
 
 
 

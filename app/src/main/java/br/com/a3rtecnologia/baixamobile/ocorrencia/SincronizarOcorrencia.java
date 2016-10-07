@@ -69,21 +69,4 @@ public class SincronizarOcorrencia {
         }
     }
 
-
-
-
-
-//    public void stoptimertask() {
-//
-//        //stop the timer, if it's not already null
-//        if (timer != null) {
-//
-//            timer.cancel();
-//
-//            timer = null;
-//
-//            Toast.makeText(mContext, "STOP - SINCRONIZAR OCORRENCIAS", Toast.LENGTH_LONG).show();
-//        }
-//    }
-
 }

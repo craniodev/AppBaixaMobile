@@ -1,4 +1,4 @@
-package br.com.a3rtecnologia.baixamobile.util;
+package br.com.a3rtecnologia.baixamobile.splash;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,6 +9,7 @@ import android.os.Handler;
 import br.com.a3rtecnologia.baixamobile.R;
 import br.com.a3rtecnologia.baixamobile.login.LoginActivity;
 import br.com.a3rtecnologia.baixamobile.menu.MenuDrawerActivity;
+import br.com.a3rtecnologia.baixamobile.util.SessionManager;
 
 public class SplashActivity extends Activity implements Runnable {
 
@@ -26,7 +27,6 @@ public class SplashActivity extends Activity implements Runnable {
 		sessionManager = new SessionManager(getApplicationContext());
     	
     	Handler handler = new Handler();
-		
 		handler.postDelayed(SplashActivity.this, 2000);
     }
     

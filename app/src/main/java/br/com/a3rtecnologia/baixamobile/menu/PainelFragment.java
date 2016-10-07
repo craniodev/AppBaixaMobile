@@ -19,16 +19,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import br.com.a3rtecnologia.baixamobile.R;
-import br.com.a3rtecnologia.baixamobile.dialogs.EncerrarViagemDialog;
-import br.com.a3rtecnologia.baixamobile.dialogs.IniciarViagemDialog;
-import br.com.a3rtecnologia.baixamobile.encomenda.DelegateEncomendaAsyncResponse;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
-import br.com.a3rtecnologia.baixamobile.ocorrencia.AtualizaEncomendaPendenteTimerTask;
-import br.com.a3rtecnologia.baixamobile.status.Status;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
 import br.com.a3rtecnologia.baixamobile.tab.TabViewPagerAdapter;
-import br.com.a3rtecnologia.baixamobile.tab_lista.FinalizarViagemVolley;
 import br.com.a3rtecnologia.baixamobile.tab_mapa.TabItemMapaAsyncTask;
 import br.com.a3rtecnologia.baixamobile.util.SessionManager;
 
@@ -37,16 +31,15 @@ import br.com.a3rtecnologia.baixamobile.util.SessionManager;
  */
 public class PainelFragment extends Fragment {
 
-    public static TabLayout tabLayout;
-    public static ViewPager viewPager;
-    public static Button painelIniciarViagem;
-    public static Button painelFinalizarViagem;
-    public static TextView painelMensagem;
+    public TabLayout tabLayout;
+    public ViewPager viewPager;
+    public Button painelIniciarViagem;
+    public Button painelFinalizarViagem;
+    public TextView painelMensagem;
 
     public static ProgressDialog mProgressDialog;
     private TabViewPagerAdapter tabViewPagerAdapter;
     private Context mContext;
-
 
     Timer timer;
     TimerTask timerTask;
@@ -55,7 +48,6 @@ public class PainelFragment extends Fragment {
     private SessionManager sessionManager;
     public EncomendaBusiness encomendaBusiness;
     private StatusBusiness statusBusiness;
-
 
 
 
@@ -72,6 +64,8 @@ public class PainelFragment extends Fragment {
         timer.schedule(timerTask, 500, 10000); //
     }
 
+
+
     public void stoptimertask(View v) {
 
         //stop the timer, if it's not already null
@@ -82,6 +76,8 @@ public class PainelFragment extends Fragment {
             timer = null;
         }
     }
+
+
 
     public void initializeTimerTask() {
 
@@ -108,12 +104,6 @@ public class PainelFragment extends Fragment {
 
 
 
-
-
-
-
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -126,19 +116,12 @@ public class PainelFragment extends Fragment {
         this.statusBusiness = new StatusBusiness(mContext);
         this.encomendaBusiness = new EncomendaBusiness(mContext);
 
-
         View fragment_tab = inflater.inflate(R.layout.fragment_tab, null);
         tabLayout = (TabLayout) fragment_tab.findViewById(R.id.tabs);
         viewPager = (ViewPager) fragment_tab.findViewById(R.id.viewpager);
         painelIniciarViagem = (Button) fragment_tab.findViewById(R.id.painelIniciarViagem);
         painelFinalizarViagem = (Button) fragment_tab.findViewById(R.id.painelFinalizarViagem);
         painelMensagem = (TextView) fragment_tab.findViewById(R.id.painelMensagem);
-
-
-
-
-//        buttonIniciarViagem();
-//        buttonFinalizarViagem();
 
         createLoading(mContext);
 
@@ -162,9 +145,8 @@ public class PainelFragment extends Fragment {
             }
         });
 
-
-
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -195,16 +177,8 @@ public class PainelFragment extends Fragment {
             }
         });
 
-
-
-//        /**
-//         * REGRA PARA BOTOES OU MENSAGEM - INICIAR/FINALIZAR VIAGEM
-//         */
-//        exibirBotaoIniciarFinalizarViagem();
-
         return fragment_tab;
     }
-
 
 
 
@@ -212,188 +186,11 @@ public class PainelFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        //startTimer();
-
         /**
          * REGRA PARA BOTOES OU MENSAGEM - INICIAR/FINALIZAR VIAGEM
          */
-//        exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
         MenuDrawerActivity.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
-
     }
-
-
-
-
-
-//    public static void exibirBotaoIniciarFinalizarViagem(StatusBusiness statusBusiness, EncomendaBusiness encomendaBusiness){
-//
-//        boolean viagemIniciada = statusBusiness.verificarViagemIniciada();
-//        Status status = statusBusiness.getStatus();
-//        //String isFinalizadoForcado = sessionManager.getFinalizarViagemOcorrenciaForcado();
-//
-//        /**
-//         * VIAGEM JA INICIADA
-//         */
-//        if(viagemIniciada){
-//
-//            //BOTAO INICIAR VIAGEM
-//            painelIniciarViagem.setVisibility(View.GONE);
-//            painelFinalizarViagem.setVisibility(View.VISIBLE);
-//            painelMensagem.setVisibility(View.GONE);
-//
-//        }else if(status != null){
-//
-//            /**
-//             * NAO EXISTE ENCOMENDAS
-//             */
-//            int total = encomendaBusiness.countEncomendasEmRotaAndLiberado();
-//            if (total == 0) {
-//
-//                //MENSAGEM DE QUE NAO TEM ENCOMENDAS NO MOMENTO
-//                painelIniciarViagem.setVisibility(View.GONE);
-//                painelFinalizarViagem.setVisibility(View.GONE);
-//                painelMensagem.setVisibility(View.VISIBLE);
-//
-//            /**
-//             * EXISTE ENCOMENDAS
-//             */
-//            }else{
-//
-//                //BOTAO INICIAR VIAGEM
-//                painelIniciarViagem.setVisibility(View.VISIBLE);
-//                painelFinalizarViagem.setVisibility(View.GONE);
-//                painelMensagem.setVisibility(View.GONE);
-//            }
-//
-//        }else{
-//
-//            /**
-//             * NAO EXISTE ENCOMENDAS
-//             */
-//            int total = encomendaBusiness.countEncomendasEmRotaAndLiberado();
-//            if (total == 0) {
-//
-//                //MENSAGEM DE QUE NAO TEM ENCOMENDAS NO MOMENTO
-//                painelIniciarViagem.setVisibility(View.GONE);
-//                painelFinalizarViagem.setVisibility(View.GONE);
-//                painelMensagem.setVisibility(View.VISIBLE);
-//
-//                /**
-//                 * EXISTE ENCOMENDAS
-//                 */
-//            }else{
-//
-//                //BOTAO INICIAR VIAGEM
-//                painelIniciarViagem.setVisibility(View.VISIBLE);
-//                painelFinalizarViagem.setVisibility(View.GONE);
-//                painelMensagem.setVisibility(View.GONE);
-//            }
-//        }
-//    }
-
-
-
-
-    /**
-     * INICIAR JORNADA DE TRABALHO
-     *
-     * TODAS ENCOMENDAS INICARAM COM STATUS DE - EM ROTA
-     */
-    private void buttonIniciarViagem(){
-
-//        painelIniciarViagem.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-
-//                createLoading(mContext, "Iniciando Viagem");
-//                showProgress(true);
-//
-//                IniciarViagemDialog dialog = new IniciarViagemDialog(getActivity(), "Iniciar Viagem", "Deseja iniciar sua viagem?", painelIniciarViagem, painelFinalizarViagem, false);
-//            }
-//        });
-    }
-
-    private void buttonFinalizarViagem(){
-
-//        painelFinalizarViagem.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-
-                createLoading(mContext, "Finalizando Viagem");
-                showProgress(true);
-
-                /**
-                 * AGUARDAR RESPOSTA
-                 *
-                 * PODE RECEBER LISTA DE ENCOMENDAS PENDENTES PARA ENCERRAR AINDA
-                 *
-                 */
-                FinalizarViagemVolley finalizarViagemVolley = new FinalizarViagemVolley(getActivity(), new DelegateEncomendaAsyncResponse() {
-                    @Override
-                    public void processFinish(boolean finish, String resposta) {
-
-                        showProgress(false);
-
-                        /**
-                         * SE NAO TEM ENCOMENDAS PENDENTES
-                         * SUCESSO
-                         */
-                        if(resposta.equalsIgnoreCase("SUCESSO")) {
-
-                            painelIniciarViagem.setVisibility(View.VISIBLE);
-                            painelFinalizarViagem.setVisibility(View.GONE);
-
-                            Status status = statusBusiness.getStatus();
-                            if (status != null) {
-
-                                /**
-                                 * REMOVIDO
-                                 */
-//                                status.setViagemIniciada(false);
-//                                statusBusiness.atualizar(status);
-
-                                /**
-                                 * ADICIONADO
-                                 */
-                                statusBusiness.stopJornadaTrabalho();
-//                                PainelFragment.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
-                                MenuDrawerActivity.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
-
-                                if(AtualizaEncomendaPendenteTimerTask.timer != null){
-
-                                    AtualizaEncomendaPendenteTimerTask.timer.cancel();
-                                }
-                            }
-
-                        }else{
-
-                            /**
-                             * TEM ENCOMENDAS PENDENTES - ENCERRAR FORCADO
-                             */
-
-//                            StatusDialog dialog = new StatusDialog(getActivity(), "Finalizar Viagem", resposta, false);
-                            EncerrarViagemDialog dialog = new EncerrarViagemDialog(getActivity(), "Finalizar Viagem", resposta);
-                        }
-                    }
-
-                    @Override
-                    public void processCanceled(boolean cancel) {
-
-                        System.out.println("ERRO FINALIZAR VIAGEM");
-                        showProgress(false);
-                    }
-                });
-//            }
-//        });
-    }
-
-
-
-
-
-
-
 
 
 
