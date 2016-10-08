@@ -352,25 +352,6 @@ public class OcorrenciaActivity extends AppCompatActivity {
         /** 1 - progress **/
         showProgress(true);
 
-        /** 2 - recupera id encomenda corrente **/
-        long id = statusBusiness.getIdEncomendaCorrente();
-
-        /** 2.1 - recupera objeto encomenda corrente **/
-        final Encomenda encomendaCorrente = encomendaBusiness.buscarEncomendaCorrente(id);
-
-        /** 3 - recupera localizacao atual **/
-        MyLocationTimerTask timerTaskLocation = new MyLocationTimerTask(mContext, TabItemMapaFragment.map);
-        timerTaskLocation.startTimer();
-
-        /** 3.1 - monta objeto latlng **/
-        LatLng latLng = timerTaskLocation.getMyLatLng();
-        timerTaskLocation.stoptimertask();
-
-        if(latLng != null){
-
-            encomendaCorrente.setLatitude(latLng.latitude);
-            encomendaCorrente.setLongitude(latLng.longitude);
-        }
 
         /** 4 - verifica se é um finalizar viagem forcado **/
         if(finalizarViagemOcorrencia.equalsIgnoreCase("1")){
@@ -383,6 +364,38 @@ public class OcorrenciaActivity extends AppCompatActivity {
             finalizarViagemOcorrenciaForcado(ocorrencia);
 
         }else {
+
+            /** 2 - recupera id encomenda corrente **/
+            long id = statusBusiness.getIdEncomendaCorrente();
+
+            /** 2.1 - recupera objeto encomenda corrente **/
+            final Encomenda encomendaCorrente = encomendaBusiness.buscarEncomendaCorrente(id);
+
+            /** 3 - recupera localizacao atual **/
+            MyLocationTimerTask timerTaskLocation = new MyLocationTimerTask(mContext, TabItemMapaFragment.map);
+            timerTaskLocation.startTimer();
+
+            /** 3.1 - monta objeto latlng **/
+            LatLng latLng = timerTaskLocation.getMyLatLng();
+            timerTaskLocation.stoptimertask();
+
+            if(latLng != null){
+
+                encomendaCorrente.setLatitude(latLng.latitude);
+                encomendaCorrente.setLongitude(latLng.longitude);
+            }
+
+//        /** 4 - verifica se é um finalizar viagem forcado **/
+//        if(finalizarViagemOcorrencia.equalsIgnoreCase("1")){
+//
+//            sessionManager.setFinalizarViagemOcorrenciaForcado("");
+//
+//            /**
+//             * FORCAR FINALIZAR TODAS ENCOMENDAS PENDENTES, COMO OCORRENCIA
+//             */
+//            finalizarViagemOcorrenciaForcado(ocorrencia);
+//
+//        }else {
 
             /** 5 - data atual da baixa **/
             encomendaCorrente.setDataBaixa(DateUtil.getDataAtual());
