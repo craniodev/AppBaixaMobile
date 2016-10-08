@@ -131,11 +131,10 @@ public class MyLocationTimerTask {
 
             mylatLng = new LatLng(location.getLatitude(), location.getLongitude());
 
+        }else{
+
+            mylatLng = new LatLng(0, 0);
         }
-//        else{
-//
-//            mylatLng = new LatLng(0, 0);
-//        }
 
         return mylatLng;
     }

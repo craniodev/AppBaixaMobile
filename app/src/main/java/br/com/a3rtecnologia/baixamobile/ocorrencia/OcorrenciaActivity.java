@@ -430,11 +430,6 @@ public class OcorrenciaActivity extends AppCompatActivity {
             ocorrenciaBusiness.salvarOcorrencia(ocorrencia);
             encomendaCorrente.setOcorrencia(ocorrencia);
 
-
-//            /** MARCAR COMO PENDENTE DE SINCRONISMO **/
-//            encomendaCorrente.setIdStatus(EnumEncomendaStatus.PENDENTE_SINCRONIZAR.getKey());
-//            encomendaCorrente.setDescStatus(EnumEncomendaStatus.PENDENTE_SINCRONIZAR.getValue());
-
             /** 13 - atualiza encomenda - FINAL **/
             encomendaBusiness.update(encomendaCorrente);
 
@@ -457,7 +452,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
                 showProgress(false);
 
                 statusBusiness.stopJornadaTrabalho();
-//                PainelFragment.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
+
                 MenuDrawerActivity.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
 
                 if(AtualizaEncomendaPendenteTimerTask.timer != null){

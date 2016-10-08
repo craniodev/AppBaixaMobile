@@ -41,35 +41,37 @@ public class IniciarViagemVolley {
     private DelegateEncomendaAsyncResponse delegate;
     private RequestQueue queue;
 
-    private SessionManager sessionManager;
-    private StatusBusiness statusBusiness;
-    private LatLng latLng;
+//    private SessionManager sessionManager;
+//    private StatusBusiness statusBusiness;
+//    private LatLng latLng;
+    private IniciarViagem iniciarViagem;
+
+
 
 
     /**
-     * INICIAR VIAGEM,
-     *
-     * MANDAR DE TEMPO EM TEMPO LOCALIZACAO DA ENTREGA
+     * INICIAR VIAGEM
      *
      * @param mContext
-     * @param latLng
+     * @param iniciarViagem
      * @param delegate
      */
-    public IniciarViagemVolley(Context mContext, LatLng latLng, DelegateEncomendaAsyncResponse delegate) {
+//    public IniciarViagemVolley(Context mContext, LatLng latLng, DelegateEncomendaAsyncResponse delegate) {
+    public IniciarViagemVolley(Context mContext, IniciarViagem iniciarViagem, DelegateEncomendaAsyncResponse delegate) {
 
         this.mContext = mContext;
         this.delegate = delegate;
         this.queue = VolleySingleton.getInstance(this.mContext).getRequestQueue();
 
-        this.sessionManager = new SessionManager(mContext);
-        this.statusBusiness = new StatusBusiness(mContext);
+        this.iniciarViagem = iniciarViagem;
 
-        this.latLng = latLng;
-
+//        this.sessionManager = new SessionManager(mContext);
+//        this.statusBusiness = new StatusBusiness(mContext);
+//
+//        this.latLng = latLng;
 
         requestAPI();
     }
-
 
 
 
@@ -82,39 +84,26 @@ public class IniciarViagemVolley {
         return headers;
     }
 
+
+
     private Map<String, String> param(){
 
         Map<String, String> params = new HashMap();
 
-        String id = sessionManager.getValue("id");
+//        String id = sessionManager.getValue("id");
+//        String latitude = String.valueOf(latLng.latitude);
+//        String longitude = String.valueOf(latLng.longitude);
+//        String dataInicioViagem = statusBusiness.getDataInicioViagem();
 
-        String latitude = "";
-        String longitude = "";
+//        params.put("IdMotorista", id);
+//        params.put("Latitude", latitude);
+//        params.put("Longitude", longitude);
+//        params.put("DataIteracao", dataInicioViagem);
 
-        if(latLng != null){
-
-            latitude = String.valueOf(latLng.latitude);
-            longitude = String.valueOf(latLng.longitude);
-
-        }else{
-
-            latitude = "0";
-            longitude = "0";
-        }
-
-        params.put("IdMotorista", id);
-        params.put("Latitude", latitude);
-        params.put("Longitude", longitude);
-
-
-
-        /**
-         * SALVAR DATA INICIO
-         */
-        statusBusiness.startJornadaTrabalho();
-
-        String dataInicioViagem = statusBusiness.getDataInicioViagem();
-        params.put("DataIteracao", dataInicioViagem);
+        params.put("IdMotorista", iniciarViagem.getIdMotorista());
+        params.put("Latitude", iniciarViagem.getLatitude().toString());
+        params.put("Longitude", iniciarViagem.getLongitude().toString());
+        params.put("DataIteracao", iniciarViagem.getDataIteracao());
 
         return params;
     }

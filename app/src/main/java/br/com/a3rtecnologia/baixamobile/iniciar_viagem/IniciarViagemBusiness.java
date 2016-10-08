@@ -122,6 +122,24 @@ public class IniciarViagemBusiness {
 
 
 
+    /**
+     * DELETE ALL
+     *
+     */
+    public void delete(IniciarViagem iniciarViagem){
+
+        try {
+
+            iniciarViagemDao.delete(iniciarViagem);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
 
 
     /**

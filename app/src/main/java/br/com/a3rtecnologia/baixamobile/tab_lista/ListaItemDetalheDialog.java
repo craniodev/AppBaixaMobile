@@ -39,8 +39,6 @@ public class ListaItemDetalheDialog extends Activity{
     private EncomendaBusiness encomendaBusiness;
     private SessionManager sessionManager;
     private StatusBusiness statusBusiness;
-    private IniciarViagemBusiness iniciarViagemBusiness;
-    private IniciarViagem iniciarViagem;
 
 
 
@@ -50,9 +48,9 @@ public class ListaItemDetalheDialog extends Activity{
         this.encomendaBusiness = new EncomendaBusiness(mActivity);
         this.sessionManager = new SessionManager(mActivity);
         this.statusBusiness = new StatusBusiness(mActivity);
-        this.iniciarViagemBusiness = new IniciarViagemBusiness(mActivity);
 
-        iniciarViagem = new IniciarViagem();
+
+
 
         LayoutInflater li = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 

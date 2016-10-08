@@ -27,12 +27,13 @@ import android.widget.TextView;
 
 import br.com.a3rtecnologia.baixamobile.R;
 import br.com.a3rtecnologia.baixamobile.dialogs.EncerrarViagemDialog;
-import br.com.a3rtecnologia.baixamobile.dialogs.IniciarViagemDialog;
+import br.com.a3rtecnologia.baixamobile.iniciar_viagem.IniciarViagemDialog;
 import br.com.a3rtecnologia.baixamobile.encomenda.DelegateEncomendaAsyncResponse;
 import br.com.a3rtecnologia.baixamobile.encomenda.DelegateEncomendasAsyncResponse;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaVolley;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomendas;
+import br.com.a3rtecnologia.baixamobile.iniciar_viagem.SincronizaIniciarViagemTimerTask;
 import br.com.a3rtecnologia.baixamobile.ocorrencia.AtualizaEncomendaPendenteTimerTask;
 import br.com.a3rtecnologia.baixamobile.status.Status;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
@@ -237,7 +238,7 @@ public class MenuDrawerActivity extends AppCompatActivity implements NavigationV
 
                 } else if (viagemTextView.getText().toString().equalsIgnoreCase("INICIAR VIAGEM")) {
 
-                    IniciarViagemDialog dialog = new IniciarViagemDialog(mActivity, "Iniciar Viagem", "Deseja iniciar sua viagem?", null, null, false, viagemTextView);
+                    IniciarViagemDialog dialog = new IniciarViagemDialog(mActivity, viagemTextView);
                 }
             }
         });
@@ -252,13 +253,6 @@ public class MenuDrawerActivity extends AppCompatActivity implements NavigationV
 
         boolean viagemIniciada = statusBusiness.verificarViagemIniciada();
         Status status = statusBusiness.getStatus();
-
-
-
-//        if(encomendaTimerTask == null){
-//
-//            encomendaTimerTask = new EncomendaTimerTask(mContext);
-//        }
 
         /**
          * VIAGEM JA INICIADA
