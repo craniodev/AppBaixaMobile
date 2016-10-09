@@ -53,8 +53,6 @@ public class SincronizarIniciarViagem {
                         task.stoptimertask();
                         iniciarViagemBusiness.deleteAll();
                     }
-
-//                    iniciarViagemBusiness.delete(iniciarViagem);
                 }
 
                 @Override

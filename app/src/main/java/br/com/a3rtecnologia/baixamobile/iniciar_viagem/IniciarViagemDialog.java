@@ -87,40 +87,20 @@ public class IniciarViagemDialog {
 
                         iniciarViagemBusiness.salvar(iniciarViagem);
 
+
+
                         /**
-                         * MODO ONLINE
+                         * MODO ONLINE (SINCRONIZAR)
                          */
                         SincronizaIniciarViagemTimerTask task = new SincronizaIniciarViagemTimerTask(mActivity);
-//                        task.startTimer();
 
+
+
+                        /**
+                         * UPDATE BOTAO INICIAR VIAGEM
+                         */
                         PainelFragment.showProgress(false);
                         MenuDrawerActivity.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
-
-
-//                        /**
-//                         * MODO ONLINE
-//                         */
-//                        IniciarViagemVolley iniciarViagemVolley = new IniciarViagemVolley(mActivity, iniciarViagem, new DelegateEncomendaAsyncResponse() {
-//                            @Override
-//                            public void processFinish(boolean finish, String resposta) {
-//
-//                                System.out.println("Sucesso");
-//
-//                                viagemTextView.setText("Finalizar Viagem");
-//
-//                                PainelFragment.showProgress(false);
-//                            }
-//
-//                            @Override
-//                            public void processCanceled(boolean cancel) {
-//
-//                                System.out.println("Error");
-//                                PainelFragment.showProgress(false);
-//                            }
-//                        });
-
-
-
                     }
                 });
 

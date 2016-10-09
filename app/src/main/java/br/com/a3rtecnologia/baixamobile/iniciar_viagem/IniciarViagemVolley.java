@@ -41,9 +41,6 @@ public class IniciarViagemVolley {
     private DelegateEncomendaAsyncResponse delegate;
     private RequestQueue queue;
 
-//    private SessionManager sessionManager;
-//    private StatusBusiness statusBusiness;
-//    private LatLng latLng;
     private IniciarViagem iniciarViagem;
 
 
@@ -56,7 +53,6 @@ public class IniciarViagemVolley {
      * @param iniciarViagem
      * @param delegate
      */
-//    public IniciarViagemVolley(Context mContext, LatLng latLng, DelegateEncomendaAsyncResponse delegate) {
     public IniciarViagemVolley(Context mContext, IniciarViagem iniciarViagem, DelegateEncomendaAsyncResponse delegate) {
 
         this.mContext = mContext;
@@ -64,11 +60,6 @@ public class IniciarViagemVolley {
         this.queue = VolleySingleton.getInstance(this.mContext).getRequestQueue();
 
         this.iniciarViagem = iniciarViagem;
-
-//        this.sessionManager = new SessionManager(mContext);
-//        this.statusBusiness = new StatusBusiness(mContext);
-//
-//        this.latLng = latLng;
 
         requestAPI();
     }
@@ -89,16 +80,6 @@ public class IniciarViagemVolley {
     private Map<String, String> param(){
 
         Map<String, String> params = new HashMap();
-
-//        String id = sessionManager.getValue("id");
-//        String latitude = String.valueOf(latLng.latitude);
-//        String longitude = String.valueOf(latLng.longitude);
-//        String dataInicioViagem = statusBusiness.getDataInicioViagem();
-
-//        params.put("IdMotorista", id);
-//        params.put("Latitude", latitude);
-//        params.put("Longitude", longitude);
-//        params.put("DataIteracao", dataInicioViagem);
 
         params.put("IdMotorista", iniciarViagem.getIdMotorista());
         params.put("Latitude", iniciarViagem.getLatitude().toString());
@@ -162,27 +143,11 @@ public class IniciarViagemVolley {
 
                 if(InternetStatus.isNetworkAvailable(mContext)){
 
-//                    if (error.networkResponse.statusCode == EnumHttpError.ERROR_401.getErrorInt()) {
-//
-//                        Toast.makeText(mContext, R.string.error_invalid_email_or_password, Toast.LENGTH_LONG).show();
-//
-//                        delegate.processCanceled(false);
-////                        StatusDialog dialog = new StatusDialog((Activity)mContext, false, error.networkResponse.statusCode);
-//
-//                    }else if (error.networkResponse.statusCode == EnumHttpError.ERROR_400.getErrorInt()) {
-//
-//                        delegate.processCanceled(false);
-////                        StatusDialog dialog = new StatusDialog((Activity)mContext, false, error.networkResponse.statusCode);
-//                    }else if(error.networkResponse.statusCode == 404){
-//
-//                        delegate.processCanceled(false);
-//                    }
                     delegate.processCanceled(false);
 
                 }else{
 
                     delegate.processCanceled(false);
-//                    StatusDialog dialog = new StatusDialog((Activity)mContext, false, error.networkResponse.statusCode);
                 }
             }
         };
