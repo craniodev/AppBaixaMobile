@@ -209,7 +209,7 @@ public class TipoDocumentoBusiness {
 
             tipoDocumentoList = tipoDocumentoDao.queryBuilder()
                     .where()
-                    .eq("Id", id)
+                    .eq("idTipoDocumento", id)
                     .query();
 
         } catch (SQLException e) {

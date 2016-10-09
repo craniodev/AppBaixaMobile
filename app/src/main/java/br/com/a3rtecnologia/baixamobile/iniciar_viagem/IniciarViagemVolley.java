@@ -162,21 +162,22 @@ public class IniciarViagemVolley {
 
                 if(InternetStatus.isNetworkAvailable(mContext)){
 
-                    if (error.networkResponse.statusCode == EnumHttpError.ERROR_401.getErrorInt()) {
-
-                        Toast.makeText(mContext, R.string.error_invalid_email_or_password, Toast.LENGTH_LONG).show();
-
-                        delegate.processCanceled(false);
-//                        StatusDialog dialog = new StatusDialog((Activity)mContext, false, error.networkResponse.statusCode);
-
-                    }else if (error.networkResponse.statusCode == EnumHttpError.ERROR_400.getErrorInt()) {
-
-                        delegate.processCanceled(false);
-//                        StatusDialog dialog = new StatusDialog((Activity)mContext, false, error.networkResponse.statusCode);
-                    }else if(error.networkResponse.statusCode == 404){
-
-                        delegate.processCanceled(false);
-                    }
+//                    if (error.networkResponse.statusCode == EnumHttpError.ERROR_401.getErrorInt()) {
+//
+//                        Toast.makeText(mContext, R.string.error_invalid_email_or_password, Toast.LENGTH_LONG).show();
+//
+//                        delegate.processCanceled(false);
+////                        StatusDialog dialog = new StatusDialog((Activity)mContext, false, error.networkResponse.statusCode);
+//
+//                    }else if (error.networkResponse.statusCode == EnumHttpError.ERROR_400.getErrorInt()) {
+//
+//                        delegate.processCanceled(false);
+////                        StatusDialog dialog = new StatusDialog((Activity)mContext, false, error.networkResponse.statusCode);
+//                    }else if(error.networkResponse.statusCode == 404){
+//
+//                        delegate.processCanceled(false);
+//                    }
+                    delegate.processCanceled(false);
 
                 }else{
 

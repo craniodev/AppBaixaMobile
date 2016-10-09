@@ -40,7 +40,7 @@ public class SincronizaIniciarViagemTimerTask {
         this.mContext = mContext;
         this.iniciarViagemBusiness = new IniciarViagemBusiness(mContext);
 
-        iniciarViagemList = iniciarViagemBusiness.buscarTodos();
+        iniciarViagemList = iniciarViagemBusiness.buscarTodosNaoSincronizados();
 
         task = this;
 
@@ -69,7 +69,7 @@ public class SincronizaIniciarViagemTimerTask {
             initializeTimerTask();
 
             //schedule the timer, after the first 5000ms the TimerTask will run every 10000ms
-            timer.schedule(timerTask, 5000, 5000); //
+            timer.schedule(timerTask, 20000, 20000); //
         }
     }
 

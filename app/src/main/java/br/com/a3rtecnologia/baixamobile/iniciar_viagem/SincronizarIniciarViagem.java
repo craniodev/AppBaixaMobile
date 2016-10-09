@@ -4,6 +4,7 @@ import android.content.Context;
 
 import java.util.List;
 
+import br.com.a3rtecnologia.baixamobile.EnumStatusEnvio;
 import br.com.a3rtecnologia.baixamobile.encomenda.DelegateEncomendaAsyncResponse;
 
 /**
@@ -43,13 +44,17 @@ public class SincronizarIniciarViagem {
                 @Override
                 public void processFinish(boolean finish, String resposta) {
 
+                    iniciarViagem.setFgSincronizado(EnumStatusEnvio.SINCRONIZADO.getKey());
+                    iniciarViagemBusiness.update(iniciarViagem);
+
                     int pendentesSincronizar = iniciarViagemBusiness.count();
                     if (pendentesSincronizar == 0) {
 
                         task.stoptimertask();
+                        iniciarViagemBusiness.deleteAll();
                     }
 
-                    iniciarViagemBusiness.delete(iniciarViagem);
+//                    iniciarViagemBusiness.delete(iniciarViagem);
                 }
 
                 @Override

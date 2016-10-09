@@ -212,7 +212,7 @@ public class TipoRecebedorBusiness {
 
             tipoRecebedorList = tipoRecebedorDao.queryBuilder()
                     .where()
-                    .eq("Id", id)
+                    .eq("IdTipoRecebedor", id)
                     .query();
 
         } catch (SQLException e) {

@@ -27,6 +27,9 @@ public class IniciarViagem {
     @DatabaseField
     private String DataIteracao;
 
+    @DatabaseField
+    private int fgSincronizado;
+
 
 
     public int getId() {
@@ -67,5 +70,13 @@ public class IniciarViagem {
 
     public void setDataIteracao(String dataIteracao) {
         DataIteracao = dataIteracao;
+    }
+
+    public int getFgSincronizado() {
+        return fgSincronizado;
+    }
+
+    public void setFgSincronizado(int fgSincronizado) {
+        this.fgSincronizado = fgSincronizado;
     }
 }

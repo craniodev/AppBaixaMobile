@@ -8,6 +8,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import java.sql.SQLException;
 import java.util.List;
 
+import br.com.a3rtecnologia.baixamobile.EnumStatusEnvio;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EnumEncomendaStatus;
 import br.com.a3rtecnologia.baixamobile.orm.CustomDao;
@@ -161,7 +162,7 @@ public class IniciarViagemBusiness {
 //            e.printStackTrace();
 //        }
 
-        List<IniciarViagem> lista = buscarTodos();
+        List<IniciarViagem> lista = buscarTodosNaoSincronizados();
 
         if(lista != null){
 
@@ -190,6 +191,32 @@ public class IniciarViagemBusiness {
 
         try {
             iniciarViagemList = iniciarViagemDao.queryForAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return iniciarViagemList;
+    }
+
+
+
+
+
+
+    /**
+     * BUSCAR TODOS
+     *
+     * @return
+     */
+    public List<IniciarViagem> buscarTodosNaoSincronizados(){
+
+        List<IniciarViagem> iniciarViagemList = null;
+
+        try {
+            iniciarViagemList = iniciarViagemDao.queryBuilder()
+                                                    .where()
+                                                    .eq("fgSincronizado", EnumStatusEnvio.NAO_SINCRONIZADO.getKey())
+                                                    .query();
         } catch (SQLException e) {
             e.printStackTrace();
         }

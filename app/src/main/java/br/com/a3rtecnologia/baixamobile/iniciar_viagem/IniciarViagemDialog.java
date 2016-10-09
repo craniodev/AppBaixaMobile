@@ -9,7 +9,10 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import br.com.a3rtecnologia.baixamobile.EnumStatusEnvio;
 import br.com.a3rtecnologia.baixamobile.encomenda.DelegateEncomendaAsyncResponse;
+import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
+import br.com.a3rtecnologia.baixamobile.menu.MenuDrawerActivity;
 import br.com.a3rtecnologia.baixamobile.menu.PainelFragment;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
 import br.com.a3rtecnologia.baixamobile.iniciar_viagem.IniciarViagemVolley;
@@ -26,6 +29,7 @@ public class IniciarViagemDialog {
     private SessionManager sessionManager;
     private StatusBusiness statusBusiness;
     private IniciarViagemBusiness iniciarViagemBusiness;
+    private EncomendaBusiness encomendaBusiness;
 
     private IniciarViagem iniciarViagem;
 
@@ -37,6 +41,7 @@ public class IniciarViagemDialog {
         this.sessionManager = new SessionManager(mActivity);
         this.statusBusiness = new StatusBusiness(mActivity);
         this.iniciarViagemBusiness = new IniciarViagemBusiness(mActivity);
+        this.encomendaBusiness = new EncomendaBusiness(mActivity);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         builder.setTitle("Iniciar Viagem");
@@ -78,6 +83,7 @@ public class IniciarViagemDialog {
                         iniciarViagem.setLatitude(latLng.latitude);
                         iniciarViagem.setLongitude(latLng.longitude);
                         iniciarViagem.setIdMotorista(idStr);
+                        iniciarViagem.setFgSincronizado(EnumStatusEnvio.NAO_SINCRONIZADO.getKey());
 
                         iniciarViagemBusiness.salvar(iniciarViagem);
 
@@ -85,7 +91,10 @@ public class IniciarViagemDialog {
                          * MODO ONLINE
                          */
                         SincronizaIniciarViagemTimerTask task = new SincronizaIniciarViagemTimerTask(mActivity);
-                        task.startTimer();
+//                        task.startTimer();
+
+                        PainelFragment.showProgress(false);
+                        MenuDrawerActivity.exibirBotaoIniciarFinalizarViagem(statusBusiness, encomendaBusiness);
 
 
 //                        /**

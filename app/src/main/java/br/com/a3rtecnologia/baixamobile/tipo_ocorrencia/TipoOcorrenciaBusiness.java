@@ -224,7 +224,7 @@ public class TipoOcorrenciaBusiness {
 
             tipoOcorrenciaList = tipoOcorrenciaDao.queryBuilder()
                     .where()
-                    .eq("Id", id)
+                    .eq("idTipoOcorrencia", id)
                     .query();
 
         } catch (SQLException e) {
