@@ -52,10 +52,8 @@ public class EntregaPendenteFragment extends Fragment {
          */
         View fragment_pending = inflater.inflate(R.layout.fragment_pending, null);
 
-
         mContext = getContext();
         encomendaBusiness = new EncomendaBusiness(mContext);
-//        getDao();
 
         createLoading(mContext);
 
@@ -68,13 +66,8 @@ public class EntregaPendenteFragment extends Fragment {
         mSwipyRefreshLayout = (SwipyRefreshLayout) fragment_pending.findViewById(R.id.swipeRefreshLayout);
         swipyRefresh();
 
-        SincronizaEncomendaPendenteTimerTask sincronizaEncomendaPendenteTimerTask = new SincronizaEncomendaPendenteTimerTask(mContext);
-//        sincronizaEncomendaPendenteTimerTask.startTimer();
-
         return fragment_pending;
     }
-
-
 
 
 
@@ -116,10 +109,6 @@ public class EntregaPendenteFragment extends Fragment {
 
 
 
-
-
-
-
     private void swipyRefresh(){
 
         mSwipyRefreshLayout.setOnRefreshListener(new SwipyRefreshLayout.OnRefreshListener() {
@@ -141,55 +130,21 @@ public class EntregaPendenteFragment extends Fragment {
 
 
 
-
     private void connectionServer(){
 
         showProgress(true);
 
+        List<Encomenda> encomendas = null;
 
-//        if(InternetStatus.isNetworkAvailable(mContext)) {
-//
-//            new EncomendaVolley(getContext(), new Usuario(), new DelegateEncomendasAsyncResponse() {
-//
-//                @Override
-//                public void processFinish(boolean finish, Encomendas encomendas) {
-//
-//                    System.out.println(finish);
-//                    updateAdapter(encomendas.getEncomendas());
-//
-//                    showProgress(false);
-//                }
-//
-//                @Override
-//                public void processCanceled(boolean cancel) {
-//
-//                    System.out.println(cancel);
-//                    showProgress(false);
-//                }
-//
-//            });
-//
-//
-//        }else{
+        encomendas = encomendaBusiness.buscarEntregasOcorrencia();
 
-            List<Encomenda> encomendas = null;
+        if(encomendas != null){
 
-//                encomendas = encomendaDao.queryForAll();
-                encomendas = encomendaBusiness.buscarEntregasOcorrencia();
-//        encomendas = encomendaBusiness.buscarEntregasFinalizadas();
+            updateAdapter(encomendas);
 
-
-
-            if(encomendas != null){
-
-                updateAdapter(encomendas);
-
-                showProgress(false);
-            }
-
-//        }
+            showProgress(false);
+        }
     }
-
 
 
 
@@ -202,12 +157,10 @@ public class EntregaPendenteFragment extends Fragment {
 
 
 
-
     private void refreshComplete() {
 
         mSwipyRefreshLayout.setRefreshing(false);
     }
-
 
 
 

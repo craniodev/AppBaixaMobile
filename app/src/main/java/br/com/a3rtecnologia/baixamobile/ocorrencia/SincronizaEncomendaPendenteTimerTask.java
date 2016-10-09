@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -108,12 +109,14 @@ public class SincronizaEncomendaPendenteTimerTask {
 
                         if(InternetStatus.isNetworkAvailable(mContext)){
 
-                            Toast.makeText(mContext, "COM INTERNET", Toast.LENGTH_LONG).show();
+
+
+                            Toast.makeText(mContext, "COM INTERNET - Tempo - " + Calendar.getInstance().getTime().getSeconds(), Toast.LENGTH_LONG).show();
                             SincronizarOcorrencia sincronizarOcorrencia = new SincronizarOcorrencia(mContext, encomendasSincronizar, task);
 
                         }else{
 
-                            Toast.makeText(mContext, "SEM INTERNET", Toast.LENGTH_LONG).show();
+                            Toast.makeText(mContext, "SEM INTERNET - Tempo - " + Calendar.getInstance().getTime().getSeconds(), Toast.LENGTH_LONG).show();
                         }
 
                     }

@@ -770,12 +770,13 @@ public class EntregaAcitivty extends AppCompatActivity {
         /** 12 - marca como NAO SINCRONIZADO **/
         encomendaCorrente.setFlagEnviado(EnumStatusEnvio.NAO_SINCRONIZADO.getKey());
 
-//        /** MARCAR COMO PENDENTE DE SINCRONISMO **/
-//        encomendaCorrente.setDescStatus(EnumEncomendaStatus.PENDENTE_SINCRONIZAR.getValue());
-//        encomendaCorrente.setIdStatus(EnumEncomendaStatus.PENDENTE_SINCRONIZAR.getKey());
-
         /** 13 - atualiza encomenda - FINAL **/
         encomendaBusiness.update(encomendaCorrente);
+
+        /**
+         * ATIVAR SINCRONISMO
+         */
+        SincronizaEncomendaEntregueTimerTask sincronizaEncomendaEntregueTimerTask = new SincronizaEncomendaEntregueTimerTask(mContext);
 
         finish();
     }

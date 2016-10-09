@@ -72,6 +72,7 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -193,8 +194,6 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
 
 
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -212,7 +211,6 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
 
 
-
     private Bitmap getBitmap(Uri uri){
 
         String name = uri.getPath().replace("/my_images/", "");
@@ -221,7 +219,6 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
         return bm;
     }
-
 
 
 
@@ -243,7 +240,6 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
 
 
-
     private void botaoFlutuante(){
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -260,7 +256,6 @@ public class OcorrenciaActivity extends AppCompatActivity {
             }
         });
     }
-
 
 
 
@@ -352,7 +347,6 @@ public class OcorrenciaActivity extends AppCompatActivity {
         /** 1 - progress **/
         showProgress(true);
 
-
         /** 4 - verifica se é um finalizar viagem forcado **/
         if(finalizarViagemOcorrencia.equalsIgnoreCase("1")){
 
@@ -384,18 +378,6 @@ public class OcorrenciaActivity extends AppCompatActivity {
                 encomendaCorrente.setLatitude(latLng.latitude);
                 encomendaCorrente.setLongitude(latLng.longitude);
             }
-
-//        /** 4 - verifica se é um finalizar viagem forcado **/
-//        if(finalizarViagemOcorrencia.equalsIgnoreCase("1")){
-//
-//            sessionManager.setFinalizarViagemOcorrenciaForcado("");
-//
-//            /**
-//             * FORCAR FINALIZAR TODAS ENCOMENDAS PENDENTES, COMO OCORRENCIA
-//             */
-//            finalizarViagemOcorrenciaForcado(ocorrencia);
-//
-//        }else {
 
             /** 5 - data atual da baixa **/
             encomendaCorrente.setDataBaixa(DateUtil.getDataAtual());
@@ -432,6 +414,11 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
             /** 13 - atualiza encomenda - FINAL **/
             encomendaBusiness.update(encomendaCorrente);
+
+            /**
+             * ATIVAR SINCRONISMO
+             */
+            SincronizaEncomendaPendenteTimerTask sincronizaEncomendaPendenteTimerTask = new SincronizaEncomendaPendenteTimerTask(mContext);
 
             finish();
         }
@@ -477,8 +464,6 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
 
 
-
-
     private void fotoOcorrencia(){
 
         ImageView ocorrencia_foto_icon = (ImageView) findViewById(R.id.ocorrencia_foto_icon);
@@ -496,6 +481,8 @@ public class OcorrenciaActivity extends AppCompatActivity {
         });
     }
 
+
+
     private void visualizarFotoOcorrencia(){
 
         ocorrencia_foto.setOnClickListener(new View.OnClickListener() {
@@ -506,14 +493,6 @@ public class OcorrenciaActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
-
-
-
-
-
 
 
 

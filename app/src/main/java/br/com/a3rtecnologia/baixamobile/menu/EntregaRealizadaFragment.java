@@ -33,15 +33,14 @@ public class EntregaRealizadaFragment extends Fragment {
 
     //LISTA COMPARTILHADA COM MAPA
     public static List<Encomenda> encomendaList;
-//    private List<Encomenda> encomendaList;
 
     private Context mContext;
     private ProgressDialog progress;
 
-    //    private Dao<Encomenda, Integer> encomendaDao;
     private EncomendaBusiness encomendaBusiness;
 
 
+    
 
     @Nullable
     @Override
@@ -66,10 +65,6 @@ public class EntregaRealizadaFragment extends Fragment {
         mSwipyRefreshLayout = (SwipyRefreshLayout) fragment_finished.findViewById(R.id.swipeRefreshLayout);
         swipyRefresh();
 
-
-        SincronizaEncomendaEntregueTimerTask sincronizaEncomendaEntregueTimerTask = new SincronizaEncomendaEntregueTimerTask(mContext);
-//        sincronizaEncomendaEntregueTimerTask.startTimer();
-
         return fragment_finished;
     }
 
@@ -92,7 +87,6 @@ public class EntregaRealizadaFragment extends Fragment {
 
 
 
-
     private void updateAdapter(){
 
         EncomendaAdapter produtoAdapter = new EncomendaAdapter(encomendaList, getActivity(), null, EnumEncomendaStatus.ENTREGUE.getKey());
@@ -100,6 +94,8 @@ public class EntregaRealizadaFragment extends Fragment {
 
         recyclerView.setAdapter(produtoAdapter);
     }
+
+
 
     private void updateAdapter(List<Encomenda> encomendaList){
 
@@ -110,10 +106,6 @@ public class EntregaRealizadaFragment extends Fragment {
 
         recyclerView.setAdapter(produtoAdapter);
     }
-
-
-
-
 
 
 
@@ -143,39 +135,9 @@ public class EntregaRealizadaFragment extends Fragment {
 
         showProgress(true);
 
-
-//        if(InternetStatus.isNetworkAvailable(mContext)) {
-//
-//            new EncomendaVolley(getContext(), new Usuario(), new DelegateEncomendasAsyncResponse() {
-//
-//                @Override
-//                public void processFinish(boolean finish, Encomendas encomendas) {
-//
-//                    System.out.println(finish);
-//                    updateAdapter(encomendas.getEncomendas());
-//
-//                    showProgress(false);
-//                }
-//
-//                @Override
-//                public void processCanceled(boolean cancel) {
-//
-//                    System.out.println(cancel);
-//                    showProgress(false);
-//                }
-//
-//            });
-//
-//
-//        }else{
-
         List<Encomenda> encomendas = null;
 
-//                encomendas = encomendaDao.queryForAll();
-//        encomendas = encomendaBusiness.buscarEntregasOcorrencia();
         encomendas = encomendaBusiness.buscarEntregasFinalizadas();
-
-
 
         if(encomendas != null){
 
@@ -183,10 +145,7 @@ public class EntregaRealizadaFragment extends Fragment {
 
             showProgress(false);
         }
-
-//        }
     }
-
 
 
 
@@ -199,12 +158,10 @@ public class EntregaRealizadaFragment extends Fragment {
 
 
 
-
     private void refreshComplete() {
 
         mSwipyRefreshLayout.setRefreshing(false);
     }
-
 
 
 
