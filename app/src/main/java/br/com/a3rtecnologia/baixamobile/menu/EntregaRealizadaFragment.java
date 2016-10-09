@@ -40,7 +40,7 @@ public class EntregaRealizadaFragment extends Fragment {
     private EncomendaBusiness encomendaBusiness;
 
 
-    
+
 
     @Nullable
     @Override

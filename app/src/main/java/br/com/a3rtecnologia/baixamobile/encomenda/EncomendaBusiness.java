@@ -28,6 +28,7 @@ public class EncomendaBusiness {
     }
 
 
+
     private void getDao(){
 
         DatabaseHelper helper  = new DatabaseHelper(mContext);
@@ -42,6 +43,8 @@ public class EncomendaBusiness {
 
         System.out.print("");
     }
+
+
 
 
 
@@ -124,25 +127,12 @@ public class EncomendaBusiness {
 
 
     /**
-     * COUNT - TODOS MENOS NAO SINCRONIZADOS
+     * COUNT - TODOS DIFERENTE DE NAO_SINCRONIZADO
      *
      * @return
      */
     public int count(){
 
-//        Long count = null;
-//        try {
-//
-//            count = usuarioDao.queryBuilder()
-//                    .where()
-//                    .eq(Usuario.FIELD_NAME_NAME, "Fernando")
-//                    .countOf();
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-
-//        List<Encomenda> lista = buscarTodos();
         List<Encomenda> lista = buscarTodosNaoPendentesSincronismo();
 
 
@@ -160,23 +150,14 @@ public class EncomendaBusiness {
 
 
     /**
+     * OCORRENCIA
+     *
+     *
      * COUNT - OCORRENCIAS NAO SINCRONIZADAS
      *
      * @return
      */
     public int countOcorrenciasNaoSincronizadas(){
-
-//        Long count = null;
-//        try {
-//
-//            count = usuarioDao.queryBuilder()
-//                    .where()
-//                    .eq(Usuario.FIELD_NAME_NAME, "Fernando")
-//                    .countOf();
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
 
         List<Encomenda> lista = buscarOcorrenciasNaoSincronizadas();
 
@@ -201,23 +182,14 @@ public class EncomendaBusiness {
 
 
     /**
+     * ENTREGUE
+     *
+     *
      * COUNT - ENTREGUE NAO SINCRONIZADAS
      *
      * @return
      */
     public int countEntregueNaoSincronizadas(){
-
-//        Long count = null;
-//        try {
-//
-//            count = usuarioDao.queryBuilder()
-//                    .where()
-//                    .eq(Usuario.FIELD_NAME_NAME, "Fernando")
-//                    .countOf();
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
 
         List<Encomenda> lista = buscarEntregueNaoSincronizadas();
 
@@ -238,23 +210,14 @@ public class EncomendaBusiness {
 
 
     /**
+     * OCORRENCIA E ENTREGUE
+     *
+     *
      * COUNT - NAO SINCRONIZADAS - ENTREGUE E OCORRENCIAS
      *
      * @return
      */
     public int countNaoSincronizadas(){
-
-//        Long count = null;
-//        try {
-//
-//            count = usuarioDao.queryBuilder()
-//                    .where()
-//                    .eq(Usuario.FIELD_NAME_NAME, "Fernando")
-//                    .countOf();
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
 
         List<Encomenda> lista = naoSincronizados();
 
@@ -277,6 +240,9 @@ public class EncomendaBusiness {
 
 
     /**
+     * TUDO
+     *
+     *
      * BUSCAR TODOS - INDEPENDENTE DE STATUS
      *
      * @return
@@ -300,6 +266,9 @@ public class EncomendaBusiness {
 
 
     /**
+     * TODOS COM STATUS DA API
+     *
+     *
      * BUSCAR TODOS COM STATUS DIFERENTE DE NAO SINCRONIZADOS
      *
      * @return
@@ -313,9 +282,6 @@ public class EncomendaBusiness {
             result = encomendaDao.queryBuilder()
                     .where()
                     .in("IdStatus", EnumEncomendaStatus.EM_ROTA.getKey(), EnumEncomendaStatus.LIBERADO.getKey())
-//                    .eq("IdStatus", EnumEncomendaStatus.LIBERADO.getKey())
-//                    .or()
-//                    .eq("IdStatus", EnumEncomendaStatus.EM_ROTA.getKey())
                     .query();
 
         } catch (SQLException e) {
@@ -332,6 +298,9 @@ public class EncomendaBusiness {
 
 
     /**
+     * EM ROTA
+     *
+     *
      * BUSCAR EM ROTA
      *
      * @return
@@ -388,6 +357,9 @@ public class EncomendaBusiness {
 
 
     /**
+     * ENTREGA JA SINCRONIZADA
+     *
+     *
      * BUSCAR ENTREGUE
      *
      * @return
@@ -415,6 +387,9 @@ public class EncomendaBusiness {
 
 
     /**
+     * ENTREGA NAO SINCRONIZADA
+     *
+     *
      * BUSCAR ENTREGUE NAO SINCRONIZADAS
      *
      * @return
@@ -443,6 +418,9 @@ public class EncomendaBusiness {
 
 
     /**
+     * ENTREGA NAO SINCRONIZADA
+     *
+     *
      * BUSCAR ENTREGUE NAO SINCRONIZADAS
      *
      * @return
@@ -469,6 +447,9 @@ public class EncomendaBusiness {
 
 
     /**
+     * ENTREGA - NAO SINCRONIZADA
+     *
+     *
      * BUSCAR ENTREGUE NAO SINCRONIZADAS
      *
      * @return
@@ -499,6 +480,9 @@ public class EncomendaBusiness {
 
 
     /**
+     * OCORRENCIA
+     *
+     *
      * BUSCAR PENDENTES
      *
      * @return
@@ -525,6 +509,9 @@ public class EncomendaBusiness {
 
 
     /**
+     * OCORRENCIA - NAO SINCRONIZADO
+     *
+     *
      * BUSCAR PENDENTES NAO SINCRONIZADAS
      *
      * @return
@@ -553,7 +540,11 @@ public class EncomendaBusiness {
 
 
 
+
     /**
+     * ENTREGUE - NAO SINCRONIZADO
+     *
+     *
      * BUSCAR PENDENTES NAO SINCRONIZADAS
      *
      * @return
@@ -583,6 +574,9 @@ public class EncomendaBusiness {
 
 
     /**
+     * ENCOMENDA - STATUS DA API
+     *
+     *
      * BUSCAR EM ROTA
      *
      * @return
@@ -595,10 +589,7 @@ public class EncomendaBusiness {
 
             result = encomendaDao.queryBuilder()
                     .where()
-//                    .eq("IdStatus", EnumEncomendaStatus.EM_ROTA.getKey())
                     .in("IdStatus", EnumEncomendaStatus.EM_ROTA.getKey(), EnumEncomendaStatus.LIBERADO.getKey())
-//                    .and()
-//                    .eq("IdStatus", EnumEncomendaStatus.LIBERADO.getKey())
                     .query();
 
         } catch (SQLException e) {
@@ -613,6 +604,10 @@ public class EncomendaBusiness {
 
 
     /**
+     * ENCOMENDA - STATUS DA API
+     *
+     *
+     *
      * COUNT EM ROTA
      *
      * @return
@@ -626,9 +621,6 @@ public class EncomendaBusiness {
             result = encomendaDao.queryBuilder()
                     .where()
                     .in("IdStatus", EnumEncomendaStatus.EM_ROTA.getKey(), EnumEncomendaStatus.LIBERADO.getKey())
-//                    .eq("IdStatus", EnumEncomendaStatus.LIBERADO.getKey())
-//                    .or()
-//                    .eq("IdStatus", EnumEncomendaStatus.EM_ROTA.getKey())
                     .query();
 
         } catch (SQLException e) {
@@ -643,6 +635,9 @@ public class EncomendaBusiness {
 
 
     /**
+     * MAPA - STATUS DA API
+     *
+     *
      * BUSCAR EM ROTA
      *
      * @return
@@ -662,7 +657,6 @@ public class EncomendaBusiness {
         }
 
         builder.limit(10);
-//        builder.orderBy("columnName", true);  // true for ascending, false for descending
 
         try {
 
@@ -706,6 +700,9 @@ public class EncomendaBusiness {
 
 
     /**
+     * MAPA - ENCOMENDA POR NOME
+     *
+     *
      * BUSCAR POR NOME
      *
      * @return
@@ -739,40 +736,13 @@ public class EncomendaBusiness {
 
 
 
-//    /**
-//     * BUSCAR ULTIMA ENTREGUE
-//     *
-//     * @return
-//     */
-//    public Encomenda buscarEncomendaCorrente(){
-//
-//        List<Encomenda> result = null;
-//
-//        try {
-//
-//            result = encomendaDao.queryBuilder()
-//                    .where()
-//                    .eq("flagEncomendaCorrente", 1)
-//                    .query();
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//
-//        Encomenda encomenda = null;
-//        if(result != null && result.size() > 0){
-//
-//            encomenda = result.get(result.size() - 1);
-//        }
-//
-//        return encomenda;
-//    }
-
-
 
 
 
     /**
+     * ENCOMENDA - EM ANDAMENTO
+     *
+     *
      * BUSCAR ULTIMA ENTREGUE
      *
      * @return
@@ -806,24 +776,9 @@ public class EncomendaBusiness {
 
 
     /**
-     * ENCOMENDA CORRENTE
+     * ENCOMENDA - ATUALIZAR STATUS - EM ROTA
      *
-     * @return
-     */
-//    public Encomenda atualizarEncomendaCorrente(Encomenda encomenda){
-//
-//        encomenda.setFlagEncomendaCorrente(1);
-//
-//        atualizarEncomenda(encomenda);
-//
-//        return encomenda;
-//    }
-
-
-
-
-
-    /**
+     *
      * EM ROTA
      *
      * @return
@@ -842,6 +797,9 @@ public class EncomendaBusiness {
 
 
     /**
+     * ENCOMENDA - ATUALIZAR STATUS - OCORRENCIA
+     *
+     *
      * EM ROTA
      *
      * @return
@@ -861,17 +819,17 @@ public class EncomendaBusiness {
 
 
     /**
+     * ENCOMENDA - ATUALIZAR STATUS - ENTREGUE
+     *
+     *
      * ENTREGUE
      *
      * @return
      */
     public Encomenda encomendaEntregue(Encomenda encomenda){
 
-//        Encomenda encomenda = buscarEncomendaCorrente();
-
         encomenda.setIdStatus(EnumEncomendaStatus.ENTREGUE.getKey());
         encomenda.setDescStatus(EnumEncomendaStatus.ENTREGUE.getValue());
-//        encomenda.setFlagEncomendaCorrente(0);
 
         atualizarEncomenda(encomenda);
 

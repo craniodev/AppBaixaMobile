@@ -42,15 +42,13 @@ public class ListaItemDetalheDialog extends Activity{
 
 
 
+
     public ListaItemDetalheDialog(final Activity mActivity, final Encomenda encomenda){
 
         this.mActivity = mActivity;
         this.encomendaBusiness = new EncomendaBusiness(mActivity);
         this.sessionManager = new SessionManager(mActivity);
         this.statusBusiness = new StatusBusiness(mActivity);
-
-
-
 
         LayoutInflater li = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -110,6 +108,7 @@ public class ListaItemDetalheDialog extends Activity{
 
         setarValoresCampos(view, encomenda);
     }
+
 
 
     /**
