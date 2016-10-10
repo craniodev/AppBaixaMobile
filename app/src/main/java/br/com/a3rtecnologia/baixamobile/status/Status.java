@@ -28,6 +28,9 @@ public class Status {
     @DatabaseField
     private String dataFimViagem;
 
+//    @DatabaseField(defaultValue = "0")
+//    private Integer flagEnviado;
+
 
 
     public int getId() {
@@ -69,4 +72,12 @@ public class Status {
     public void setDataFimViagem(String dataFimViagem) {
         this.dataFimViagem = dataFimViagem;
     }
+
+//    public Integer getFlagEnviado() {
+//        return flagEnviado;
+//    }
+//
+//    public void setFlagEnviado(Integer flagEnviado) {
+//        this.flagEnviado = flagEnviado;
+//    }
 }

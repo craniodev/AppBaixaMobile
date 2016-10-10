@@ -75,6 +75,7 @@ public class StatusBusiness {
 //        }
     }
 
+
     /**
      * DELETE ALL
      *
@@ -85,6 +86,18 @@ public class StatusBusiness {
 
             List<Status> statusList = statusDao.queryForAll();
             statusDao.delete(statusList);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void update(Status status){
+
+        try {
+
+            statusDao.update(status);
 
         } catch (SQLException e) {
             e.printStackTrace();

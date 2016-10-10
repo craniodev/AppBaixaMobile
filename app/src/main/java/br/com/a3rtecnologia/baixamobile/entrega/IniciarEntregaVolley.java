@@ -16,12 +16,14 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.HashMap;
 import java.util.Map;
 
+import br.com.a3rtecnologia.baixamobile.EnumStatusEnvio;
 import br.com.a3rtecnologia.baixamobile.R;
 import br.com.a3rtecnologia.baixamobile.api.EnumAPI;
 import br.com.a3rtecnologia.baixamobile.encomenda.DelegateEncomendaAsyncResponse;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomendas;
+import br.com.a3rtecnologia.baixamobile.status.Status;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
 import br.com.a3rtecnologia.baixamobile.tab_mapa.MyLocationTimerTask;
 import br.com.a3rtecnologia.baixamobile.tab_mapa.TabItemMapaFragment;
@@ -46,6 +48,7 @@ public class IniciarEntregaVolley {
     private Encomenda encomenda;
     private EncomendaBusiness encomendaBusiness;
     private StatusBusiness statusBusiness;
+
 
 
 
@@ -74,7 +77,6 @@ public class IniciarEntregaVolley {
 
 
 
-
     private Map<String, String> header(){
 
         Map<String, String> headers = new HashMap();
@@ -83,6 +85,8 @@ public class IniciarEntregaVolley {
 
         return headers;
     }
+
+
 
     private Map<String, String> param(){
 
@@ -98,22 +102,13 @@ public class IniciarEntregaVolley {
         LatLng latLng = timerTaskLocation.getMyLatLng();
         timerTaskLocation.stoptimertask();
 
-        if(latLng != null){
+        String latitude = String.valueOf(latLng.latitude);
+        String longitude = String.valueOf(latLng.longitude);
 
-            String latitude = String.valueOf(latLng.latitude);
-            String longitude = String.valueOf(latLng.longitude);
-            params.put("Latitude", latitude);
-            params.put("Longitude", longitude);
-
-        }else{
-
-            params.put("Latitude", "0");
-            params.put("Longitude", "0");
-        }
-
+        params.put("Latitude", latitude);
+        params.put("Longitude", longitude);
         params.put("IdMotorista", id);
         params.put("IdEncomenda", idEncomendaStr);
-
         params.put("DataIteracao", encomenda.getDataInicioEntrega());
 
         return params;
@@ -151,6 +146,11 @@ public class IniciarEntregaVolley {
 
                     Toast.makeText(mContext, "API - INICIAR ENTREGA - SUCESSO", Toast.LENGTH_LONG).show();
 
+
+                    Status status = statusBusiness.getStatus();
+//                    status.setFlagEnviado(EnumStatusEnvio.SINCRONIZADO.getKey());
+                    statusBusiness.update(status);
+
                     delegate.processFinish(true, "INICIAR ENTREGA - OK");
 
                 } catch (Exception e) {
@@ -175,26 +175,11 @@ public class IniciarEntregaVolley {
 
                 if(InternetStatus.isNetworkAvailable(mContext)){
 
-                    if (error.networkResponse.statusCode == EnumHttpError.ERROR_401.getErrorInt()) {
-
-                        Toast.makeText(mContext, R.string.error_invalid_email_or_password, Toast.LENGTH_LONG).show();
-
-                        delegate.processCanceled(false);
-                        //                        StatusDialog dialog = new StatusDialog((Activity)mContext, false, error.networkResponse.statusCode);
-
-                    }else if (error.networkResponse.statusCode == EnumHttpError.ERROR_400.getErrorInt()) {
-
-                        delegate.processCanceled(false);
-                        //                        StatusDialog dialog = new StatusDialog((Activity)mContext, false, error.networkResponse.statusCode);
-                    }else if(error.networkResponse.statusCode == 404){
-
-                        delegate.processCanceled(false);
-                    }
+                    delegate.processCanceled(false);
 
                 }else{
 
                     delegate.processCanceled(false);
-                    //                    StatusDialog dialog = new StatusDialog((Activity)mContext, false, error.networkResponse.statusCode);
                 }
             }
         };

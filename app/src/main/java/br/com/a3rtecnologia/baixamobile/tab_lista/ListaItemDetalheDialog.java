@@ -75,7 +75,7 @@ public class ListaItemDetalheDialog extends Activity{
                 public void onClick(DialogInterface dialogInterface, int i) {
 
                     /**
-                     * STATUS EM ROTA
+                     * STATUS EM ROTA(MOBILE) - SAIU PARA ENTREGA(API)
                      */
                     encomendaBusiness.atualizarStatusEncomendaEmRota(encomenda);
                     Status status = statusBusiness.getStatus();
@@ -118,26 +118,30 @@ public class ListaItemDetalheDialog extends Activity{
      */
     private void iniciarEntrega(Encomenda encomendaEntregue){
 
-        /**
-         * ATUALIZAR DATA BAIXA
-         */
-        encomendaEntregue.setDataInicioEntrega(DateUtil.getDataAtual());
-        encomendaBusiness.update(encomendaEntregue);
+        SincronizaInicioEntregaTimerTask sincronizaInicioEntregaTimerTask = new SincronizaInicioEntregaTimerTask(mActivity);
 
-        IniciarEntregaVolley iniciarEntregaVolley = new IniciarEntregaVolley(mActivity, encomendaEntregue, new DelegateEncomendaAsyncResponse() {
 
-            @Override
-            public void processFinish(boolean finish, String resposta) {
 
-                System.out.println(resposta);
-            }
-
-            @Override
-            public void processCanceled(boolean cancel) {
-
-                System.out.println("ERRO INICIAR ENTREGA");
-            }
-        });
+//        /**
+//         * ATUALIZAR DATA BAIXA
+//         */
+//        encomendaEntregue.setDataInicioEntrega(DateUtil.getDataAtual());
+//        encomendaBusiness.update(encomendaEntregue);
+//
+//        IniciarEntregaVolley iniciarEntregaVolley = new IniciarEntregaVolley(mActivity, encomendaEntregue, new DelegateEncomendaAsyncResponse() {
+//
+//            @Override
+//            public void processFinish(boolean finish, String resposta) {
+//
+//                System.out.println(resposta);
+//            }
+//
+//            @Override
+//            public void processCanceled(boolean cancel) {
+//
+//                System.out.println("ERRO INICIAR ENTREGA");
+//            }
+//        });
     }
 
 
