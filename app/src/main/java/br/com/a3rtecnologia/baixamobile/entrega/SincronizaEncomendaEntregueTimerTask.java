@@ -11,10 +11,7 @@ import java.util.TimerTask;
 
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
-import br.com.a3rtecnologia.baixamobile.ocorrencia.SincronizarOcorrencia;
-import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
 import br.com.a3rtecnologia.baixamobile.util.InternetStatus;
-import br.com.a3rtecnologia.baixamobile.util.SessionManager;
 
 /**
  * Created by maclemon on 10/09/16.
@@ -83,7 +80,10 @@ public class SincronizaEncomendaEntregueTimerTask {
 //        if (timer != null) {
         if(isAtivar){
 
-            timer.cancel();
+            if(timer != null){
+
+                timer.cancel();
+            }
 
             timer = null;
             isAtivar = false;

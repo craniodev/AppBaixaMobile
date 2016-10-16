@@ -28,9 +28,9 @@ import br.com.a3rtecnologia.baixamobile.R;
 import br.com.a3rtecnologia.baixamobile.dialogs.StatusDialog;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
-import br.com.a3rtecnologia.baixamobile.encomenda.EnumEncomendaStatus;
 import br.com.a3rtecnologia.baixamobile.entrega.DelegateEntregaAsyncResponse;
 import br.com.a3rtecnologia.baixamobile.menu.MenuDrawerActivity;
+import br.com.a3rtecnologia.baixamobile.ocorrencia_sincronizacao.OcorrenciaReceiver;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
 import br.com.a3rtecnologia.baixamobile.tab_mapa.MyLocationTimerTask;
 import br.com.a3rtecnologia.baixamobile.tab_mapa.TabItemMapaFragment;
@@ -418,7 +418,25 @@ public class OcorrenciaActivity extends AppCompatActivity {
             /**
              * ATIVAR SINCRONISMO
              */
-            SincronizaEncomendaPendenteTimerTask sincronizaEncomendaPendenteTimerTask = new SincronizaEncomendaPendenteTimerTask(mContext);
+            Intent ocorrenciaIntent = new Intent(mContext, OcorrenciaReceiver.class);
+            ocorrenciaIntent.putExtra("OPERACAO", "START");
+            getApplicationContext().sendBroadcast(ocorrenciaIntent);
+
+
+
+
+
+//            ControleTimerTaskBusiness controleTimerTaskBusiness = new ControleTimerTaskBusiness(mContext);
+//            Integer total = controleTimerTaskBusiness.verificarFinalizarEntrega();
+//
+//            if(total == null || total == 0){
+//
+//                ControleTimerTask controleTimerTask = new ControleTimerTask();
+//                controleTimerTask.setIdOperacao(EnumOperacao.OP_FINALIZAR_ENTREGA.getValue());
+//                controleTimerTaskBusiness.salvar(controleTimerTask);
+//
+//                SincronizaEncomendaPendenteTimerTask sincronizaEncomendaPendenteTimerTask = new SincronizaEncomendaPendenteTimerTask(mContext);
+//            }
 
             finish();
         }

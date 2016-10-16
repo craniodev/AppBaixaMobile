@@ -69,7 +69,7 @@ public class SincronizaIniciarViagemTimerTask {
             initializeTimerTask();
 
             //schedule the timer, after the first 5000ms the TimerTask will run every 10000ms
-            timer.schedule(timerTask, 20000, 20000); //
+            timer.schedule(timerTask, 10000, 10000); //
         }
     }
 
@@ -81,7 +81,10 @@ public class SincronizaIniciarViagemTimerTask {
 //        if (timer != null) {
         if(isAtivar){
 
-            timer.cancel();
+            if(timer != null) {
+
+                timer.cancel();
+            }
 
             timer = null;
             isAtivar = false;

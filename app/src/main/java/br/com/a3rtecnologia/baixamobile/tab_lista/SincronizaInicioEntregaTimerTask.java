@@ -74,7 +74,7 @@ public class SincronizaInicioEntregaTimerTask {
             initializeTimerTask();
 
             //schedule the timer, after the first 5000ms the TimerTask will run every 10000ms
-            timer.schedule(timerTask, 5000, 5000); //
+            timer.schedule(timerTask, 10000, 10000); //
         }
     }
 
@@ -86,7 +86,10 @@ public class SincronizaInicioEntregaTimerTask {
 //        if (timer != null) {
         if(isAtivar){
 
-            timer.cancel();
+            if(timer != null){
+
+                timer.cancel();
+            }
 
             timer = null;
             isAtivar = false;
@@ -114,7 +117,10 @@ public class SincronizaInicioEntregaTimerTask {
                             long id = statusBusiness.getIdEncomendaCorrente();
                             Encomenda encomenda = encomendaBusiness.buscarEncomendaCorrente(id);
 
-                            SincronizarInicioEntrega sincronizarInicioEntrega = new SincronizarInicioEntrega(mContext, encomenda, status, task);
+                            if(encomenda != null){
+
+                                SincronizarInicioEntrega sincronizarInicioEntrega = new SincronizarInicioEntrega(mContext, encomenda, status, task);
+                            }
 
                         }else{
 

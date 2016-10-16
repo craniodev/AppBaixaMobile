@@ -37,6 +37,99 @@ public class SessionManager {
 
 
 
+
+
+
+
+    /**
+     * MODO OCORRENCIA
+     *
+     */
+    public void startModoOcorrencia() {
+        editor.putBoolean("ocorrencia", true);
+        editor.commit();
+    }
+
+    public Boolean isModoOcorrencia() {
+
+        return pref.getBoolean("ocorrencia", false);
+    }
+
+    public void stopModoOcorrencia() {
+        editor.putBoolean("ocorrencia", false);
+        editor.commit();
+    }
+
+
+    /**
+     * MODO ENTREGA
+     *
+     */
+    public void startModoEntrega() {
+        editor.putBoolean("entrega", true);
+        editor.commit();
+    }
+
+    public Boolean isModoEntrega() {
+
+        return pref.getBoolean("entrega", false);
+    }
+
+    public void stopModoEntrega() {
+        editor.putBoolean("entrega", false);
+        editor.commit();
+    }
+
+
+
+    /**
+     * MODO INICIO ENTREGA
+     *
+     */
+    public void startModoInicioEntrega() {
+        editor.putBoolean("inicioEntrega", true);
+        editor.commit();
+    }
+
+    public Boolean isModoInicioEntrega() {
+
+        return pref.getBoolean("inicioEntrega", false);
+    }
+
+    public void stopModoInicioEntrega() {
+        editor.putBoolean("inicioEntrega", false);
+        editor.commit();
+    }
+
+
+
+    /**
+     * MODO INICIO VIAGEM
+     *
+     */
+    public void startModoInicioViagem() {
+        editor.putBoolean("inicioViagem", true);
+        editor.commit();
+    }
+
+    public Boolean isModoInicioViagem() {
+
+        return pref.getBoolean("inicioViagem", false);
+    }
+
+    public void stopModoInicioViagem() {
+        editor.putBoolean("inicioViagem", false);
+        editor.commit();
+    }
+
+
+
+
+
+
+
+
+
     /**
      * JSON
      */

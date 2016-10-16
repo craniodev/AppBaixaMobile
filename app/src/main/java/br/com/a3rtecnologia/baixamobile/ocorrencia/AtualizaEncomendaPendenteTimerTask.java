@@ -19,6 +19,7 @@ import br.com.a3rtecnologia.baixamobile.encomenda.Encomendas;
 import br.com.a3rtecnologia.baixamobile.entrega.DelegateEntregaAsyncResponse;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
 import br.com.a3rtecnologia.baixamobile.tab_lista.TabItemListaFragment;
+import br.com.a3rtecnologia.baixamobile.util.InternetStatus;
 import br.com.a3rtecnologia.baixamobile.util.SessionManager;
 
 /**
@@ -37,7 +38,7 @@ public class AtualizaEncomendaPendenteTimerTask {
 
     public static Timer timer;
     private TimerTask timerTask;
-    private final Handler handler = new Handler();
+    private Handler handler = new Handler();
 
     private boolean isAtivar;
 
@@ -72,7 +73,7 @@ public class AtualizaEncomendaPendenteTimerTask {
             initializeTimerTask();
 
             //schedule the timer, after the first 5000ms the TimerTask will run every 10000ms
-            timer.schedule(timerTask, 50000, 50000); //
+            timer.schedule(timerTask, 5000, 5000); //
         }
 
     }
@@ -82,7 +83,10 @@ public class AtualizaEncomendaPendenteTimerTask {
         //stop the timer, if it's not already null
         if (timer != null) {
 
-            timer.cancel();
+            if(timer != null) {
+
+                timer.cancel();
+            }
 
             timer = null;
         }
@@ -112,27 +116,35 @@ public class AtualizaEncomendaPendenteTimerTask {
                         }
                         e.setEncomendas(listaPendentes);
 
-                        AtualizaEncomendaPendenteVolley atualizaEncomendaPendenteVolley = new AtualizaEncomendaPendenteVolley(mContext, e, new DelegateEntregaAsyncResponse() {
-                            @Override
-                            public void processFinish(boolean finish, String resposta) {
 
-                                if(finish){
+                        if(InternetStatus.isNetworkAvailable(mContext)) {
 
-                                    List<Encomenda> encomendasPendentes = encomendaBusiness.buscarEntregasOcorrencia();
+                            AtualizaEncomendaPendenteVolley atualizaEncomendaPendenteVolley = new AtualizaEncomendaPendenteVolley(mContext, e, new DelegateEntregaAsyncResponse() {
+                                @Override
+                                public void processFinish(boolean finish, String resposta) {
 
-                                    if(encomendasPendentes == null || encomendasPendentes.size() == 0){
+                                    if (finish) {
 
-                                        stoptimertask();
-                                        Toast.makeText(mContext, "API - STOP - ATUALIZA ENCOMENDA PENDENTE(TRATADA) - SUCESSO", Toast.LENGTH_LONG).show();
+                                        List<Encomenda> encomendasPendentes = encomendaBusiness.buscarEntregasOcorrencia();
+
+                                        if (encomendasPendentes == null || encomendasPendentes.size() == 0) {
+
+                                            stoptimertask();
+                                            Toast.makeText(mContext, "API - STOP - VERIFICANDO TRATADAS - SUCESSO", Toast.LENGTH_LONG).show();
+                                        }
                                     }
                                 }
-                            }
 
-                            @Override
-                            public void processCanceled(boolean cancel) {
+                                @Override
+                                public void processCanceled(boolean cancel) {
 
-                            }
-                        });
+                                }
+                            });
+
+                        }else{
+
+                            Toast.makeText(mContext, "OFFLINE", Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
             }

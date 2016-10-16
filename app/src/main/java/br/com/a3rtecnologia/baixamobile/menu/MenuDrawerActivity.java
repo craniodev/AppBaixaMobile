@@ -33,8 +33,8 @@ import br.com.a3rtecnologia.baixamobile.encomenda.DelegateEncomendasAsyncRespons
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaVolley;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomendas;
-import br.com.a3rtecnologia.baixamobile.iniciar_viagem.SincronizaIniciarViagemTimerTask;
 import br.com.a3rtecnologia.baixamobile.ocorrencia.AtualizaEncomendaPendenteTimerTask;
+import br.com.a3rtecnologia.baixamobile.ocorrencia_sincronizacao.OcorrenciaReceiver;
 import br.com.a3rtecnologia.baixamobile.status.Status;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
 import br.com.a3rtecnologia.baixamobile.tab_lista.FinalizarViagemVolley;
@@ -98,12 +98,27 @@ public class MenuDrawerActivity extends AppCompatActivity implements NavigationV
 
         donwloadTablesTipo();
 
+
+        verificador();
+    }
+
+
+
+    private void verificador(){
+
         /**
          * ATIVA VERIFICADOR DE ENCOMENDAS TRATADAS
          */
-        AtualizaEncomendaPendenteTimerTask atualizaEncomendaPendenteTimerTask = new AtualizaEncomendaPendenteTimerTask(mContext);
-        atualizaEncomendaPendenteTimerTask.startTimer();
+//        AtualizaEncomendaPendenteTimerTask atualizaEncomendaPendenteTimerTask = new AtualizaEncomendaPendenteTimerTask(mContext);
+//        atualizaEncomendaPendenteTimerTask.startTimer();
+
+//        SincronizaEncomendaPendenteTimerTask sincronizaEncomendaPendenteTimerTask = new SincronizaEncomendaPendenteTimerTask(mContext);
+
+        Intent ocorrenciaIntent = new Intent(mContext, OcorrenciaReceiver.class);
+        ocorrenciaIntent.putExtra("OPERACAO", "START");
+        getApplicationContext().sendBroadcast(ocorrenciaIntent);
     }
+
 
 
 

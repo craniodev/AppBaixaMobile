@@ -21,7 +21,6 @@ import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaAdapter;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
 import br.com.a3rtecnologia.baixamobile.encomenda.EnumEncomendaStatus;
-import br.com.a3rtecnologia.baixamobile.ocorrencia.SincronizaEncomendaPendenteTimerTask;
 
 /**
  * Created by maclemon on 01/08/16.

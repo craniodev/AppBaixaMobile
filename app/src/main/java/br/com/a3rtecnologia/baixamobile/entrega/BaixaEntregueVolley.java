@@ -173,27 +173,7 @@ public class BaixaEntregueVolley {
 
                 if(InternetStatus.isNetworkAvailable(mContext)){
 
-                    if(error.networkResponse != null) {
-
-                        if (error.networkResponse.statusCode == EnumHttpError.ERROR_401.getErrorInt()) {
-
-                            Toast.makeText(mContext, R.string.error_invalid_email_or_password, Toast.LENGTH_LONG).show();
-
-                            delegate.processCanceled(false);
-
-                        } else if (error.networkResponse.statusCode == EnumHttpError.ERROR_400.getErrorInt()) {
-
-                            delegate.processCanceled(false);
-
-                        } else if (error.networkResponse.statusCode == 404) {
-
-                            delegate.processCanceled(false);
-                        }
-
-                    }else{
-
-                        delegate.processCanceled(false);
-                    }
+                    delegate.processCanceled(false);
 
                 }else{
 

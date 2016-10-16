@@ -72,7 +72,10 @@ public class MyLocationTimerTask {
         //stop the timer, if it's not already null
         if (timer != null) {
 
-            timer.cancel();
+            if(timer != null) {
+
+                timer.cancel();
+            }
 
             timer = null;
         }

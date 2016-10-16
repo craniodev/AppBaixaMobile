@@ -11,6 +11,7 @@ import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
 
+import br.com.a3rtecnologia.baixamobile.controle_timertask.ControleTimerTask;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.entrega.Recebedor;
 import br.com.a3rtecnologia.baixamobile.iniciar_viagem.IniciarViagem;
@@ -23,7 +24,7 @@ import br.com.a3rtecnologia.baixamobile.tipo_ocorrencia.TipoOcorrencia;
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     private static final String DATABASE_NAME    = "ormlite.db";
-    private static final int DATABASE_VERSION = 67;
+    private static final int DATABASE_VERSION = 68;
 
     private Dao<Encomenda, Integer> mEncomendaDao = null;
     private Dao<Recebedor, Integer> mRecebedorDao = null;
@@ -33,6 +34,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private Dao<Ocorrencia, Integer> mOcorrenciaDao = null;
     private Dao<Status, Integer> mStatusDao = null;
     private Dao<IniciarViagem, Integer> mIniciarViagemDao = null;
+    private Dao<ControleTimerTask, Integer> mControleTimerTaskDao = null;
 
     private RuntimeExceptionDao<Encomenda, ?> m;
 
@@ -55,6 +57,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, Ocorrencia.class);
             TableUtils.createTable(connectionSource, Status.class);
             TableUtils.createTable(connectionSource, IniciarViagem.class);
+            TableUtils.createTable(connectionSource, ControleTimerTask.class);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -74,6 +77,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.dropTable(connectionSource, Ocorrencia.class, true);
             TableUtils.dropTable(connectionSource, Status.class, true);
             TableUtils.dropTable(connectionSource, IniciarViagem.class, true);
+            TableUtils.dropTable(connectionSource, ControleTimerTask.class, true);
             onCreate(db, connectionSource);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -165,6 +169,16 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return mIniciarViagemDao;
     }
 
+    /* ControleTimerTask */
+    public Dao<ControleTimerTask, Integer> getControleTimerTaskDao() throws SQLException {
+
+        if (mControleTimerTaskDao == null) {
+            mControleTimerTaskDao = getDao(ControleTimerTask.class);
+        }
+
+        return mControleTimerTaskDao;
+    }
+
 
 
     @Override
@@ -176,6 +190,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         mTipoOcorrenciaDao = null;
         mOcorrenciaDao = null;
         mIniciarViagemDao = null;
+        mControleTimerTaskDao = null;
 
         super.close();
     }

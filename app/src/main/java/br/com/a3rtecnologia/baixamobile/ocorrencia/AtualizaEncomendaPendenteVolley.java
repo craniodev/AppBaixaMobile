@@ -162,15 +162,15 @@ public class AtualizaEncomendaPendenteVolley {
                     TabItemListaFragment.updateAdapter();
 
 
-                    Toast.makeText(mContext, "API - ATUALIZA ENCOMENDA PENDENTE - SUCESSO", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "API - VERIFICANDO TRATADAS - SUCESSO", Toast.LENGTH_LONG).show();
 
 
 
-                    delegate.processFinish(resposta, "ATUALIZA ENCOMENDA PENDENTE - OK");
+                    delegate.processFinish(resposta, "VERIFICANDO TRATADAS - OK");
 
                 } catch (Exception e) {
 
-                    Toast.makeText(mContext, "API - ATUALIZA ENCOMENDA PENDENTE - EXCEPTION", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "API - VERIFICANDO TRATADAS - EXCEPTION", Toast.LENGTH_LONG).show();
 
                     e.printStackTrace();
                 }
@@ -186,29 +186,11 @@ public class AtualizaEncomendaPendenteVolley {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(mContext, "API - ATUALIZA ENCOMENDA PENDENTE - ERROR", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "API - VERIFICANDO TRATADAS - ERROR", Toast.LENGTH_LONG).show();
 
                 if(InternetStatus.isNetworkAvailable(mContext)){
 
-                    if(error.networkResponse != null) {
-
-                        if (error.networkResponse.statusCode == EnumHttpError.ERROR_401.getErrorInt()) {
-
-                            delegate.processCanceled(false);
-
-                        } else if (error.networkResponse.statusCode == EnumHttpError.ERROR_400.getErrorInt()) {
-
-                            delegate.processCanceled(false);
-
-                        } else if (error.networkResponse.statusCode == 404) {
-
-                            delegate.processCanceled(false);
-                        }
-
-                    }else{
-
-                        delegate.processCanceled(false);
-                    }
+                    delegate.processCanceled(false);
 
                 }else{
 
