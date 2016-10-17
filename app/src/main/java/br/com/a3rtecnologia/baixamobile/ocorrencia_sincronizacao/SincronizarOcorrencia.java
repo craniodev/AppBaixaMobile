@@ -61,11 +61,6 @@ public class SincronizarOcorrencia {
                         Intent ocorrenciaIntent = new Intent(mContext, OcorrenciaReceiver.class);
                         ocorrenciaIntent.putExtra("OPERACAO", "STOP");
                         mContext.getApplicationContext().sendBroadcast(ocorrenciaIntent);
-
-//                        ControleTimerTaskBusiness controleTimerTaskBusiness = new ControleTimerTaskBusiness(mContext);
-//                        controleTimerTaskBusiness.deleteAllFinalizarEntrega();
-
-                        task.stoptimertask();
                     }
                 }
 

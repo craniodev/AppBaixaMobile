@@ -2,23 +2,21 @@ package br.com.a3rtecnologia.baixamobile.iniciar_viagem;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import br.com.a3rtecnologia.baixamobile.EnumStatusEnvio;
-import br.com.a3rtecnologia.baixamobile.encomenda.DelegateEncomendaAsyncResponse;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
+import br.com.a3rtecnologia.baixamobile.iniciar_viagem_sincronizacao.IniciarViagemReceiver;
+import br.com.a3rtecnologia.baixamobile.iniciar_viagem_sincronizacao.SincronizaIniciarViagemTimerTask;
 import br.com.a3rtecnologia.baixamobile.menu.MenuDrawerActivity;
 import br.com.a3rtecnologia.baixamobile.menu.PainelFragment;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
-import br.com.a3rtecnologia.baixamobile.iniciar_viagem.IniciarViagemVolley;
 import br.com.a3rtecnologia.baixamobile.tab_mapa.MyLocationTimerTask;
 import br.com.a3rtecnologia.baixamobile.tab_mapa.TabItemMapaFragment;
-import br.com.a3rtecnologia.baixamobile.util.DateUtil;
 import br.com.a3rtecnologia.baixamobile.util.SessionManager;
 
 /**
@@ -92,8 +90,10 @@ public class IniciarViagemDialog {
                         /**
                          * MODO ONLINE (SINCRONIZAR)
                          */
-                        SincronizaIniciarViagemTimerTask task = new SincronizaIniciarViagemTimerTask(mActivity);
-
+//                        SincronizaIniciarViagemTimerTask task = new SincronizaIniciarViagemTimerTask(mActivity);
+                        Intent iniciarViagemIntent = new Intent(mActivity, IniciarViagemReceiver.class);
+                        iniciarViagemIntent.putExtra("OPERACAO", "START");
+                        mActivity.sendBroadcast(iniciarViagemIntent);
 
 
                         /**

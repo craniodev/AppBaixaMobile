@@ -1,19 +1,12 @@
 package br.com.a3rtecnologia.baixamobile.menu;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import br.com.a3rtecnologia.baixamobile.R;
 import br.com.a3rtecnologia.baixamobile.login.LoginActivity;
-import br.com.a3rtecnologia.baixamobile.ocorrencia.AtualizaEncomendaPendenteTimerTask;
-import br.com.a3rtecnologia.baixamobile.orm.DatabaseHelper;
+import br.com.a3rtecnologia.baixamobile.ocorrencia_tratada_sincronizacao.AtualizaEncomendaPendenteTimerTask;
 import br.com.a3rtecnologia.baixamobile.orm.TableUtil;
 import br.com.a3rtecnologia.baixamobile.util.SessionManager;
 

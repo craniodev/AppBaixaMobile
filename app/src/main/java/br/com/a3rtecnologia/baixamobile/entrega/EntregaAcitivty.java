@@ -33,7 +33,9 @@ import br.com.a3rtecnologia.baixamobile.assinatura.AssinaturaDigital;
 import br.com.a3rtecnologia.baixamobile.dialogs.StatusDialog;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
-import br.com.a3rtecnologia.baixamobile.encomenda.EnumEncomendaStatus;
+import br.com.a3rtecnologia.baixamobile.entrega_sincronizacao.EntregaReceiver;
+import br.com.a3rtecnologia.baixamobile.entrega_sincronizacao.SincronizaEncomendaEntregueTimerTask;
+import br.com.a3rtecnologia.baixamobile.ocorrencia_sincronizacao.OcorrenciaReceiver;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
 import br.com.a3rtecnologia.baixamobile.tab_mapa.MyLocationTimerTask;
 import br.com.a3rtecnologia.baixamobile.tab_mapa.TabItemMapaFragment;
@@ -47,7 +49,6 @@ import br.com.a3rtecnologia.baixamobile.util.ActivityUtil;
 import br.com.a3rtecnologia.baixamobile.tipo_recebedor.TipoRecebedorAdapter;
 import br.com.a3rtecnologia.baixamobile.util.DateUtil;
 import br.com.a3rtecnologia.baixamobile.util.ImagemUtil;
-import br.com.a3rtecnologia.baixamobile.util.InternetStatus;
 import br.com.a3rtecnologia.baixamobile.util.SessionManager;
 
 public class EntregaAcitivty extends AppCompatActivity {
@@ -773,10 +774,17 @@ public class EntregaAcitivty extends AppCompatActivity {
         /** 13 - atualiza encomenda - FINAL **/
         encomendaBusiness.update(encomendaCorrente);
 
+//        /**
+//         * ATIVAR SINCRONISMO
+//         */
+//        SincronizaEncomendaEntregueTimerTask sincronizaEncomendaEntregueTimerTask = new SincronizaEncomendaEntregueTimerTask(mContext);
+
         /**
          * ATIVAR SINCRONISMO
          */
-        SincronizaEncomendaEntregueTimerTask sincronizaEncomendaEntregueTimerTask = new SincronizaEncomendaEntregueTimerTask(mContext);
+        Intent entregaIntent = new Intent(mContext, EntregaReceiver.class);
+        entregaIntent.putExtra("OPERACAO", "START");
+        getApplicationContext().sendBroadcast(entregaIntent);
 
         finish();
     }

@@ -281,7 +281,7 @@ public class EncomendaBusiness {
 
             result = encomendaDao.queryBuilder()
                     .where()
-                    .in("IdStatus", EnumEncomendaStatus.EM_ROTA.getKey(), EnumEncomendaStatus.LIBERADO.getKey())
+                    .in("IdStatus", EnumEncomendaStatus.EM_ROTA.getKey(), EnumEncomendaStatus.LIBERADO.getKey(), EnumEncomendaStatus.SAIU_ENTREGA.getKey())
                     .query();
 
         } catch (SQLException e) {
@@ -589,7 +589,7 @@ public class EncomendaBusiness {
 
             result = encomendaDao.queryBuilder()
                     .where()
-                    .in("IdStatus", EnumEncomendaStatus.EM_ROTA.getKey(), EnumEncomendaStatus.LIBERADO.getKey())
+                    .in("IdStatus", EnumEncomendaStatus.EM_ROTA.getKey(), EnumEncomendaStatus.LIBERADO.getKey(), EnumEncomendaStatus.SAIU_ENTREGA.getKey())
                     .query();
 
         } catch (SQLException e) {
@@ -597,6 +597,69 @@ public class EncomendaBusiness {
         }
 
         return result;
+    }
+
+
+
+
+    /**
+     * ENCOMENDA - STATUS MOBILE
+     *
+     *
+     * BUSCAR INICIO ENTREGA - SAIU PARA ENTREGA
+     *
+     * @return
+     */
+    public List<Encomenda> buscarSaiuEntrega(){
+
+        List<Encomenda> result = null;
+
+        try {
+
+            result = encomendaDao.queryBuilder()
+                    .where()
+                    .eq("IdStatus", EnumEncomendaStatus.SAIU_ENTREGA.getKey())
+//                    .and()
+//                    .eq("flagEnviado", EnumStatusEnvio.NAO_SINCRONIZADO)
+                    .query();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+
+
+
+
+    /**
+     * ENCOMENDA - COUNT STATUS MOBILE
+     *
+     *
+     * COUNT INICIO ENTREGA - SAIU PARA ENTREGA
+     *
+     * @return
+     */
+    public Integer countSaiuEntrega(){
+
+        List<Encomenda> result = null;
+
+        try {
+
+            result = encomendaDao.queryBuilder()
+                    .where()
+                    .eq("IdStatus", EnumEncomendaStatus.SAIU_ENTREGA.getKey())
+//                    .and()
+//                    .eq("flagEnviado", EnumStatusEnvio.NAO_SINCRONIZADO)
+                    .query();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result.size();
     }
 
 
@@ -620,7 +683,7 @@ public class EncomendaBusiness {
 
             result = encomendaDao.queryBuilder()
                     .where()
-                    .in("IdStatus", EnumEncomendaStatus.EM_ROTA.getKey(), EnumEncomendaStatus.LIBERADO.getKey())
+                    .in("IdStatus", EnumEncomendaStatus.EM_ROTA.getKey(), EnumEncomendaStatus.LIBERADO.getKey(), EnumEncomendaStatus.SAIU_ENTREGA.getKey())
                     .query();
 
         } catch (SQLException e) {
@@ -650,7 +713,7 @@ public class EncomendaBusiness {
 
         try {
 
-            builder.where().in("IdStatus", EnumEncomendaStatus.EM_ROTA.getKey(), EnumEncomendaStatus.LIBERADO.getKey());
+            builder.where().in("IdStatus", EnumEncomendaStatus.EM_ROTA.getKey(), EnumEncomendaStatus.LIBERADO.getKey(), EnumEncomendaStatus.SAIU_ENTREGA.getKey());
 
         } catch (SQLException e) {
             e.printStackTrace();

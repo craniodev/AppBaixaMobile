@@ -1,11 +1,16 @@
-package br.com.a3rtecnologia.baixamobile.iniciar_viagem;
+package br.com.a3rtecnologia.baixamobile.iniciar_viagem_sincronizacao;
 
 import android.content.Context;
+import android.content.Intent;
 
 import java.util.List;
 
 import br.com.a3rtecnologia.baixamobile.EnumStatusEnvio;
 import br.com.a3rtecnologia.baixamobile.encomenda.DelegateEncomendaAsyncResponse;
+import br.com.a3rtecnologia.baixamobile.iniciar_viagem.IniciarViagem;
+import br.com.a3rtecnologia.baixamobile.iniciar_viagem.IniciarViagemBusiness;
+import br.com.a3rtecnologia.baixamobile.iniciar_viagem.IniciarViagemVolley;
+import br.com.a3rtecnologia.baixamobile.iniciar_viagem_sincronizacao.SincronizaIniciarViagemTimerTask;
 
 /**
  * Created by maclemon on 08/10/16.
@@ -50,8 +55,11 @@ public class SincronizarIniciarViagem {
                     int pendentesSincronizar = iniciarViagemBusiness.count();
                     if (pendentesSincronizar == 0) {
 
-                        task.stoptimertask();
                         iniciarViagemBusiness.deleteAll();
+
+                        Intent iniciarViagemIntent = new Intent(mContext, IniciarViagemReceiver.class);
+                        iniciarViagemIntent.putExtra("OPERACAO", "STOP");
+                        mContext.sendBroadcast(iniciarViagemIntent);
                     }
                 }
 

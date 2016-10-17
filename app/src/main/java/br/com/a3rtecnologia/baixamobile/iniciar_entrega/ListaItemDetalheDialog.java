@@ -1,27 +1,32 @@
-package br.com.a3rtecnologia.baixamobile.tab_lista;
+package br.com.a3rtecnologia.baixamobile.iniciar_entrega;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.model.LatLng;
-
+import br.com.a3rtecnologia.baixamobile.EnumStatusEnvio;
 import br.com.a3rtecnologia.baixamobile.R;
-import br.com.a3rtecnologia.baixamobile.encomenda.DelegateEncomendaAsyncResponse;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
-import br.com.a3rtecnologia.baixamobile.entrega.IniciarEntregaVolley;
+import br.com.a3rtecnologia.baixamobile.encomenda.EnumEncomendaStatus;
+import br.com.a3rtecnologia.baixamobile.iniciar_entrega_sincronizacao.IniciarEntregaReceiver;
+import br.com.a3rtecnologia.baixamobile.iniciar_entrega_sincronizacao.SincronizaInicioEntregaTimerTask;
+import br.com.a3rtecnologia.baixamobile.status.Status;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
+import br.com.a3rtecnologia.baixamobile.tab_lista.NavegacaoGPSDialog;
+import br.com.a3rtecnologia.baixamobile.tab_lista.TabItemListaFragment;
+import br.com.a3rtecnologia.baixamobile.util.DateUtil;
 import br.com.a3rtecnologia.baixamobile.util.SessionManager;
 
 /**
  * Created by maclemon on 01/08/16.
  */
-public class ListaItemDetalheEncerrarDialog extends Activity{
+public class ListaItemDetalheDialog extends Activity{
 
     private Activity mActivity;
     private EncomendaBusiness encomendaBusiness;
@@ -30,7 +35,8 @@ public class ListaItemDetalheEncerrarDialog extends Activity{
 
 
 
-    public ListaItemDetalheEncerrarDialog(final Activity mActivity, final Encomenda encomenda){
+
+    public ListaItemDetalheDialog(final Activity mActivity, final Encomenda encomenda){
 
         this.mActivity = mActivity;
         this.encomendaBusiness = new EncomendaBusiness(mActivity);
@@ -55,19 +61,42 @@ public class ListaItemDetalheEncerrarDialog extends Activity{
                     }
                 });
 
-        builder.setPositiveButton("FINALIZAR ENTREGA",
+        builder.setPositiveButton("INICIAR ENTREGA",
                 new DialogInterface.OnClickListener(){
 
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
 
                     /**
-                     * ABRIR DIALOG SELECAO
-                     *
-                     * OCORRENCIA
-                     * ENTREGUE
+                     * STATUS EM ROTA(MOBILE) - SAIU PARA ENTREGA(API)
                      */
-                    StatusEncomendaDialog statusEncomendaDialog = new StatusEncomendaDialog(mActivity);
+                    encomendaBusiness.atualizarStatusEncomendaEmRota(encomenda);
+                    Status status = statusBusiness.getStatus();
+                    status.setIdEncomendaCorrente(encomenda.getIdEncomenda());
+                    statusBusiness.salvar(status);
+
+                    /**
+                     * ADICIONADO
+                     */
+                    encomenda.setDataInicioEntrega(DateUtil.getDataAtual());
+                    encomenda.setFlagEnviado(EnumStatusEnvio.NAO_SINCRONIZADO.getKey());
+                    encomenda.setIdStatus(EnumEncomendaStatus.SAIU_ENTREGA.getKey());
+                    encomenda.setDescStatus(EnumEncomendaStatus.SAIU_ENTREGA.getValue());
+                    encomendaBusiness.update(encomenda);
+                    iniciarEntrega(encomenda);
+
+                    /**
+                     * ADICIONA ENCOMENDA CORRENTE
+                     */
+                    statusBusiness.addEncomendaCorrente(encomenda.getIdEncomenda());
+                    NavegacaoGPSDialog navegacaoGPSDialog = new NavegacaoGPSDialog(mActivity, encomenda);
+
+                    /**
+                     * UPDATE LISTA ENCOMENDAS
+                     *
+                     * ALTERACAO STATUS BOLINHAS
+                     */
+                    TabItemListaFragment.updateAdapter();
                 }
             });
 
@@ -79,66 +108,25 @@ public class ListaItemDetalheEncerrarDialog extends Activity{
     }
 
 
+
+
+
+
+
+
     /**
      * ADICIONADO
      *
      * @param encomendaEntregue
      */
-//    private void iniciarEntrega(Encomenda encomendaEntregue){
-//
-//        LatLng latLng = null;
-//
-//        IniciarEntregaVolley iniciarEntregaVolley = new IniciarEntregaVolley(mActivity, encomendaEntregue, new DelegateEncomendaAsyncResponse() {
-//
-//            @Override
-//            public void processFinish(boolean finish, String resposta) {
-//
-//                System.out.println(resposta);
-//
-////                finalizarViagemx();
-//            }
-//
-//            @Override
-//            public void processCanceled(boolean cancel) {
-//
-//                System.out.println("ERRO INICIAR ENTREGA");
-//            }
-//        });
-//    }
+    private void iniciarEntrega(Encomenda encomendaEntregue){
 
+//        SincronizaInicioEntregaTimerTask sincronizaInicioEntregaTimerTask = new SincronizaInicioEntregaTimerTask(mActivity);
 
-    /**
-     * REMOVIDO
-     *
-     *
-     * @param view
-     * @param encomenda
-     */
-//    /**
-//     * PASSAR ESSA CHAMADA PARA UM TIMER TASK
-//     *
-//     * @param encomenda
-//     */
-//    public void iniciarViagem(Encomenda encomenda){
-//
-////        LatLng latLng = new LatLng(encomenda.getLatitude(), encomenda.getLongitude());
-//        LatLng latLng = null;
-//
-//        IniciarViagemVolley iniciarViagemVolley = new IniciarViagemVolley(mActivity, latLng, new DelegateEncomendaAsyncResponse() {
-//            @Override
-//            public void processFinish(boolean finish, String resposta) {
-//
-//                System.out.println(resposta);
-//            }
-//
-//            @Override
-//            public void processCanceled(boolean cancel) {
-//
-//                System.out.println("ERRO INICIAR VIAGEM");
-//            }
-//        });
-//    }
-
+        Intent iniciarEntregaIntent = new Intent(mActivity, IniciarEntregaReceiver.class);
+        iniciarEntregaIntent.putExtra("OPERACAO", "START");
+        mActivity.sendBroadcast(iniciarEntregaIntent);
+    }
 
 
 
@@ -186,7 +174,6 @@ public class ListaItemDetalheEncerrarDialog extends Activity{
 
 
 
-
     private void validateAndAppend(String value, String separator, StringBuilder stringBuilder){
 
         if(value != null && !value.equals("")){
@@ -195,7 +182,6 @@ public class ListaItemDetalheEncerrarDialog extends Activity{
             stringBuilder.append(separator);
         }
     }
-
 
 
 

@@ -146,10 +146,8 @@ public class IniciarEntregaVolley {
 
                     Toast.makeText(mContext, "API - INICIAR ENTREGA - SUCESSO", Toast.LENGTH_LONG).show();
 
-
-                    Status status = statusBusiness.getStatus();
-//                    status.setFlagEnviado(EnumStatusEnvio.SINCRONIZADO.getKey());
-                    statusBusiness.update(status);
+                    encomenda.setFlagEnviado(EnumStatusEnvio.SINCRONIZADO.getKey());
+                    encomendaBusiness.update(encomenda);
 
                     delegate.processFinish(true, "INICIAR ENTREGA - OK");
 

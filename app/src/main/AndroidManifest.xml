@@ -101,6 +101,27 @@
         <receiver android:name=".ocorrencia_sincronizacao.OcorrenciaReceiver" >
         </receiver>
 
+        <receiver android:name=".entrega_sincronizacao.EntregaReceiver" >
+        </receiver>
+
+        <receiver android:name=".iniciar_viagem_sincronizacao.IniciarViagemReceiver" >
+        </receiver>
+
+        <receiver android:name=".iniciar_entrega_sincronizacao.IniciarEntregaReceiver" >
+        </receiver>
+
+        <receiver android:name=".NetworkChangeReceiver" >
+
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="android.net.conn.CONNECTIVITY_ACTION"/>
+
+            </intent-filter>
+
+        </receiver>
+
+
+
     </application>
 
 </manifest>

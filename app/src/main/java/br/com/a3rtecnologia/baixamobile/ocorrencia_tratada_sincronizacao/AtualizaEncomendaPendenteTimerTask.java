@@ -1,4 +1,4 @@
-package br.com.a3rtecnologia.baixamobile.ocorrencia;
+package br.com.a3rtecnologia.baixamobile.ocorrencia_tratada_sincronizacao;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -17,6 +17,7 @@ import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomendas;
 import br.com.a3rtecnologia.baixamobile.entrega.DelegateEntregaAsyncResponse;
+import br.com.a3rtecnologia.baixamobile.ocorrencia.AtualizaEncomendaPendenteVolley;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
 import br.com.a3rtecnologia.baixamobile.tab_lista.TabItemListaFragment;
 import br.com.a3rtecnologia.baixamobile.util.InternetStatus;

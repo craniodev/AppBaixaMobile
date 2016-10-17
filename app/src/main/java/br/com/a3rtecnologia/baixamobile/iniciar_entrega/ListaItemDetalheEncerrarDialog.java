@@ -1,11 +1,8 @@
-package br.com.a3rtecnologia.baixamobile.tab_lista;
+package br.com.a3rtecnologia.baixamobile.iniciar_entrega;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,27 +10,19 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.List;
-
 import br.com.a3rtecnologia.baixamobile.R;
 import br.com.a3rtecnologia.baixamobile.encomenda.DelegateEncomendaAsyncResponse;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
 import br.com.a3rtecnologia.baixamobile.entrega.IniciarEntregaVolley;
-import br.com.a3rtecnologia.baixamobile.iniciar_viagem.IniciarViagem;
-import br.com.a3rtecnologia.baixamobile.iniciar_viagem.IniciarViagemBusiness;
-import br.com.a3rtecnologia.baixamobile.status.Status;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
-import br.com.a3rtecnologia.baixamobile.tab_mapa.MyLocationTimerTask;
-import br.com.a3rtecnologia.baixamobile.tab_mapa.TabItemMapaFragment;
-import br.com.a3rtecnologia.baixamobile.util.DateUtil;
-import br.com.a3rtecnologia.baixamobile.util.InternetStatus;
+import br.com.a3rtecnologia.baixamobile.tab_lista.StatusEncomendaDialog;
 import br.com.a3rtecnologia.baixamobile.util.SessionManager;
 
 /**
  * Created by maclemon on 01/08/16.
  */
-public class ListaItemDetalheDialog extends Activity{
+public class ListaItemDetalheEncerrarDialog extends Activity{
 
     private Activity mActivity;
     private EncomendaBusiness encomendaBusiness;
@@ -42,8 +31,7 @@ public class ListaItemDetalheDialog extends Activity{
 
 
 
-
-    public ListaItemDetalheDialog(final Activity mActivity, final Encomenda encomenda){
+    public ListaItemDetalheEncerrarDialog(final Activity mActivity, final Encomenda encomenda){
 
         this.mActivity = mActivity;
         this.encomendaBusiness = new EncomendaBusiness(mActivity);
@@ -68,37 +56,19 @@ public class ListaItemDetalheDialog extends Activity{
                     }
                 });
 
-        builder.setPositiveButton("INICIAR ENTREGA",
+        builder.setPositiveButton("FINALIZAR ENTREGA",
                 new DialogInterface.OnClickListener(){
 
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
 
                     /**
-                     * STATUS EM ROTA(MOBILE) - SAIU PARA ENTREGA(API)
-                     */
-                    encomendaBusiness.atualizarStatusEncomendaEmRota(encomenda);
-                    Status status = statusBusiness.getStatus();
-                    status.setIdEncomendaCorrente(encomenda.getIdEncomenda());
-                    statusBusiness.salvar(status);
-
-                    /**
-                     * ADICIONADO
-                     */
-                    iniciarEntrega(encomenda);
-
-                    /**
-                     * ADICIONA ENCOMENDA CORRENTE
-                     */
-                    statusBusiness.addEncomendaCorrente(encomenda.getIdEncomenda());
-                    NavegacaoGPSDialog navegacaoGPSDialog = new NavegacaoGPSDialog(mActivity, encomenda);
-
-                    /**
-                     * UPDATE LISTA ENCOMENDAS
+                     * ABRIR DIALOG SELECAO
                      *
-                     * ALTERACAO STATUS BOLINHAS
+                     * OCORRENCIA
+                     * ENTREGUE
                      */
-                    TabItemListaFragment.updateAdapter();
+                    StatusEncomendaDialog statusEncomendaDialog = new StatusEncomendaDialog(mActivity);
                 }
             });
 
@@ -110,26 +80,52 @@ public class ListaItemDetalheDialog extends Activity{
     }
 
 
-
     /**
      * ADICIONADO
      *
      * @param encomendaEntregue
      */
-    private void iniciarEntrega(Encomenda encomendaEntregue){
-
-        SincronizaInicioEntregaTimerTask sincronizaInicioEntregaTimerTask = new SincronizaInicioEntregaTimerTask(mActivity);
-
-
-
-//        /**
-//         * ATUALIZAR DATA BAIXA
-//         */
-//        encomendaEntregue.setDataInicioEntrega(DateUtil.getDataAtual());
-//        encomendaBusiness.update(encomendaEntregue);
+//    private void iniciarEntrega(Encomenda encomendaEntregue){
+//
+//        LatLng latLng = null;
 //
 //        IniciarEntregaVolley iniciarEntregaVolley = new IniciarEntregaVolley(mActivity, encomendaEntregue, new DelegateEncomendaAsyncResponse() {
 //
+//            @Override
+//            public void processFinish(boolean finish, String resposta) {
+//
+//                System.out.println(resposta);
+//
+////                finalizarViagemx();
+//            }
+//
+//            @Override
+//            public void processCanceled(boolean cancel) {
+//
+//                System.out.println("ERRO INICIAR ENTREGA");
+//            }
+//        });
+//    }
+
+
+    /**
+     * REMOVIDO
+     *
+     *
+     * @param view
+     * @param encomenda
+     */
+//    /**
+//     * PASSAR ESSA CHAMADA PARA UM TIMER TASK
+//     *
+//     * @param encomenda
+//     */
+//    public void iniciarViagem(Encomenda encomenda){
+//
+////        LatLng latLng = new LatLng(encomenda.getLatitude(), encomenda.getLongitude());
+//        LatLng latLng = null;
+//
+//        IniciarViagemVolley iniciarViagemVolley = new IniciarViagemVolley(mActivity, latLng, new DelegateEncomendaAsyncResponse() {
 //            @Override
 //            public void processFinish(boolean finish, String resposta) {
 //
@@ -139,10 +135,11 @@ public class ListaItemDetalheDialog extends Activity{
 //            @Override
 //            public void processCanceled(boolean cancel) {
 //
-//                System.out.println("ERRO INICIAR ENTREGA");
+//                System.out.println("ERRO INICIAR VIAGEM");
 //            }
 //        });
-    }
+//    }
+
 
 
 
@@ -190,6 +187,7 @@ public class ListaItemDetalheDialog extends Activity{
 
 
 
+
     private void validateAndAppend(String value, String separator, StringBuilder stringBuilder){
 
         if(value != null && !value.equals("")){
@@ -198,6 +196,7 @@ public class ListaItemDetalheDialog extends Activity{
             stringBuilder.append(separator);
         }
     }
+
 
 
 

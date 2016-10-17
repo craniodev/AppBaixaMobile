@@ -1,17 +1,18 @@
-package br.com.a3rtecnologia.baixamobile.ocorrencia_sincronizacao;
+package br.com.a3rtecnologia.baixamobile.entrega_sincronizacao;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import br.com.a3rtecnologia.baixamobile.ocorrencia_sincronizacao.SincronizaEncomendaPendenteTimerTask;
 import br.com.a3rtecnologia.baixamobile.util.SessionManager;
 
 /**
  * Created by maclemon on 13/10/16.
  */
 
-public class OcorrenciaReceiver extends BroadcastReceiver {
+public class EntregaReceiver extends BroadcastReceiver {
 
     private SessionManager sessionManager;
     private Context mContext;
@@ -39,15 +40,15 @@ public class OcorrenciaReceiver extends BroadcastReceiver {
 
             if (OPERACAO.equalsIgnoreCase("START")) {
 
-                sessionManager.startModoOcorrencia();
+                sessionManager.startModoEntrega();
 
-                SincronizaEncomendaPendenteTimerTask.getInstance(mContext, true);
+                SincronizaEncomendaEntregueTimerTask.getInstance(mContext, true);
 
             } else if (OPERACAO.equalsIgnoreCase("STOP")) {
 
-                sessionManager.stopModoOcorrencia();
+                sessionManager.stopModoEntrega();
 
-                SincronizaEncomendaPendenteTimerTask.getInstance(mContext, false);
+                SincronizaEncomendaEntregueTimerTask.getInstance(mContext, false);
             }
         }
     }

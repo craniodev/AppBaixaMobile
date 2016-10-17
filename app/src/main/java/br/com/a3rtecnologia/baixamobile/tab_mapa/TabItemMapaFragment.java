@@ -33,8 +33,8 @@ import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
 import br.com.a3rtecnologia.baixamobile.status.Status;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
-import br.com.a3rtecnologia.baixamobile.tab_lista.ListaItemDetalheDialog;
-import br.com.a3rtecnologia.baixamobile.tab_lista.ListaItemDetalheEncerrarDialog;
+import br.com.a3rtecnologia.baixamobile.iniciar_entrega.ListaItemDetalheDialog;
+import br.com.a3rtecnologia.baixamobile.iniciar_entrega.ListaItemDetalheEncerrarDialog;
 
 
 /**

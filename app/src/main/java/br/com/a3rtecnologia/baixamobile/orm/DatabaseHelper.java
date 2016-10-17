@@ -24,7 +24,7 @@ import br.com.a3rtecnologia.baixamobile.tipo_ocorrencia.TipoOcorrencia;
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     private static final String DATABASE_NAME    = "ormlite.db";
-    private static final int DATABASE_VERSION = 68;
+    private static final int DATABASE_VERSION = 69;
 
     private Dao<Encomenda, Integer> mEncomendaDao = null;
     private Dao<Recebedor, Integer> mRecebedorDao = null;

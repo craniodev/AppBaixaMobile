@@ -1,6 +1,5 @@
-package br.com.a3rtecnologia.baixamobile.ocorrencia_sincronizacao;
+package br.com.a3rtecnologia.baixamobile.iniciar_entrega_sincronizacao;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Handler;
 import android.widget.Toast;
@@ -10,40 +9,47 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import br.com.a3rtecnologia.baixamobile.controle_timertask.ControleTimerTask;
+import br.com.a3rtecnologia.baixamobile.EnumStatusEnvio;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
+import br.com.a3rtecnologia.baixamobile.iniciar_viagem.IniciarViagem;
+import br.com.a3rtecnologia.baixamobile.iniciar_viagem.IniciarViagemBusiness;
+import br.com.a3rtecnologia.baixamobile.iniciar_viagem_sincronizacao.SincronizarIniciarViagem;
+import br.com.a3rtecnologia.baixamobile.status.Status;
+import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
 import br.com.a3rtecnologia.baixamobile.util.InternetStatus;
 import br.com.a3rtecnologia.baixamobile.util.SessionManager;
 
 /**
  * Created by maclemon on 10/09/16.
  */
-public class SincronizaEncomendaPendenteTimerTask {
+public class SincronizaInicioEntregaTimerTask {
 
     private Context mContext;
 
     private SessionManager sessionManager;
+    private StatusBusiness statusBusiness;
     private EncomendaBusiness encomendaBusiness;
-    private List<Encomenda> encomendasSincronizar;
+
+    private List<Encomenda> encomendaList;
 
     private Timer timer;
     private TimerTask timerTask;
     private Handler handler = new Handler();
 
     private boolean isAtivar;
-    private SincronizaEncomendaPendenteTimerTask task;
+    private SincronizaInicioEntregaTimerTask task;
 
 
 
 
-    private static SincronizaEncomendaPendenteTimerTask instance = null;
+    private static SincronizaInicioEntregaTimerTask instance = null;
 
-    public static SincronizaEncomendaPendenteTimerTask getInstance(Context mContext, boolean isStart) {
+    public static SincronizaInicioEntregaTimerTask getInstance(Context mContext, boolean isStart) {
 
         if(instance == null) {
 
-            instance = new SincronizaEncomendaPendenteTimerTask(mContext);
+            instance = new SincronizaInicioEntregaTimerTask(mContext);
 
             return instance;
         }
@@ -62,7 +68,7 @@ public class SincronizaEncomendaPendenteTimerTask {
 
 
 
-    public SincronizaEncomendaPendenteTimerTask(Context mContext){
+    public SincronizaInicioEntregaTimerTask(Context mContext){
 
         init(mContext);
     }
@@ -72,20 +78,22 @@ public class SincronizaEncomendaPendenteTimerTask {
     private void init(Context mContext){
 
         this.mContext = mContext;
+        statusBusiness = new StatusBusiness(mContext);
         encomendaBusiness = new EncomendaBusiness(mContext);
-        encomendasSincronizar = encomendaBusiness.buscarPendentesNaoSincronizadas();
+
         sessionManager = new SessionManager(mContext);
         task = this;
 
-        /** 1 - ativar timertask quando existir encomenda pendente **/
-        if(encomendasSincronizar != null && encomendasSincronizar.size() > 0){
+//        Status status = statusBusiness.getStatus();
+//        long id = statusBusiness.getIdEncomendaCorrente();
+
+        /** 1 - ativar timertask quando existir viagem **/
+//        if(encomenda != null && encomenda.getFlagEnviado() == EnumStatusEnvio.NAO_SINCRONIZADO.getKey()){
+        encomendaList = encomendaBusiness.buscarSaiuEntrega();
+        if(encomendaList != null && encomendaList.size() > 0){
 
             isAtivar = true;
             startTimer();
-
-        }else{
-
-//            sessionManager.stopModoOcorrencia();
         }
     }
 
@@ -97,7 +105,7 @@ public class SincronizaEncomendaPendenteTimerTask {
         /** 2 - ativo **/
         if(timer == null && isAtivar){
 
-            Toast.makeText(mContext, "START SINCRONIZAR OCORRENCIAS", Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, "START INICIAR VIAGEM ENTREGA", Toast.LENGTH_LONG).show();
 
             timer = new Timer();
 
@@ -144,12 +152,14 @@ public class SincronizaEncomendaPendenteTimerTask {
 
                         if(InternetStatus.isNetworkAvailable(mContext)){
 
-                            Toast.makeText(mContext, "OCORRENCIA ONLINE - Tempo - " + Calendar.getInstance().getTime().getSeconds(), Toast.LENGTH_LONG).show();
-                            SincronizarOcorrencia sincronizarOcorrencia = new SincronizarOcorrencia(mContext, encomendasSincronizar, task);
+                            Toast.makeText(mContext, "INICIAR ENTREGA ONLINE - Tempo - " + Calendar.getInstance().getTime().getSeconds(), Toast.LENGTH_LONG).show();
+
+                            SincronizarInicioEntrega sincronizarInicioEntrega = new SincronizarInicioEntrega(mContext, encomendaList, task);
+
 
                         }else{
 
-                            Toast.makeText(mContext, "OCORRENCIA OFFLINE - Tempo - " + Calendar.getInstance().getTime().getSeconds(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(mContext, "INICIAR ENTREGA OFFLINE - Tempo - " + Calendar.getInstance().getTime().getSeconds(), Toast.LENGTH_LONG).show();
                         }
                     }
                 });

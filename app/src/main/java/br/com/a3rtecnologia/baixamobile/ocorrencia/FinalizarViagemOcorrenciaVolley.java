@@ -1,6 +1,7 @@
 package br.com.a3rtecnologia.baixamobile.ocorrencia;
 
 import android.content.Context;
+import android.content.Intent;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -19,6 +20,7 @@ import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
 import br.com.a3rtecnologia.baixamobile.encomenda.EnumEncomendaStatus;
 import br.com.a3rtecnologia.baixamobile.entrega.DelegateEntregaAsyncResponse;
+import br.com.a3rtecnologia.baixamobile.ocorrencia_sincronizacao.OcorrenciaReceiver;
 import br.com.a3rtecnologia.baixamobile.status.Status;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
 import br.com.a3rtecnologia.baixamobile.tab_mapa.MyLocationTimerTask;
@@ -86,19 +88,13 @@ public class FinalizarViagemOcorrenciaVolley {
         Map<String, String> params = new HashMap<>();
         String id = sessionManager.getValue("id");
 
-        params.put("IdMotorista", id);
-
         String dataFimViagem = DateUtil.getDataAtual();
         Status status = statusBusiness.getStatus();
         status.setDataFimViagem(dataFimViagem);
+
         statusBusiness.salvar(status);
 
-        params.put("DataFinalizacao", dataFimViagem);
-
         String idStatus = String.valueOf(ocorrencia.getTipoOcorrencia().getId());
-        params.put("IdStatus", idStatus);
-
-
 
         //RECUPERA MINHA LOCALIZACAO ATUAL
         MyLocationTimerTask timerTaskLocation = new MyLocationTimerTask(mContext, TabItemMapaFragment.map);
@@ -107,6 +103,10 @@ public class FinalizarViagemOcorrenciaVolley {
         LatLng latLng = timerTaskLocation.getMyLatLng();
         timerTaskLocation.stoptimertask();
 
+        params.put("IdMotorista", id);
+        params.put("DataFinalizacao", dataFimViagem);
+        params.put("IdStatus", idStatus);
+
         if(latLng != null){
 
             String latitude = String.valueOf(latLng.latitude);
@@ -114,16 +114,49 @@ public class FinalizarViagemOcorrenciaVolley {
 
             params.put("Latitude", latitude);
             params.put("Longitude", longitude);
-
-        }else{
-
-            params.put("Latitude", "0");
-            params.put("Longitude", "0");
         }
-
 
         return params;
     }
+
+
+
+    private void prepare(Encomenda encomendaCorrente){
+
+        encomendaCorrente.setIdStatus(EnumEncomendaStatus.OCORRENCIA.getKey());
+        encomendaCorrente.setDescStatus(EnumEncomendaStatus.OCORRENCIA.getValue());
+
+
+        /** 3 - recupera localizacao atual **/
+        MyLocationTimerTask timerTaskLocation = new MyLocationTimerTask(mContext, TabItemMapaFragment.map);
+        timerTaskLocation.startTimer();
+
+        /** 3.1 - monta objeto latlng **/
+        LatLng latLng = timerTaskLocation.getMyLatLng();
+        timerTaskLocation.stoptimertask();
+
+        if(latLng != null){
+
+            encomendaCorrente.setLatitude(latLng.latitude);
+            encomendaCorrente.setLongitude(latLng.longitude);
+        }
+
+        /** 5 - data atual da baixa **/
+        encomendaCorrente.setDataBaixa(DateUtil.getDataAtual());
+        encomendaBusiness.update(encomendaCorrente);
+
+
+        /** 6 - remove COR do circulo se for uma encomenda TRATADA **/
+        encomendaCorrente.setFlagTratado(false);
+
+        /** 7 - atualiza STATUS da encomenda para OCORRENCIA **/
+        encomendaBusiness.atualizarStatusEncomendaOcorrencia(encomendaCorrente);
+
+        /** 8 - DESMARCA encomenda como CORRENTE **/
+        statusBusiness.removeEncomendaCorrente();
+    }
+
+
 
 
 
@@ -161,12 +194,19 @@ public class FinalizarViagemOcorrenciaVolley {
 
                     for(Encomenda encomenda : encomendaList){
 
-                        encomenda.setIdStatus(EnumEncomendaStatus.OCORRENCIA.getKey());
-                        encomenda.setDescStatus(EnumEncomendaStatus.OCORRENCIA.getValue());
+//                        encomenda.setIdStatus(EnumEncomendaStatus.OCORRENCIA.getKey());
+//                        encomenda.setDescStatus(EnumEncomendaStatus.OCORRENCIA.getValue());
+                        prepare(encomenda);
 
                         encomendaBusiness.atualizarEncomenda(encomenda);
                     }
 
+                    /**
+                     * ATIVAR SINCRONISMO
+                     */
+                    Intent ocorrenciaIntent = new Intent(mContext, OcorrenciaReceiver.class);
+                    ocorrenciaIntent.putExtra("OPERACAO", "START");
+                    mContext.sendBroadcast(ocorrenciaIntent);
 
                     delegate.processFinish(true, "FINALIZA VIAGEM OCORRENCIA - FORCADO - OK");
 
@@ -192,33 +232,11 @@ public class FinalizarViagemOcorrenciaVolley {
 
                 if(InternetStatus.isNetworkAvailable(mContext)){
 
-                    if(error.networkResponse != null) {
-
-                        if (error.networkResponse.statusCode == EnumHttpError.ERROR_401.getErrorInt()) {
-
-                            Toast.makeText(mContext, R.string.error_invalid_email_or_password, Toast.LENGTH_LONG).show();
-
-                            delegate.processCanceled(false);
-//                        StatusDialog dialog = new StatusDialog((Activity)mContext, false, error.networkResponse.statusCode);
-
-                        } else if (error.networkResponse.statusCode == EnumHttpError.ERROR_400.getErrorInt()) {
-
-                            delegate.processCanceled(false);
-//                        StatusDialog dialog = new StatusDialog((Activity)mContext, false, error.networkResponse.statusCode);
-                        } else if (error.networkResponse.statusCode == 404) {
-
-                            delegate.processCanceled(false);
-                        }
-
-                    }else{
-
-                        delegate.processCanceled(false);
-                    }
+                    delegate.processCanceled(false);
 
                 }else{
 
                     delegate.processCanceled(false);
-//                    StatusDialog dialog = new StatusDialog((Activity)mContext, false, error.networkResponse.statusCode);
                 }
             }
         };
