@@ -5,7 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import br.com.a3rtecnologia.baixamobile.iniciar_viagem_sincronizacao.SincronizaIniciarViagemTimerTask;
+import br.com.a3rtecnologia.baixamobile.entrega_sincronizacao.EntregaReceiver;
+import br.com.a3rtecnologia.baixamobile.ocorrencia_sincronizacao.OcorrenciaReceiver;
 import br.com.a3rtecnologia.baixamobile.util.SessionManager;
 
 /**
@@ -49,7 +50,46 @@ public class IniciarEntregaReceiver extends BroadcastReceiver {
                 sessionManager.stopModoInicioEntrega();
 
                 SincronizaInicioEntregaTimerTask.getInstance(mContext, false);
+
+
+
+                /** ativar verificacao - se existe finalizar **/
+                sequenciaSincronizar();
+
+            } else if (OPERACAO.equalsIgnoreCase("FINALIZAR")) {
+
+                sequenciaSincronizar();
+
             }
+//            else if (OPERACAO.equalsIgnoreCase("FINALIZAR_OCORRENCIA")) {
+//
+//                if(sessionManager.isModoOcorrencia()){
+//
+//                    Intent ocorrenciaIntent = new Intent(mContext, OcorrenciaReceiver.class);
+//                    ocorrenciaIntent.putExtra("OPERACAO", "START");
+//                    mContext.sendBroadcast(ocorrenciaIntent);
+//                }
+//            }
+        }
+    }
+
+
+
+
+    private void sequenciaSincronizar(){
+
+        if(sessionManager.isModoOcorrencia()){
+
+            Intent ocorrenciaIntent = new Intent(mContext, OcorrenciaReceiver.class);
+            ocorrenciaIntent.putExtra("OPERACAO", "START");
+            mContext.sendBroadcast(ocorrenciaIntent);
+        }
+
+        if(sessionManager.isModoEntrega()){
+
+            Intent entregaIntent = new Intent(mContext, EntregaReceiver.class);
+            entregaIntent.putExtra("OPERACAO", "START");
+            mContext.sendBroadcast(entregaIntent);
         }
     }
 

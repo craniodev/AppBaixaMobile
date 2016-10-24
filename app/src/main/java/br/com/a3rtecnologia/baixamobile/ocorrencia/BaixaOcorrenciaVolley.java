@@ -12,6 +12,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.HashMap;
 import java.util.Map;
 
+import br.com.a3rtecnologia.baixamobile.EnumInicioEntregaEnvio;
 import br.com.a3rtecnologia.baixamobile.EnumStatusEnvio;
 import br.com.a3rtecnologia.baixamobile.R;
 import br.com.a3rtecnologia.baixamobile.api.EnumAPI;
@@ -143,6 +144,7 @@ public class BaixaOcorrenciaVolley {
                     Toast.makeText(mContext, "API - BAIXA OCORRENCIA - SUCESSO", Toast.LENGTH_LONG).show();
 
                     encomenda.setFlagEnviado(EnumStatusEnvio.SINCRONIZADO.getKey());
+//                    encomenda.setFlagInicioEntrega(EnumInicioEntregaEnvio.NAO.getKey());
                     encomendaBusiness.update(encomenda);
 
                     delegate.processFinish(true, "BAIXA OCORRENCIA - OK");

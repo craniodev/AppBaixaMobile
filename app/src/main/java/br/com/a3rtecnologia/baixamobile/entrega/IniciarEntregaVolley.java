@@ -16,6 +16,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.HashMap;
 import java.util.Map;
 
+import br.com.a3rtecnologia.baixamobile.EnumInicioEntregaEnvio;
 import br.com.a3rtecnologia.baixamobile.EnumStatusEnvio;
 import br.com.a3rtecnologia.baixamobile.R;
 import br.com.a3rtecnologia.baixamobile.api.EnumAPI;
@@ -146,7 +147,8 @@ public class IniciarEntregaVolley {
 
                     Toast.makeText(mContext, "API - INICIAR ENTREGA - SUCESSO", Toast.LENGTH_LONG).show();
 
-                    encomenda.setFlagEnviado(EnumStatusEnvio.SINCRONIZADO.getKey());
+//                    encomenda.setFlagEnviado(EnumStatusEnvio.SINCRONIZADO.getKey());
+                    encomenda.setFlagInicioEntrega(EnumInicioEntregaEnvio.NAO.getKey());
                     encomendaBusiness.update(encomenda);
 
                     delegate.processFinish(true, "INICIAR ENTREGA - OK");

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import br.com.a3rtecnologia.baixamobile.ocorrencia_sincronizacao.SincronizaEncomendaPendenteTimerTask;
 import br.com.a3rtecnologia.baixamobile.util.SessionManager;
 
 /**
@@ -40,7 +39,7 @@ public class EntregaReceiver extends BroadcastReceiver {
 
             if (OPERACAO.equalsIgnoreCase("START")) {
 
-                sessionManager.startModoEntrega();
+//                sessionManager.startModoEntrega();
 
                 SincronizaEncomendaEntregueTimerTask.getInstance(mContext, true);
 

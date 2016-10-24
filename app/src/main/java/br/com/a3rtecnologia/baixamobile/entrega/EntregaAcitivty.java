@@ -33,9 +33,7 @@ import br.com.a3rtecnologia.baixamobile.assinatura.AssinaturaDigital;
 import br.com.a3rtecnologia.baixamobile.dialogs.StatusDialog;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
-import br.com.a3rtecnologia.baixamobile.entrega_sincronizacao.EntregaReceiver;
-import br.com.a3rtecnologia.baixamobile.entrega_sincronizacao.SincronizaEncomendaEntregueTimerTask;
-import br.com.a3rtecnologia.baixamobile.ocorrencia_sincronizacao.OcorrenciaReceiver;
+import br.com.a3rtecnologia.baixamobile.iniciar_entrega_sincronizacao.IniciarEntregaReceiver;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
 import br.com.a3rtecnologia.baixamobile.tab_mapa.MyLocationTimerTask;
 import br.com.a3rtecnologia.baixamobile.tab_mapa.TabItemMapaFragment;
@@ -44,9 +42,9 @@ import br.com.a3rtecnologia.baixamobile.tipo_documento.TipoDocumentoAdapter;
 import br.com.a3rtecnologia.baixamobile.tipo_documento.TipoDocumentoBusiness;
 import br.com.a3rtecnologia.baixamobile.tipo_ocorrencia.TipoOcorrenciaBusiness;
 import br.com.a3rtecnologia.baixamobile.tipo_recebedor.TipoRecebedor;
+import br.com.a3rtecnologia.baixamobile.tipo_recebedor.TipoRecebedorAdapter;
 import br.com.a3rtecnologia.baixamobile.tipo_recebedor.TipoRecebedorBusiness;
 import br.com.a3rtecnologia.baixamobile.util.ActivityUtil;
-import br.com.a3rtecnologia.baixamobile.tipo_recebedor.TipoRecebedorAdapter;
 import br.com.a3rtecnologia.baixamobile.util.DateUtil;
 import br.com.a3rtecnologia.baixamobile.util.ImagemUtil;
 import br.com.a3rtecnologia.baixamobile.util.SessionManager;
@@ -480,10 +478,6 @@ public class EntregaAcitivty extends AppCompatActivity {
      */
     private void createNumeroDocumentoRecebedor(){
 
-//        entrega_nr_documento = (MaskedEditText) findViewById(R.id.entrega_nr_documento);
-//        entrega_cnh = (MaskedEditText) findViewById(R.id.entrega_cnh);
-//        entrega_cpf = (MaskedEditText) findViewById(R.id.entrega_cpf);
-//        entrega_rg = (MaskedEditText) findViewById(R.id.entrega_rg);
         entrega_nr_documento = (EditText) findViewById(R.id.entrega_nr_documento);
         entrega_cnh = (EditText) findViewById(R.id.entrega_cnh);
         entrega_cpf = (EditText) findViewById(R.id.entrega_cpf);
@@ -782,9 +776,11 @@ public class EntregaAcitivty extends AppCompatActivity {
         /**
          * ATIVAR SINCRONISMO
          */
-        Intent entregaIntent = new Intent(mContext, EntregaReceiver.class);
-        entregaIntent.putExtra("OPERACAO", "START");
-        getApplicationContext().sendBroadcast(entregaIntent);
+
+        sessionManager.startModoEntrega();
+        Intent iniciarEntregaIntent = new Intent(mContext, IniciarEntregaReceiver.class);
+        iniciarEntregaIntent.putExtra("OPERACAO", "START");
+        mContext.sendBroadcast(iniciarEntregaIntent);
 
         finish();
     }

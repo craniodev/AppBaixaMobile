@@ -1,6 +1,7 @@
 package br.com.a3rtecnologia.baixamobile.entrega_sincronizacao;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.widget.Toast;
 
@@ -11,7 +12,7 @@ import java.util.TimerTask;
 
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
-import br.com.a3rtecnologia.baixamobile.ocorrencia_sincronizacao.SincronizarOcorrencia;
+import br.com.a3rtecnologia.baixamobile.ocorrencia_sincronizacao.OcorrenciaReceiver;
 import br.com.a3rtecnologia.baixamobile.util.InternetStatus;
 import br.com.a3rtecnologia.baixamobile.util.SessionManager;
 
@@ -83,9 +84,11 @@ public class SincronizaEncomendaEntregueTimerTask {
             isAtivar = true;
             startTimer();
 
-        }else{
+        } else{
 
-//            sessionManager.stopModoOcorrencia();
+            Intent entregaReceiver = new Intent(mContext, EntregaReceiver.class);
+            entregaReceiver.putExtra("OPERACAO", "STOP");
+            mContext.getApplicationContext().sendBroadcast(entregaReceiver);
         }
     }
 

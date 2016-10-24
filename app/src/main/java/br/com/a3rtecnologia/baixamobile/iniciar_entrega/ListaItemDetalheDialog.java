@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import br.com.a3rtecnologia.baixamobile.EnumInicioEntregaEnvio;
 import br.com.a3rtecnologia.baixamobile.EnumStatusEnvio;
 import br.com.a3rtecnologia.baixamobile.R;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
@@ -80,6 +81,10 @@ public class ListaItemDetalheDialog extends Activity{
                      */
                     encomenda.setDataInicioEntrega(DateUtil.getDataAtual());
                     encomenda.setFlagEnviado(EnumStatusEnvio.NAO_SINCRONIZADO.getKey());
+
+                    //novo status
+                    encomenda.setFlagInicioEntrega(EnumInicioEntregaEnvio.SIM.getKey());
+
                     encomenda.setIdStatus(EnumEncomendaStatus.SAIU_ENTREGA.getKey());
                     encomenda.setDescStatus(EnumEncomendaStatus.SAIU_ENTREGA.getValue());
                     encomendaBusiness.update(encomenda);

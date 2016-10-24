@@ -29,8 +29,8 @@ import br.com.a3rtecnologia.baixamobile.dialogs.StatusDialog;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
 import br.com.a3rtecnologia.baixamobile.entrega.DelegateEntregaAsyncResponse;
+import br.com.a3rtecnologia.baixamobile.iniciar_entrega_sincronizacao.IniciarEntregaReceiver;
 import br.com.a3rtecnologia.baixamobile.menu.MenuDrawerActivity;
-import br.com.a3rtecnologia.baixamobile.ocorrencia_sincronizacao.OcorrenciaReceiver;
 import br.com.a3rtecnologia.baixamobile.ocorrencia_tratada_sincronizacao.AtualizaEncomendaPendenteTimerTask;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
 import br.com.a3rtecnologia.baixamobile.tab_mapa.MyLocationTimerTask;
@@ -400,9 +400,19 @@ public class OcorrenciaActivity extends AppCompatActivity {
 
             Toast.makeText(mContext, "API - START - ENCOMENDA PENDENTE - SUCESSO", Toast.LENGTH_LONG).show();
 
-            /** 10 - ativa VERIFICADOR de encomendas TRATADAS **/
-            AtualizaEncomendaPendenteTimerTask atualizaEncomendaPendenteTimerTask = new AtualizaEncomendaPendenteTimerTask(mContext);
-            atualizaEncomendaPendenteTimerTask.startTimer();
+
+
+
+
+
+//            /** 10 - ativa VERIFICADOR de encomendas TRATADAS **/
+//            AtualizaEncomendaPendenteTimerTask atualizaEncomendaPendenteTimerTask = new AtualizaEncomendaPendenteTimerTask(mContext);
+
+
+
+
+
+
 
             /** 11 - adiciona recebedor - SOMENTE TRATADAS **/
 
@@ -419,9 +429,17 @@ public class OcorrenciaActivity extends AppCompatActivity {
             /**
              * ATIVAR SINCRONISMO
              */
-            Intent ocorrenciaIntent = new Intent(mContext, OcorrenciaReceiver.class);
-            ocorrenciaIntent.putExtra("OPERACAO", "START");
-            getApplicationContext().sendBroadcast(ocorrenciaIntent);
+//            Intent ocorrenciaIntent = new Intent(mContext, OcorrenciaReceiver.class);
+//            ocorrenciaIntent.putExtra("OPERACAO", "START");
+//            getApplicationContext().sendBroadcast(ocorrenciaIntent);
+
+
+
+            sessionManager.startModoOcorrencia();
+            Intent iniciarEntregaIntent = new Intent(mContext, IniciarEntregaReceiver.class);
+//            iniciarEntregaIntent.putExtra("OPERACAO", "FINALIZAR");
+            iniciarEntregaIntent.putExtra("OPERACAO", "START");
+            mContext.sendBroadcast(iniciarEntregaIntent);
 
 
 

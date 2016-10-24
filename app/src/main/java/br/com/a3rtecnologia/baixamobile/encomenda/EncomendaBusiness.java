@@ -8,6 +8,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import java.sql.SQLException;
 import java.util.List;
 
+import br.com.a3rtecnologia.baixamobile.EnumInicioEntregaEnvio;
 import br.com.a3rtecnologia.baixamobile.EnumStatusEnvio;
 import br.com.a3rtecnologia.baixamobile.orm.CustomDao;
 import br.com.a3rtecnologia.baixamobile.orm.DatabaseHelper;
@@ -133,17 +134,9 @@ public class EncomendaBusiness {
      */
     public int count(){
 
-        List<Encomenda> lista = buscarTodosNaoPendentesSincronismo();
+        List<Encomenda> result = buscarTodosNaoPendentesSincronismo();
 
-
-        if(lista != null){
-
-            return lista.size();
-
-        }else{
-
-            return 0;
-        }
+        return result != null ? result.size() : 0;
     }
 
 
@@ -159,16 +152,9 @@ public class EncomendaBusiness {
      */
     public int countOcorrenciasNaoSincronizadas(){
 
-        List<Encomenda> lista = buscarOcorrenciasNaoSincronizadas();
+        List<Encomenda> result = buscarOcorrenciasNaoSincronizadas();
 
-        if(lista != null){
-
-            return lista.size();
-
-        }else{
-
-            return 0;
-        }
+        return result != null ? result.size() : 0;
     }
 
 
@@ -191,16 +177,9 @@ public class EncomendaBusiness {
      */
     public int countEntregueNaoSincronizadas(){
 
-        List<Encomenda> lista = buscarEntregueNaoSincronizadas();
+        List<Encomenda> result = buscarEntregueNaoSincronizadas();
 
-        if(lista != null){
-
-            return lista.size();
-
-        }else{
-
-            return 0;
-        }
+        return result != null ? result.size() : 0;
     }
 
 
@@ -219,16 +198,9 @@ public class EncomendaBusiness {
      */
     public int countNaoSincronizadas(){
 
-        List<Encomenda> lista = naoSincronizados();
+        List<Encomenda> result = naoSincronizados();
 
-        if(lista != null){
-
-            return lista.size();
-
-        }else{
-
-            return 0;
-        }
+        return result != null ? result.size() : 0;
     }
 
 
@@ -590,6 +562,8 @@ public class EncomendaBusiness {
             result = encomendaDao.queryBuilder()
                     .where()
                     .in("IdStatus", EnumEncomendaStatus.EM_ROTA.getKey(), EnumEncomendaStatus.LIBERADO.getKey(), EnumEncomendaStatus.SAIU_ENTREGA.getKey())
+//                    .and()
+//                    .eq("flagEnviado", EnumStatusEnvio.NAO_SINCRONIZADO.getKey())
                     .query();
 
         } catch (SQLException e) {
@@ -618,9 +592,10 @@ public class EncomendaBusiness {
 
             result = encomendaDao.queryBuilder()
                     .where()
-                    .eq("IdStatus", EnumEncomendaStatus.SAIU_ENTREGA.getKey())
-//                    .and()
-//                    .eq("flagEnviado", EnumStatusEnvio.NAO_SINCRONIZADO)
+//                    .eq("IdStatus", EnumEncomendaStatus.SAIU_ENTREGA.getKey())
+                    .in("flagInicioEntrega", EnumInicioEntregaEnvio.SIM.getKey())
+                    .and()
+                    .eq("flagEnviado", EnumStatusEnvio.NAO_SINCRONIZADO.getKey())
                     .query();
 
         } catch (SQLException e) {
@@ -650,16 +625,17 @@ public class EncomendaBusiness {
 
             result = encomendaDao.queryBuilder()
                     .where()
-                    .eq("IdStatus", EnumEncomendaStatus.SAIU_ENTREGA.getKey())
-//                    .and()
-//                    .eq("flagEnviado", EnumStatusEnvio.NAO_SINCRONIZADO)
+//                    .eq("IdStatus", EnumEncomendaStatus.SAIU_ENTREGA.getKey())
+                    .eq("flagInicioEntrega", EnumInicioEntregaEnvio.SIM.getKey())
+                    .and()
+                    .eq("flagEnviado", EnumStatusEnvio.NAO_SINCRONIZADO.getKey())
                     .query();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return result.size();
+        return result != null ? result.size() : 0;
     }
 
 

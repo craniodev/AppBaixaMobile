@@ -94,6 +94,9 @@ public class Encomenda implements Serializable{
     @DatabaseField
     private Boolean flagTratado;
 
+    @DatabaseField
+    private int flagInicioEntrega;
+
 
 
     public int getId() {
@@ -294,5 +297,13 @@ public class Encomenda implements Serializable{
 
     public void setFlagTratado(Boolean flagTratado) {
         this.flagTratado = flagTratado;
+    }
+
+    public int getFlagInicioEntrega() {
+        return flagInicioEntrega;
+    }
+
+    public void setFlagInicioEntrega(int flagInicioEntrega) {
+        this.flagInicioEntrega = flagInicioEntrega;
     }
 }

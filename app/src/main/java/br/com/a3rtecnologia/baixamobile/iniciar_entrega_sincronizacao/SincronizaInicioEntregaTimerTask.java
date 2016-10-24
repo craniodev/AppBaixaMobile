@@ -1,6 +1,7 @@
 package br.com.a3rtecnologia.baixamobile.iniciar_entrega_sincronizacao;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.widget.Toast;
 
@@ -12,9 +13,11 @@ import java.util.TimerTask;
 import br.com.a3rtecnologia.baixamobile.EnumStatusEnvio;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
+import br.com.a3rtecnologia.baixamobile.entrega_sincronizacao.EntregaReceiver;
 import br.com.a3rtecnologia.baixamobile.iniciar_viagem.IniciarViagem;
 import br.com.a3rtecnologia.baixamobile.iniciar_viagem.IniciarViagemBusiness;
 import br.com.a3rtecnologia.baixamobile.iniciar_viagem_sincronizacao.SincronizarIniciarViagem;
+import br.com.a3rtecnologia.baixamobile.ocorrencia_sincronizacao.OcorrenciaReceiver;
 import br.com.a3rtecnologia.baixamobile.status.Status;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
 import br.com.a3rtecnologia.baixamobile.util.InternetStatus;
@@ -94,8 +97,22 @@ public class SincronizaInicioEntregaTimerTask {
 
             isAtivar = true;
             startTimer();
+
+        }else{
+
+            /**
+             * CHAMA OCORRENCIA / ENTREGA
+             *
+             * JA FOI SINCRONIZADO O PRIMEIRO STATUS "SAIU PARA ENTREGA"
+             *
+             */
+            Intent inicioEntregaIntent = new Intent(mContext, IniciarEntregaReceiver.class);
+            inicioEntregaIntent.putExtra("OPERACAO", "FINALIZAR");
+            mContext.sendBroadcast(inicioEntregaIntent);
+
         }
     }
+
 
 
 
@@ -156,7 +173,6 @@ public class SincronizaInicioEntregaTimerTask {
 
                             SincronizarInicioEntrega sincronizarInicioEntrega = new SincronizarInicioEntrega(mContext, encomendaList, task);
 
-
                         }else{
 
                             Toast.makeText(mContext, "INICIAR ENTREGA OFFLINE - Tempo - " + Calendar.getInstance().getTime().getSeconds(), Toast.LENGTH_LONG).show();
@@ -166,5 +182,26 @@ public class SincronizaInicioEntregaTimerTask {
             }
         };
     }
+
+
+
+
+//    private void sequenciaSincronizar(){
+//
+//        if(sessionManager.isModoOcorrencia()){
+//
+//            Intent ocorrenciaIntent = new Intent(mContext, OcorrenciaReceiver.class);
+//            ocorrenciaIntent.putExtra("OPERACAO", "START");
+//            mContext.sendBroadcast(ocorrenciaIntent);
+//        }
+//
+//        if(sessionManager.isModoEntrega()){
+//
+//            Intent entregaIntent = new Intent(mContext, EntregaReceiver.class);
+//            entregaIntent.putExtra("OPERACAO", "START");
+//            mContext.sendBroadcast(entregaIntent);
+//        }
+//
+//    }
 
 }

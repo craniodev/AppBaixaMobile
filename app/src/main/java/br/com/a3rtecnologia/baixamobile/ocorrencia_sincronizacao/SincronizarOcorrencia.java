@@ -5,12 +5,13 @@ import android.content.Intent;
 
 import java.util.List;
 
-import br.com.a3rtecnologia.baixamobile.controle_timertask.ControleTimerTaskBusiness;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
 import br.com.a3rtecnologia.baixamobile.entrega.DelegateEntregaAsyncResponse;
 import br.com.a3rtecnologia.baixamobile.ocorrencia.BaixaOcorrenciaVolley;
+import br.com.a3rtecnologia.baixamobile.ocorrencia_tratada_sincronizacao.AtualizaEncomendaPendenteTimerTask;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
+import br.com.a3rtecnologia.baixamobile.util.SessionManager;
 
 /**
  * Created by maclemon on 03/10/16.
@@ -25,6 +26,7 @@ public class SincronizarOcorrencia {
 
     private Context mContext;
     private SincronizaEncomendaPendenteTimerTask task;
+    private SessionManager sessionManager;
 
 
 
@@ -33,6 +35,7 @@ public class SincronizarOcorrencia {
 
         this.encomendaBusiness = new EncomendaBusiness(mContext);
         this.statusBusiness = new StatusBusiness(mContext);
+        this.sessionManager = new SessionManager(mContext);
 
         this.encomendaList = encomendaList;
 
@@ -61,6 +64,10 @@ public class SincronizarOcorrencia {
                         Intent ocorrenciaIntent = new Intent(mContext, OcorrenciaReceiver.class);
                         ocorrenciaIntent.putExtra("OPERACAO", "STOP");
                         mContext.getApplicationContext().sendBroadcast(ocorrenciaIntent);
+
+
+                        /** 10 - ativa VERIFICADOR de encomendas TRATADAS **/
+                        AtualizaEncomendaPendenteTimerTask atualizaEncomendaPendenteTimerTask = new AtualizaEncomendaPendenteTimerTask(mContext);
                     }
                 }
 

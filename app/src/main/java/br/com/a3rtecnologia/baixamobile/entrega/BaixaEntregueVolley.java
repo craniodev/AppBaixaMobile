@@ -7,19 +7,15 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.google.android.gms.maps.model.LatLng;
-
 
 import java.util.HashMap;
 import java.util.Map;
 
 import br.com.a3rtecnologia.baixamobile.EnumStatusEnvio;
-import br.com.a3rtecnologia.baixamobile.R;
 import br.com.a3rtecnologia.baixamobile.api.EnumAPI;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
 import br.com.a3rtecnologia.baixamobile.tipo_ocorrencia.ListaOcorrencia;
-import br.com.a3rtecnologia.baixamobile.util.EnumHttpError;
 import br.com.a3rtecnologia.baixamobile.util.GsonRequest;
 import br.com.a3rtecnologia.baixamobile.util.InternetStatus;
 import br.com.a3rtecnologia.baixamobile.util.SessionManager;

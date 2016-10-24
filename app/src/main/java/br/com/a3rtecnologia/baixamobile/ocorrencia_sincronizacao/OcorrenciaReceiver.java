@@ -39,14 +39,11 @@ public class OcorrenciaReceiver extends BroadcastReceiver {
 
             if (OPERACAO.equalsIgnoreCase("START")) {
 
-                sessionManager.startModoOcorrencia();
-
                 SincronizaEncomendaPendenteTimerTask.getInstance(mContext, true);
 
             } else if (OPERACAO.equalsIgnoreCase("STOP")) {
 
                 sessionManager.stopModoOcorrencia();
-
                 SincronizaEncomendaPendenteTimerTask.getInstance(mContext, false);
             }
         }

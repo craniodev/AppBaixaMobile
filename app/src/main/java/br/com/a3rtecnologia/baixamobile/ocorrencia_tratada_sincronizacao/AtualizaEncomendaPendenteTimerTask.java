@@ -54,8 +54,8 @@ public class AtualizaEncomendaPendenteTimerTask {
         if(encomendaPendentes != null && encomendaPendentes.size() > 0){
 
             isAtivar = true;
+            startTimer();
         }
-
     }
 
 
@@ -69,12 +69,12 @@ public class AtualizaEncomendaPendenteTimerTask {
             Toast.makeText(mContext, "START - SINCRONISMO ENCOMENDAS TRATADAS", Toast.LENGTH_LONG).show();
 
             timer = new Timer();
-            showProgress(true);
+
             //initialize the TimerTask's job
             initializeTimerTask();
 
             //schedule the timer, after the first 5000ms the TimerTask will run every 10000ms
-            timer.schedule(timerTask, 5000, 5000); //
+            timer.schedule(timerTask, 1000, 30000); //
         }
 
     }
@@ -152,37 +152,5 @@ public class AtualizaEncomendaPendenteTimerTask {
         };
     }
 
-
-
-
-
-
-
-
-    private void createLoading(Context mContext){
-
-        mProgressDialog = new ProgressDialog(mContext);
-        mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.setMessage("Carregando encomendas no mapa");
-    }
-
-    private void createLoading(Context mContext, String message){
-
-        mProgressDialog = new ProgressDialog(mContext);
-        mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.setMessage(message);
-    }
-
-    public static void showProgress(boolean isShow){
-
-        if(mProgressDialog != null && isShow && !mProgressDialog.isShowing()){
-
-            mProgressDialog.show();
-
-        }else if(mProgressDialog != null && !isShow && mProgressDialog.isShowing()){
-
-            mProgressDialog.hide();
-        }
-    }
 
 }

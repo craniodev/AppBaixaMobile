@@ -9,8 +9,6 @@ import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
 import br.com.a3rtecnologia.baixamobile.entrega.BaixaEntregueVolley;
 import br.com.a3rtecnologia.baixamobile.entrega.DelegateEntregaAsyncResponse;
-import br.com.a3rtecnologia.baixamobile.entrega_sincronizacao.SincronizaEncomendaEntregueTimerTask;
-import br.com.a3rtecnologia.baixamobile.ocorrencia_sincronizacao.OcorrenciaReceiver;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
 
 /**
@@ -54,8 +52,6 @@ public class SincronizarRealizadas {
 
                     int pendentesSincronizar = encomendaBusiness.countEntregueNaoSincronizadas();
                     if (pendentesSincronizar == 0) {
-
-                        task.stoptimertask();
 
                         Intent entregaIntent = new Intent(mContext, EntregaReceiver.class);
                         entregaIntent.putExtra("OPERACAO", "STOP");

@@ -7,10 +7,8 @@ import android.net.ConnectivityManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import br.com.a3rtecnologia.baixamobile.entrega_sincronizacao.EntregaReceiver;
 import br.com.a3rtecnologia.baixamobile.iniciar_entrega_sincronizacao.IniciarEntregaReceiver;
 import br.com.a3rtecnologia.baixamobile.iniciar_viagem_sincronizacao.IniciarViagemReceiver;
-import br.com.a3rtecnologia.baixamobile.ocorrencia_sincronizacao.OcorrenciaReceiver;
 
 /**
  * Created by maclemon on 16/10/16.
@@ -37,21 +35,21 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
 
                         Toast.makeText(mContext, "CHANGE CONNECTION - ONLINE", Toast.LENGTH_LONG).show();
 
-                        Intent iniciarViagemIntent = new Intent(mContext, IniciarViagemReceiver.class);
-                        iniciarViagemIntent.putExtra("OPERACAO", "START");
-                        mContext.sendBroadcast(iniciarViagemIntent);
+//                        Intent iniciarViagemIntent = new Intent(mContext, IniciarViagemReceiver.class);
+//                        iniciarViagemIntent.putExtra("OPERACAO", "START");
+//                        mContext.sendBroadcast(iniciarViagemIntent);
+//
+//                        Intent iniciarEntregaIntent = new Intent(mContext, IniciarEntregaReceiver.class);
+//                        iniciarEntregaIntent.putExtra("OPERACAO", "START");
+//                        mContext.sendBroadcast(iniciarEntregaIntent);
 
-                        Intent iniciarEntregaIntent = new Intent(mContext, IniciarEntregaReceiver.class);
-                        iniciarEntregaIntent.putExtra("OPERACAO", "START");
-                        mContext.sendBroadcast(iniciarEntregaIntent);
-
-                        Intent ocorrenciaIntent = new Intent(mContext, OcorrenciaReceiver.class);
-                        ocorrenciaIntent.putExtra("OPERACAO", "START");
-                        mContext.sendBroadcast(ocorrenciaIntent);
-
-                        Intent entregaIntent = new Intent(mContext, EntregaReceiver.class);
-                        entregaIntent.putExtra("OPERACAO", "START");
-                        mContext.sendBroadcast(entregaIntent);
+//                        Intent ocorrenciaIntent = new Intent(mContext, OcorrenciaReceiver.class);
+//                        ocorrenciaIntent.putExtra("OPERACAO", "START");
+//                        mContext.sendBroadcast(ocorrenciaIntent);
+//
+//                        Intent entregaIntent = new Intent(mContext, EntregaReceiver.class);
+//                        entregaIntent.putExtra("OPERACAO", "START");
+//                        mContext.sendBroadcast(entregaIntent);
 
                     }else{
 

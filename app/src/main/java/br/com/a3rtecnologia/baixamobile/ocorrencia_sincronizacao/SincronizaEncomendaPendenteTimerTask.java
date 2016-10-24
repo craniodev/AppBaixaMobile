@@ -2,6 +2,7 @@ package br.com.a3rtecnologia.baixamobile.ocorrencia_sincronizacao;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.widget.Toast;
 
@@ -13,6 +14,7 @@ import java.util.TimerTask;
 import br.com.a3rtecnologia.baixamobile.controle_timertask.ControleTimerTask;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
+import br.com.a3rtecnologia.baixamobile.iniciar_entrega_sincronizacao.IniciarEntregaReceiver;
 import br.com.a3rtecnologia.baixamobile.util.InternetStatus;
 import br.com.a3rtecnologia.baixamobile.util.SessionManager;
 
@@ -83,9 +85,11 @@ public class SincronizaEncomendaPendenteTimerTask {
             isAtivar = true;
             startTimer();
 
-        }else{
+        } else{
 
-//            sessionManager.stopModoOcorrencia();
+            Intent ocorrenciaIntent = new Intent(mContext, OcorrenciaReceiver.class);
+            ocorrenciaIntent.putExtra("OPERACAO", "STOP");
+            mContext.getApplicationContext().sendBroadcast(ocorrenciaIntent);
         }
     }
 
@@ -127,6 +131,8 @@ public class SincronizaEncomendaPendenteTimerTask {
             isAtivar = false;
             task = null;//TESTE
         }
+//        sessionManager.stopModoOcorrencia();
+
     }
 
 

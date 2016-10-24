@@ -5,15 +5,11 @@ import android.content.Intent;
 
 import java.util.List;
 
-import br.com.a3rtecnologia.baixamobile.EnumStatusEnvio;
 import br.com.a3rtecnologia.baixamobile.encomenda.DelegateEncomendaAsyncResponse;
 import br.com.a3rtecnologia.baixamobile.encomenda.Encomenda;
 import br.com.a3rtecnologia.baixamobile.encomenda.EncomendaBusiness;
 import br.com.a3rtecnologia.baixamobile.entrega.IniciarEntregaVolley;
-import br.com.a3rtecnologia.baixamobile.ocorrencia_sincronizacao.OcorrenciaReceiver;
-import br.com.a3rtecnologia.baixamobile.status.Status;
 import br.com.a3rtecnologia.baixamobile.status.StatusBusiness;
-import br.com.a3rtecnologia.baixamobile.util.DateUtil;
 
 /**
  * Created by maclemon on 03/10/16.
@@ -59,9 +55,21 @@ public class SincronizarInicioEntrega {
                     int pendentesSincronizar = encomendaBusiness.countSaiuEntrega();
                     if (pendentesSincronizar == 0) {
 
-                        Intent iniciarEntregaIntent = new Intent(mContext, IniciarEntregaReceiver.class);
-                        iniciarEntregaIntent.putExtra("OPERACAO", "STOP");
-                        mContext.sendBroadcast(iniciarEntregaIntent);
+
+                        /**
+                         *  ATIVAR SINCRONISMO DA OCORRENCIA OU ENTREGA
+                         *
+                         *  JA FOI SINCRONIZADO O PRIMEIRO STATUS - "SAIU PARA ENTREGA"
+                         */
+                        Intent stopInicioEntrega = new Intent(mContext, IniciarEntregaReceiver.class);
+                        stopInicioEntrega.putExtra("OPERACAO", "STOP");
+                        mContext.sendBroadcast(stopInicioEntrega);
+
+
+
+//                        Intent verificarFinalizar = new Intent(mContext, IniciarEntregaReceiver.class);
+//                        verificarFinalizar.putExtra("OPERACAO", "FINALIZAR");
+//                        mContext.sendBroadcast(verificarFinalizar);
                     }
                 }
 
